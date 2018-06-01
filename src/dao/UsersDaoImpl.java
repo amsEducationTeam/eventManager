@@ -217,6 +217,7 @@ public class UsersDaoImpl implements UsersDao {
 
 	/**
 	 * ユーザ情報更新処理
+	 * @param Users
 	 */
 	@Override
 	public void update(Users Users) throws Exception {
@@ -270,6 +271,9 @@ public class UsersDaoImpl implements UsersDao {
 		}
 	}
 
+	/**
+	 * @return count
+	 */
 	public double countAll() throws Exception {
 		List<Users> userList = new ArrayList<>();
 
