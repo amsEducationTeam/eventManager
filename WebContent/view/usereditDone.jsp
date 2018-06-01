@@ -11,7 +11,7 @@
 <h1>ユーザ編集</h1>
 ユーザの編集が完了しました。<br>
 
-<a href="User?userId=${userId}">ユーザー詳細に戻る </a>
+<a href="User?userId=${userId}&servletName=userInfo">ユーザー詳細に戻る </a>
 
 
 </div>

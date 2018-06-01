@@ -43,6 +43,7 @@ public class LoginServlet extends HttpServlet {
 			try {
 				UsersDao UsersDao = DaoFactory.createUsersDao();
 				Users user = UsersDao.findByLoginIdAndLoginPass(loginId,  loginPass);
+				String pageName = "eventToday";
 				if(user != null) {
 					// セッションにユーザー情報"loginId"を登録
 					request.getSession().setAttribute("id", user.getId());
@@ -52,7 +53,8 @@ public class LoginServlet extends HttpServlet {
 					request.getSession().setAttribute("name", user.getName());
 					// ユーザー種別"type_id"をセッションに登録, 2なら管理者, 1なら一般
 					request.getSession().setAttribute("type_id", user.getTypeId());
-					response.sendRedirect("event");// "ToDayEventServlet"今日のイベントサーブレット未実装
+					request.setAttribute("ServName", pageName);
+					request.getRequestDispatcher("EventServlet").forward(request,  response);
 				} else {
 					request.setAttribute("error", true);
 					request.getRequestDispatcher("view/login.jsp").forward(request,  response);

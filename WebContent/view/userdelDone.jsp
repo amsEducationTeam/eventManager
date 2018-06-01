@@ -9,7 +9,7 @@
 <div class="col-md-10 col-md-offset-1">
 <h1>ユーザ削除</h1>
 <p>ユーザの削除が完了しました。</p>
-<a href="User">ユーザ一覧に戻る</a>
+<a href="User?servletName=userList">ユーザ一覧に戻る</a>
 
 </div>
 </body>
