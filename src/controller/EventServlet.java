@@ -1,6 +1,9 @@
 package controller;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -12,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import dao.AttendDao;
 import dao.DaoFactory;
 import dao.EventsDao;
+import domain.Attend;
 import domain.Events;
 
 /**
@@ -89,13 +93,39 @@ public class EventServlet extends HttpServlet {
 				}
 				break;
 			case EVENT_INFO:
-				eventInfo();
+				try {
+					int infoId = Integer.parseInt(request.getParameter("info"));
+					request.getSession().setAttribute("findEventId", infoId);
+					} catch(Exception e){
+
+					}
+					int findEventId=(int)request.getSession().getAttribute("findEventId");
+
+				try {
+					EventsDao eventsDao = DaoFactory.createEventsDao();
+					Events event = eventsDao.findById(findEventId);
+					request.setAttribute("event",event);
+					AttendDao attendDao = DaoFactory.createAttendDao();
+					List<Attend> attendList = attendDao.findAttends(findEventId);
+					request.setAttribute("attendList",attendList);
+		            request.getRequestDispatcher("view/eventinfo.jsp").forward(request, response);
+				} catch (Exception e) {
+					throw new ServletException(e);
+				}
 				break;
 			case EVENT_EDIT:
-				eventEdit();
+				int infoId = Integer.parseInt(request.getParameter("info"));
+				try {
+					EventsDao eventsDao = DaoFactory.createEventsDao();
+					Events event = eventsDao.findById(infoId);
+					request.setAttribute("event",event);
+		            request.getRequestDispatcher("view/eventedit.jsp").forward(request, response);
+				} catch (Exception e) {
+					throw new ServletException(e);
+				}
 				break;
 			case EVENT_INSERT:
-				eventInsert();
+				request.getRequestDispatcher("view/eventinsert.jsp").forward(request, response);
 				break;
 			case EVENT_DELETE:
 				// doGetメソッドでは無効な処理 404ページへ遷移
@@ -122,14 +152,86 @@ public class EventServlet extends HttpServlet {
 			// doGetメソッドでは無効な処理 404ページへ遷移
 			break;
 		case EVENT_EDIT:
-			eventEditPost();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			int id = Integer.parseInt(request.getParameter("info"));
+			String title=request.getParameter("title");
+			Date start =null;
+			Date end = null;
+			try {
+				start = sdf.parse(request.getParameter("start"));
+				end=sdf.parse(request.getParameter("end"));
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+			String place=request.getParameter("place");
+			int group_id=Integer.parseInt(request.getParameter("group_id"));
+			String detail=request.getParameter("detail");
+
+			Events event=new Events();
+			event.setId(id);
+			event.setTitle(title);
+			event.setStart(start);
+			event.setEnd(end);
+			event.setPlace(place);
+			event.setGroup_id(group_id);
+			event.setDetail(detail);
+			event.setRegistered_by((int)request.getSession().getAttribute("id"));
+
+			try {
+				EventsDao eventsDao=DaoFactory.createEventsDao();
+				eventsDao.update(event);
+				request.getRequestDispatcher("view/eventeditDone.jsp").forward(request, response);
+				} catch (Exception e) {
+				throw new ServletException(e);
+				}
 			break;
 		case EVENT_INSERT:
-			eventInsertPost();
+			SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+			String title2=request.getParameter("title");
+			Date start2 =null;
+			Date end2 = null;
+			try {
+				start2 = sdf2.parse(request.getParameter("start"));
+				end2=sdf2.parse(request.getParameter("end"));
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+			String place2=request.getParameter("place");
+			int group_id2=Integer.parseInt(request.getParameter("group_id"));
+			String detail2=request.getParameter("detail");
+
+			Events event2=new Events();
+			event2.setTitle(title2);
+			event2.setStart(start2);
+			event2.setEnd(end2);
+			event2.setPlace(place2);
+			event2.setGroup_id(group_id2);
+			event2.setDetail(detail2);
+			event2.setRegistered_by((int)request.getSession().getAttribute("id"));
+
+			try {
+				EventsDao eventsDao=DaoFactory.createEventsDao();
+				eventsDao.insert(event2);
+				request.getRequestDispatcher("view/eventinsertDone.jsp").forward(request, response);
+				} catch (Exception e) {
+				throw new ServletException(e);
+				}
 			break;
 		case EVENT_DELETE:
 			//int eventId = Integer.parseInt(request.getParameter("info"));
-			eventDeletePost(request, response);
+			int eventId = Integer.parseInt(request.getParameter("info"));
+			try {
+				EventsDao eventsDao = DaoFactory.createEventsDao();
+				AttendDao attendDao = DaoFactory.createAttendDao();
+				Events event3 = new Events();
+				event3.setId(eventId);
+				attendDao.deleteByEventId(event3);
+				eventsDao.delete(event3);
+				request.getRequestDispatcher("view/eventdelDone.jsp").forward(request, response);
+			} catch (Exception e) {
+				throw new ServletException(e);
+			}
 			break;
 		}
 	}
