@@ -36,7 +36,7 @@
 			<ul class="nav navbar-nav">
 				<li><a href="event">本日のイベント</a></li>
 				<li><a href="eventlist">イベント管理<c:out value="${typeId}" /></a></li>
-				<c:if test="${type_id == 2}"><li><a href="UserListServlet">ユーザ管理</a></li></c:if>
+				<c:if test="${type_id == 2}"><li><a href="User?servletName=userList">ユーザ管理</a></li></c:if>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">

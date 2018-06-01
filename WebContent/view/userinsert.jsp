@@ -47,8 +47,8 @@
 						</select>
 					</p>
 					<p>
-						<a href="User" class="btn btn-default">キャンセル</a>
-						<input type="hidden" name="flag" value="3">
+						<a href="User?servletName=userList" class="btn btn-default">キャンセル</a>
+						<input type="hidden" name="servletName" value="userInsert">
 						<input type="submit" class="btn btn-primary" value="登録" />
 					</p>
 				</form>

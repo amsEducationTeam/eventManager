@@ -18,7 +18,7 @@
 						<div class="alert alert-warning" role="alert">ログインID、パスワードは半角英数字のみ入力できます</div>
 					</c:if>
 					<div class="form-group">
-				<form action="UserEditingServlet" method="post">
+				<form action="User" method="post">
 					<p class="bold">氏名（必須）</p>
 					<p>
 						<input type="text" name="name" placeholder="氏名" class="form-control" value="${user.name}" maxlength="50" required >
@@ -48,7 +48,8 @@
 						</select>
 					</p>
 					<p>
-						<a href="UserInfoServlet?userId=${user.id}" type="button" class="btn btn-default">キャンセル</a>
+						<a href="User?userId=${user.id}&servletName=userInfo" type="button" class="btn btn-default">キャンセル</a>
+						<input type="hidden" name="servletName" value="userEdit"/>
 						<input type="submit" class="btn btn-primary" value="登録" />
 					</p>
 				</form>
