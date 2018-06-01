@@ -25,7 +25,7 @@
 		<nav>
 			<ul class="pagination">
 				<% if(now!=1){ %>
-				<li><a href="UserListServlet?prevnext=1" aria-label="前のページへ">
+				<li><a href="User?prevnext=1&servletName=userList" aria-label="前のページへ">
 						<span aria-hidden="true">«</span>
 				</a></li>
 				<%}
@@ -37,14 +37,14 @@
 					<li <%
 
 				if (now == i) {%> class="active" <%}%>>
-						<a href="UserListServlet?page=<%= i %>"><%= i %></a>
+						<a href="User?servletName=userList&page=<%= i %>"><%= i %></a>
 					</li>
 					<%i++; %>
 				</c:forEach>
 
 					<%
 					if(now!=i-1){ %>
-					<li><a href="UserListServlet?prevnext=2" aria-label="次のページへ">
+					<li><a href="User?servletName=userList&prevnext=2" aria-label="次のページへ">
 							<span aria-hidden="true">»</span>
 					</a></li>
 					<%}
@@ -73,9 +73,9 @@
 					<td><c:out value="${user.name}" /></td>
 					<td><c:out value="${user.groupName}" /></td>
 					<td>
-						<form action="UserListServlet" method="post">
-							<input type="hidden" name="info" value="${user.id}">
-							<input type="hidden" name="flag" value="1">
+						<form action="User" method="post">
+							<input type="hidden" name="userId" value="${user.id}">
+							<input type="hidden" name="servletName" value="userInfo">
 							<input type="submit" class="btn btn-info" value="詳細" />
 						</form>
 					</td>
@@ -83,9 +83,9 @@
 				</tr>
 			</c:forEach>
 		</table>
-		<form action="User" method="post">
+		<form action="User" method="get">
 			<!--  view/addMember.jsp-->
-			<input type="hidden" name="flag" value="2">
+			<input type="hidden" name="servletName" value="userInsert">
 			<input type="submit" class="btn btn-primary" value="ユーザの登録" />
 		</form>
 	</div>
