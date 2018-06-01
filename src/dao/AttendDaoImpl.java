@@ -26,6 +26,10 @@ public class AttendDaoImpl implements UsersDao, AttendDao{
 	@Override
 	public void insert(Users user)throws Exception{
 	}
+
+	/**
+	 * @param int userId, int eventId
+	 */
 	@Override
 	public void insert(int userId,int eventId) throws Exception {
 		try(Connection con=ds.getConnection()){
@@ -39,6 +43,9 @@ public class AttendDaoImpl implements UsersDao, AttendDao{
 		}
 	}
 
+	/**
+	 * @param int userId, int eventId
+	 */
 	//テーブルattendから参加者を削除するメソッド
 	@Override
 	public void delete(int userId,int eventId)throws Exception{
@@ -51,6 +58,10 @@ public class AttendDaoImpl implements UsersDao, AttendDao{
 		}
 	}
 
+	/**
+	 *@param Integer id
+	 *@return List<Attend> attendList
+	 */
 	@Override
 	public List<Attend> findAttends(Integer id) throws Exception{
 		List<Attend> attendList=new ArrayList<>();
@@ -71,6 +82,11 @@ public class AttendDaoImpl implements UsersDao, AttendDao{
 		return attendList;
 	}
 
+	/**
+	 *
+	 * @param rs
+	 * @throws SQLException
+	 */
 	private  Attend mapToAttends(ResultSet rs) throws SQLException{
 		Attend users=new Attend();
 		users.setUser_name(rs.getString("name"));
