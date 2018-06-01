@@ -31,6 +31,7 @@ public class UserServlet extends HttpServlet {
 	protected final String USER_EDIT = "userEdit";
 	protected final String USER_DELETE = "userDelete";
 
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
