@@ -36,7 +36,6 @@
 			<input type="hidden" name="servletName" value="userEdit">
 			<input type="submit" class="btn btn-default" value="編集" />
 		</form>
-
 		<section>
 		<button type="button" class="btn btn-danger"
 			data-toggle="modal" data-target="#deleteAlert">削除
