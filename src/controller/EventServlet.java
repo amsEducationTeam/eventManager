@@ -66,7 +66,6 @@ public class EventServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//EventServName eventServName = EventServName.valueOf(request.getParameter("servName"));
 		String pageName = (String)request.getAttribute("servName");
-
 		switch(pageName) {
 		case EVENT_TODAY:
 			eventToday(request, response);

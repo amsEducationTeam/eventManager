@@ -53,7 +53,7 @@ public class LoginServlet extends HttpServlet {
 					request.getSession().setAttribute("name", user.getName());
 					// ユーザー種別"type_id"をセッションに登録, 2なら管理者, 1なら一般
 					request.getSession().setAttribute("type_id", user.getTypeId());
-					request.setAttribute("ServName", pageName);
+					request.setAttribute("servName", pageName);
 					request.getRequestDispatcher("EventServlet").forward(request,  response);
 				} else {
 					request.setAttribute("error", true);
