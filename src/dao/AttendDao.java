@@ -6,7 +6,11 @@ import domain.Attend;
 import domain.Events;
 import domain.Users;
 
-
+/**
+ * AttendDaoInterface
+ * @author
+ *
+ */
 public interface AttendDao{
 	List<Attend> findAttends(Integer id)throws Exception;
 	Users findById(Integer id) throws Exception;

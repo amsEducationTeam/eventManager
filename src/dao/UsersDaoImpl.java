@@ -172,6 +172,10 @@ public class UsersDaoImpl implements UsersDao {
 
 	}
 
+	/**
+	 * ユーザ情報の入力
+	 * @param user
+	 */
 	@Override
 	public void insert(Users user) throws Exception {
 		try (Connection con = ds.getConnection()) {
@@ -213,6 +217,7 @@ public class UsersDaoImpl implements UsersDao {
 
 	/**
 	 * ユーザ情報更新処理
+	 * @param Users
 	 */
 	@Override
 	public void update(Users Users) throws Exception {
@@ -266,6 +271,9 @@ public class UsersDaoImpl implements UsersDao {
 		}
 	}
 
+	/**
+	 * @return count
+	 */
 	public double countAll() throws Exception {
 		List<Users> userList = new ArrayList<>();
 
