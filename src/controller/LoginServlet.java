@@ -26,6 +26,7 @@ public class LoginServlet extends HttpServlet {
 		request.getRequestDispatcher("view/login.jsp").forward(request,  response);
 	}
 
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
