@@ -16,13 +16,13 @@ import domain.Events;
  * Servlet implementation class EventServlet
  */
 @WebServlet("/event")
-public class EventServlet extends HttpServlet {
+public class EventTodayServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EventServlet() {
+    public EventTodayServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
