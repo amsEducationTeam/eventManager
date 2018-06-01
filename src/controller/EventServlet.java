@@ -95,25 +95,7 @@ public class EventServlet extends HttpServlet {
 				}
 				break;
 			case EVENT_INFO:
-				try {
-					int infoId = Integer.parseInt(request.getParameter("info"));
-					request.getSession().setAttribute("findEventId", infoId);
-					} catch(Exception e){
-
-					}
-					int findEventId=(int)request.getSession().getAttribute("findEventId");
-
-				try {
-					EventsDao eventsDao = DaoFactory.createEventsDao();
-					Events event = eventsDao.findById(findEventId);
-					request.setAttribute("event",event);
-					AttendDao attendDao = DaoFactory.createAttendDao();
-					List<Attend> attendList = attendDao.findAttends(findEventId);
-					request.setAttribute("attendList",attendList);
-		            request.getRequestDispatcher("view/eventinfo.jsp").forward(request, response);
-				} catch (Exception e) {
-					throw new ServletException(e);
-				}
+				// 無効な処理
 				break;
 			case EVENT_EDIT:
 				int infoId = Integer.parseInt(request.getParameter("info"));
@@ -153,7 +135,25 @@ public class EventServlet extends HttpServlet {
 			// doGetメソッドでは無効な処理 404ページへ遷移
 			break;
 		case EVENT_INFO:
-			// doGetメソッドでは無効な処理 404ページへ遷移
+			try {
+				int infoId = Integer.parseInt(request.getParameter("info"));
+				request.getSession().setAttribute("findEventId", infoId);
+				} catch(Exception e){
+
+				}
+				int findEventId=(int)request.getSession().getAttribute("findEventId");
+
+			try {
+				EventsDao eventsDao = DaoFactory.createEventsDao();
+				Events event = eventsDao.findById(findEventId);
+				request.setAttribute("event",event);
+				AttendDao attendDao = DaoFactory.createAttendDao();
+				List<Attend> attendList = attendDao.findAttends(findEventId);
+				request.setAttribute("attendList",attendList);
+	            request.getRequestDispatcher("view/eventinfo.jsp").forward(request, response);
+			} catch (Exception e) {
+				throw new ServletException(e);
+			}
 			break;
 		case EVENT_EDIT:
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
