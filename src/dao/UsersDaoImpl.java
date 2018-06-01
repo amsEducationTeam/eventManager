@@ -256,8 +256,7 @@ public class UsersDaoImpl implements UsersDao {
 	}
 
 	/**
-	 * ユーザー情報時に処理
-	 * ResultSetをUsersクラスにセットします
+	 * ユーザー情報の削除
 	 * @return users
 	 */
 	@Override
