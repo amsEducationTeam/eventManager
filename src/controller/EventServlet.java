@@ -38,11 +38,55 @@ public class EventServlet extends HttpServlet {
 
 		switch(pageName){
 			case EVENT_TODAY:
-
-				//eventToday(request, response);
+				eventToday(request, response);
 				break;
 			case EVENT_LIST:
-				eventList(request, response);
+				int page = 0;
+				try {
+					try {
+						page = Integer.parseInt(request.getParameter("page")); //eventlist.jspから送られてきたのを受け取る
+
+						//pageに開始ページを格納する
+						if (page == 1) {
+							page = 0;
+						} else {
+							page = 5 * (page - 1);
+						}
+						request.getSession().setAttribute("event_page", page); //セッションに格納する
+					} catch (Exception e) {
+						int prevnext = Integer.parseInt(request.getParameter("prevnext")); //eventslistから送られてきたのを受け取る
+						//セッションに保存したevent_pageを取得し、変数に格納する
+						int event_page = (Integer) request.getSession().getAttribute("event_page");
+
+						//←→をするための仕組みを準備する
+						if (prevnext == 1) {
+							//もどる
+							event_page = event_page - 5;
+						} else {
+							//すすむ
+							event_page = event_page + 5;
+						}
+						request.getSession().setAttribute("event_page", event_page); //セッションに格納する
+					}
+				} catch (Exception e) {
+					page = 0; //navbarなどからこのページにきたときの処理
+					request.getSession().setAttribute("event_page", page); //セッションに格納する
+				}
+				int id = (Integer) request.getSession().getAttribute("id");
+				try {
+					//セッションに保存したevent_pageを取得し、変数に格納する
+					int event_page = (Integer) request.getSession().getAttribute("event_page");
+					EventsDao eventsDao = DaoFactory.createEventsDao();
+					List<Events> eventsList = eventsDao.findfive(eventsDao.findAll(event_page), id);
+					//lastpageを設定する
+					double a = (eventsDao.countAll());
+					int lastpage = (int) Math.ceil(a / 5);
+					request.setAttribute("eventsList", eventsList);
+					request.setAttribute("lastpage", lastpage);
+					request.getRequestDispatcher("view/eventlist.jsp").forward(request, response);
+				} catch (Exception e) {
+					throw new ServletException(e);
+				}
 				break;
 			case EVENT_INFO:
 				eventInfo();
@@ -70,7 +114,6 @@ public class EventServlet extends HttpServlet {
 		switch(pageName) {
 		case EVENT_TODAY:
 			eventToday(request, response);
-
 			break;
 		case EVENT_LIST:
 			// doGetメソッドでは無効な処理 404ページへ遷移
