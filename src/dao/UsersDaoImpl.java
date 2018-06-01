@@ -172,6 +172,10 @@ public class UsersDaoImpl implements UsersDao {
 
 	}
 
+	/**
+	 * ユーザ情報の入力
+	 * @param user
+	 */
 	@Override
 	public void insert(Users user) throws Exception {
 		try (Connection con = ds.getConnection()) {
