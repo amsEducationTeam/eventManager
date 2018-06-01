@@ -1,0 +1,68 @@
+package controller;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import dao.AttendDao;
+import dao.DaoFactory;
+
+/**
+ * Servlet implementation class AttendServlet
+ */
+@WebServlet("/attend")
+public class AttendServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public AttendServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * 削除する
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		try {
+			int userId = (int)request.getSession().getAttribute("id");
+			int eventId = Integer.parseInt(request.getParameter("info"));
+
+			AttendDao AttendDao = DaoFactory.createAttendDao();
+			AttendDao.delete(userId,eventId);
+			request.getRequestDispatcher("eventinfo").forward(request, response);
+		} catch (Exception e) {
+			throw new ServletException(e);
+		}
+
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * 参加する
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		try {
+			int userId = (int)request.getSession().getAttribute("id");
+			int eventId = Integer.parseInt(request.getParameter("info"));
+
+			AttendDao AttendDao = DaoFactory.createAttendDao();
+			AttendDao.insert(userId,eventId);
+			request.getRequestDispatcher("eventinfo").forward(request, response);
+		} catch (Exception e) {
+			throw new ServletException(e);
+		}
+	}
+
+}
