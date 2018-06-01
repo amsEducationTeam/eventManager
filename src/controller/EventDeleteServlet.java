@@ -16,7 +16,7 @@ import domain.Events;
 /**
  * Servlet implementation class EventDeleteServlet
  */
-@WebServlet("/eventDelete")
+@WebServlet()// /eventDelete
 public class EventDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

@@ -80,8 +80,10 @@
 					<td><c:out value="${event.place}" /></td>
 					<td><c:out value="${event.groups_name}" /></td>
 					<td>
-						<form action="eventinfo" method="post">
-							<input type="hidden" name="info" value="${event.id}"> <input
+						<form action="EventServlet" method="post">
+							<input type="hidden" name="info" value="${event.id}">
+							<input type="hidden" name="servName" value="eventInfo">
+							 <input
 								type="submit" class="btn btn-info" value="詳細" />
 						</form>
 					</td>

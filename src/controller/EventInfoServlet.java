@@ -18,7 +18,7 @@ import domain.Events;
 /**
  * Servlet implementation class EventInfoServlet
  */
-@WebServlet("/eventinfo")
+@WebServlet()// /eventinfo
 public class EventInfoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

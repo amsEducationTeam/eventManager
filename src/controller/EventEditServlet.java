@@ -18,7 +18,7 @@ import domain.Events;
 /**
  * Servlet implementation class EventEditServlet
  */
-@WebServlet("/eventedit")
+@WebServlet()// /eventedit
 public class EventEditServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
