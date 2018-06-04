@@ -271,6 +271,7 @@ public class UserServlet extends HttpServlet {
 			} catch (Exception e) {
 				throw new ServletException(e);
 			}
+			request.getRequestDispatcher("view/userdelDone.jsp").forward(request, response);
 			break;
 		}
 
