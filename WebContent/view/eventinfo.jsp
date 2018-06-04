@@ -75,7 +75,7 @@
 		</table>
 		<div class="btn-toolbar">
 			<div class="btn-group">
-				<a href="eventlist"><button type="button"
+				<a href="EventServlet?servletName=eventInfo"><button type="button"
 						class="btn btn-primary">一覧に戻る</button></a>
 
 
@@ -104,14 +104,14 @@
 				%>
 				<%if(type_id==2){ %>
 				<form action="EventServlet?servletName=eventEdit" method="get">
-					<input type="hidden" name="info" value="${event.id}"> <input
-						type="submit" class="btn btn-default" value="編集" />
+					<input type="hidden" name="info" value="${event.id}">
+					<input type="submit" class="btn btn-default" value="編集" />
 				</form>
 				<%}else{ %>
 				<c:if test="${event.users_name==name }">
 				<form action="EventServlet?servletName=eventEdit" method="get">
-					<input type="hidden" name="info" value="${event.id}"> <input
-						type="submit" class="btn btn-default" value="編集" />
+					<input type="hidden" name="info" value="${event.id}">
+					<input type="submit" class="btn btn-default" value="編集" />
 				</form>
 				</c:if>
 				<%} %>
