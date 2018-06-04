@@ -49,7 +49,7 @@ public class LoginServlet extends HttpServlet {
 					request.getSession().setAttribute("loginId", user.getLoginId());
 					request.getSession().setAttribute("name", user.getName());
 					request.getSession().setAttribute("type_id", user.getTypeId());
-					request.setAttribute("servName", pageName);
+					request.setAttribute("servletName", pageName);
 					request.getRequestDispatcher("EventServlet").forward(request,  response);
 				} else {
 					request.setAttribute("error", true);
