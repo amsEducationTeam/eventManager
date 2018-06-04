@@ -27,26 +27,6 @@ public class AttendServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 * 削除する
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-		try {
-			int userId = (int)request.getSession().getAttribute("id");
-			int eventId = Integer.parseInt(request.getParameter("info"));
-
-			AttendDao AttendDao = DaoFactory.createAttendDao();
-			AttendDao.delete(userId,eventId);
-			request.getRequestDispatcher("eventinfo").forward(request, response);
-		} catch (Exception e) {
-			throw new ServletException(e);
-		}
-
-	}
-
-	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 * 参加する
 	 */
@@ -56,10 +36,17 @@ public class AttendServlet extends HttpServlet {
 		try {
 			int userId = (int)request.getSession().getAttribute("id");
 			int eventId = Integer.parseInt(request.getParameter("info"));
+			int switchId = Integer.parseInt(request.getParameter("switchId"));
 
+			if(switchId == 0) {
 			AttendDao AttendDao = DaoFactory.createAttendDao();
 			AttendDao.insert(userId,eventId);
-			request.getRequestDispatcher("eventinfo").forward(request, response);
+			} else if(switchId == 1) {
+				AttendDao AttendDao = DaoFactory.createAttendDao();
+				AttendDao.delete(userId,eventId);
+			}
+			request.setAttribute("servletName", "eventInfo");
+			request.getRequestDispatcher("EventServlet").forward(request, response);
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}
