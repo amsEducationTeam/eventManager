@@ -91,7 +91,7 @@
 				</tr>
 			</c:forEach>
 		</table>
-		<form action="eventinsert" method="get">
+		<form action="EventServlet?servletName=eventInsert" method="get">
 			<input type="submit" class="btn btn-primary" value="イベントの登録" />
 		</form>
 	</div>

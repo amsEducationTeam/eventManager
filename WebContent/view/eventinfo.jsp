@@ -103,13 +103,13 @@
 				int type_id=(int)session.getAttribute("type_id");
 				%>
 				<%if(type_id==2){ %>
-				<form action="eventedit" method="get">
+				<form action="EventServlet?servletName=eventEdit" method="get">
 					<input type="hidden" name="info" value="${event.id}"> <input
 						type="submit" class="btn btn-default" value="編集" />
 				</form>
 				<%}else{ %>
 				<c:if test="${event.users_name==name }">
-				<form action="eventedit" method="get">
+				<form action="EventServlet?servletName=eventEdit" method="get">
 					<input type="hidden" name="info" value="${event.id}"> <input
 						type="submit" class="btn btn-default" value="編集" />
 				</form>
@@ -151,7 +151,7 @@
 					</button>
 					<h5 class="modal-title">本当に削除してよろしいですか？</h5></div>
 				<div class="modal-footer" align="right">
-					<form action="eventDelete" method="post">
+					<form action="EventServlet?servletName=eventDelete" method="post">
 						<input type="hidden" name="info" value="${event.id}">
 						<input type="submit" class="btn btn-primary pull-right" value="OK" />
 					</form>

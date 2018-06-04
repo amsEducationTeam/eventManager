@@ -9,7 +9,7 @@
 <div class="container col-md-10 col-md-offset-1">
 <h1>イベント削除</h1>
 <p>イベントの削除が完了しました。</p>
-<a href="eventlist">イベント一覧に戻る</a>
+<a href="EventServlet?servletName=eventList">イベント一覧に戻る</a>
 </div>
 </body>
 </html>
