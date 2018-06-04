@@ -75,7 +75,7 @@
 		</table>
 		<div class="btn-toolbar">
 			<div class="btn-group">
-				<a href="EventServlet?servletName=eventInfo"><button type="button"
+				<a href="EventServlet?servletName=eventList"><button type="button"
 						class="btn btn-primary">一覧に戻る</button></a>
 
 
@@ -83,17 +83,19 @@
 					if (i == 1) {
 				%>
 
-				<form action="attend" method="get">
-					<input type="hidden" name="info" value="${event.id}"> <input
-						type="submit" class="btn btn-warning" value="参加を取り消す" />
+				<form action="attend" method="post">
+					<input type="hidden" name="info" value="${event.id}">
+					<input type="hidden" name="switchId" value="1">
+					<input type="submit" class="btn btn-warning" value="参加を取り消す" />
 				</form>
 
 				<%
 					} else {
 				%>
 				<form action="attend" method="post">
-					<input type="hidden" name="info" value="${event.id}"> <input
-						type="submit" class="btn btn-info" value="参加する" />
+					<input type="hidden" name="info" value="${event.id}">
+					<input type="hidden" name="switchId" value="0">
+					<input type="submit" class="btn btn-info" value="参加する" />
 				</form>
 				<%
 					}
