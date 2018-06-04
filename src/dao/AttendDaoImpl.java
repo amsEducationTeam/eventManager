@@ -50,7 +50,7 @@ public class AttendDaoImpl implements UsersDao, AttendDao{
 	@Override
 	public void delete(int userId,int eventId)throws Exception{
 		try(Connection con=ds.getConnection()){
-			String sql="delete from attends  where user_id=? AND event_id=?;";
+			String sql="delete from attends  where user_id=? AND event_id=?";
 			PreparedStatement stmt =con.prepareStatement(sql);
 			stmt.setObject(1,userId);
 			stmt.setObject(2,eventId);
