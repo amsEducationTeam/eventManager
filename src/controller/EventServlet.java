@@ -38,9 +38,9 @@ public class EventServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// どのページ遷移かをパラメータから取得し定数と比較
 		//EventServName eventServName = EventServName.valueOf(request.getParameter("servName"));
-		String pageName = (String)request.getSession().getAttribute("servName");
+		String pageName = (String)request.getSession().getAttribute("servletName");
 		if(pageName==null) {
-			pageName = (String)request.getParameter("servName");
+			pageName = (String)request.getParameter("servletName");
 		}
 		switch(pageName){
 			case EVENT_TODAY:
@@ -123,9 +123,9 @@ public class EventServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//EventServName eventServName = EventServName.valueOf(request.getParameter("servName"));
-		String pageName = (String)request.getAttribute("servName");
+		String pageName = (String)request.getAttribute("servletName");
 		if(pageName==null) {
-			pageName = (String)request.getParameter("servName");
+			pageName = (String)request.getParameter("servletName");
 		}
 		switch(pageName) {
 		case EVENT_TODAY:

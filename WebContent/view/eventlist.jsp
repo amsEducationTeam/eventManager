@@ -82,7 +82,7 @@
 					<td>
 						<form action="EventServlet" method="post">
 							<input type="hidden" name="info" value="${event.id}">
-							<input type="hidden" name="servName" value="eventInfo">
+							<input type="hidden" name="servletName" value="eventInfo">
 							 <input
 								type="submit" class="btn btn-info" value="詳細" />
 						</form>
@@ -91,7 +91,7 @@
 				</tr>
 			</c:forEach>
 		</table>
-		<form action="eventinsert" method="get">
+		<form action="EventServlet?servletName=eventInsert" method="get">
 			<input type="submit" class="btn btn-primary" value="イベントの登録" />
 		</form>
 	</div>
