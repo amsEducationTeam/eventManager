@@ -39,7 +39,7 @@ public class EventServlet extends HttpServlet {
 		// どのページ遷移かをパラメータから取得し定数と比較
 		//EventServName eventServName = EventServName.valueOf(request.getParameter("servName"));
 		String pageName = (String)request.getSession().getAttribute("servletName");
-		if(pageName==null) {
+		if(pageName==null || pageName == "") {
 			pageName = (String)request.getParameter("servletName");
 		}
 		switch(pageName){
@@ -95,7 +95,25 @@ public class EventServlet extends HttpServlet {
 				}
 				break;
 			case EVENT_INFO:
-				// 無効な処理
+				try {
+					int infoId = Integer.parseInt(request.getParameter("info"));
+					request.getSession().setAttribute("findEventId", infoId);
+					} catch(Exception e){
+
+					}
+					int findEventId=(int)request.getSession().getAttribute("findEventId");
+
+				try {
+					EventsDao eventsDao = DaoFactory.createEventsDao();
+					Events event = eventsDao.findById(findEventId);
+					request.setAttribute("event",event);
+					AttendDao attendDao = DaoFactory.createAttendDao();
+					List<Attend> attendList = attendDao.findAttends(findEventId);
+					request.setAttribute("attendList",attendList);
+		            request.getRequestDispatcher("view/eventinfo.jsp").forward(request, response);
+				} catch (Exception e) {
+					throw new ServletException(e);
+				}
 				break;
 			case EVENT_EDIT:
 				int infoId = Integer.parseInt(request.getParameter("info"));
@@ -184,6 +202,7 @@ public class EventServlet extends HttpServlet {
 			try {
 				EventsDao eventsDao=DaoFactory.createEventsDao();
 				eventsDao.update(event);
+				request.setAttribute("eventId", id);
 				request.getRequestDispatcher("view/eventeditDone.jsp").forward(request, response);
 				} catch (Exception e) {
 				throw new ServletException(e);
