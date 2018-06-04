@@ -34,7 +34,7 @@ public class AttendDaoImpl implements UsersDao, AttendDao{
 	public void insert(int userId,int eventId) throws Exception {
 		try(Connection con=ds.getConnection()){
 			String sql="INSERT INTO attends "
-					+ "(id, user_id,event_id) "
+					+ " (attends_id, member_id,event_id) "
 					+ "values(null,?,?);";
 			PreparedStatement stmt =con.prepareStatement(sql);
 			stmt.setObject(1,userId);
@@ -50,7 +50,7 @@ public class AttendDaoImpl implements UsersDao, AttendDao{
 	@Override
 	public void delete(int userId,int eventId)throws Exception{
 		try(Connection con=ds.getConnection()){
-			String sql="delete from attends  where user_id=? AND event_id=?";
+			String sql="delete from attends  where  member_id=? AND event_id=?";
 			PreparedStatement stmt =con.prepareStatement(sql);
 			stmt.setObject(1,userId);
 			stmt.setObject(2,eventId);
@@ -68,9 +68,9 @@ public class AttendDaoImpl implements UsersDao, AttendDao{
 
 		try	(Connection con=ds.getConnection()) {
 			String sql="SELECT "
-					+ " users.name,user_id "
-					+ " from attends join users "
-					+ " on attends.user_id =users.id"
+					+ " members.name, attends.member_id "
+					+ " from attends join members "
+					+ " on attends.member_id = members.member_id"
 					+ " where attends.event_id = ? ";
 			PreparedStatement stms=con.prepareStatement(sql);
 			stms.setLong(1, id);
@@ -97,7 +97,7 @@ public class AttendDaoImpl implements UsersDao, AttendDao{
 		return users;
 	}
 
-	//イカ、書き換えてないよ
+
 	/**
 	 * ログイン時に処理
 	 * ResultSetをUsersクラスにセットします
@@ -119,7 +119,7 @@ public class AttendDaoImpl implements UsersDao, AttendDao{
 		Users user=null;
 		try(Connection con=ds.getConnection()) {
 			String sql="SELECT * "
-					+"FROM users WHERE login_id=?";
+					+"FROM members WHERE login_id = ?";
 			PreparedStatement stmt=con.prepareStatement(sql);
 			stmt.setString(1,loginId);
 			ResultSet rs =stmt.executeQuery();
@@ -144,7 +144,7 @@ public class AttendDaoImpl implements UsersDao, AttendDao{
 	@Override
 	public void deleteByUserId(Users user) throws Exception {
 		try(Connection con=ds.getConnection()){
-			String sql="delete from attends  where user_id=?";
+			String sql="delete from attends  where member_id=?";
 			PreparedStatement stmt =con.prepareStatement(sql);
 			stmt.setObject(1,user.getId(), Types.INTEGER);
 			stmt.executeUpdate();
