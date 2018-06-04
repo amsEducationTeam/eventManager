@@ -21,7 +21,7 @@ public class EventsDaoImpl implements EventsDao {
 		this.ds = ds;
 	}
 
-	/*
+	/**
 	 * @see dao.EventsDao#findAll()
 	 */
 	@Override
@@ -45,7 +45,6 @@ public class EventsDaoImpl implements EventsDao {
 		}
 		return eventsList;
 	}
-
 
 	/**
 	 * ユーザー一覧
@@ -150,7 +149,6 @@ public class EventsDaoImpl implements EventsDao {
 	}
 	return events;
 }
-
 
 	private Events mapToEventInfo(ResultSet rs) throws SQLException {
 		Events events = new Events();
