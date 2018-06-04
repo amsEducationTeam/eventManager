@@ -259,6 +259,7 @@ public class UserServlet extends HttpServlet {
 				request.getRequestDispatcher("view/useredit.jsp").forward(request, response);
 			}
 			break;
+
 		case USER_DELETE:
 			int userId = Integer.parseInt(request.getParameter("userId"));
 			try {
