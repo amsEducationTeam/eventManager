@@ -26,7 +26,7 @@
 		<nav>
 			<ul class="pagination">
 				<% if(now!=1){ %>
-				<li><a href="eventlist?prevnext=1" aria-label="前のページへ">
+				<li><a href="EventServlet?servletName=eventList&prevnext=1" aria-label="前のページへ">
 						<span aria-hidden="true">«</span>
 				</a></li>
 				<%}
@@ -38,7 +38,7 @@
 					<li <%
 
 				if (now == i) {%> class="active" <%}%>>
-						<a href="eventlist?page=<%= i %>"><%= i %></a>
+						<a href="EventServlet?servletName=eventList&page=<%= i %>"><%= i %></a>
 					</li>
 					<%i++; %>
 				</c:forEach>
@@ -46,7 +46,7 @@
 					<%
 
 					if(now!=i-1){ %>
-					<li><a href="eventlist?prevnext=2" aria-label="次のページへ">
+					<li><a href="EventServlet?servletName=eventList&prevnext=2" aria-label="次のページへ">
 							<span aria-hidden="true">»</span>
 					</a></li>
 					<%}
@@ -80,7 +80,7 @@
 					<td><c:out value="${event.place}" /></td>
 					<td><c:out value="${event.groups_name}" /></td>
 					<td>
-						<form action="EventServlet" method="post">
+						<form action="EventServlet" method="get">
 							<input type="hidden" name="info" value="${event.id}">
 							<input type="hidden" name="servletName" value="eventInfo">
 							 <input
