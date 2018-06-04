@@ -1,14 +1,15 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <title>イベント編集</title>
 <script src="js/jquery-3.3.1.min.js"></script>
 <script>
-$(document).ready(function(){
-$('#group').val(${event.group_id});
-});
+// $(document).ready(function(){
+// $('#group').val(${event.group_id});
+// });
 </script>
 
 </head>
@@ -21,7 +22,7 @@ $('#group').val(${event.group_id});
 				<h1>イベント編集</h1>
 				<!-- 入力画面-->
 				<div class="form-group">
-				<form action="eventedit" method="post">
+				<form action="servletName" method="post">
 					<p class="bold">タイトル（必須）</p>
 					<p>
 						<input type="text" name="title" class="form-control" value="${event.title}" maxlength="50" required />
@@ -58,8 +59,9 @@ $('#group').val(${event.group_id});
 						<textarea name="detail" rows="4" cols="40" class="form-control" >${event.detail}</textarea>
 					</p>
 					<p>
-						<a href="eventlist" type="button" class="btn btn-default">キャンセル</a>
+						<a href="EventServlet?servletName=eventList" type="button" class="btn btn-default">キャンセル</a>
 						<input type="hidden" name="info" value="${event.id}">
+						<input type="hidden" name="servletName" value="eventEdit" />
 						<input type="submit" class="btn btn-primary" value="登録" />
 					</p>
 				</form>

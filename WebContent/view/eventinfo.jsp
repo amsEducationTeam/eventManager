@@ -8,15 +8,15 @@
 <head>
 <title>イベント詳細</title>
 <%
-					session.setAttribute("disp", 0);
-				%>
-				<c:forEach items="${attendList}" var="attend">
-					<c:if test="${attend.user_id==id}">
-						<%
-							session.setAttribute("disp", 1);
-						%>
-					</c:if>
-				</c:forEach>
+	session.setAttribute("disp", 0);
+%>
+<c:forEach items="${attendList}" var="attend">
+	<c:if test="${attend.user_id==id}">
+		<%
+			session.setAttribute("disp", 1);
+		%>
+	</c:if>
+</c:forEach>
 
 </head>
 <body>
@@ -105,12 +105,14 @@
 				<%if(type_id==2){ %>
 				<form action="EventServlet?servletName=eventEdit" method="get">
 					<input type="hidden" name="info" value="${event.id}">
+					<input type="hidden" name="servletName" value="eventEdit" />
 					<input type="submit" class="btn btn-default" value="編集" />
 				</form>
 				<%}else{ %>
 				<c:if test="${event.users_name==name }">
 				<form action="EventServlet?servletName=eventEdit" method="get">
 					<input type="hidden" name="info" value="${event.id}">
+					<input type="hidden" name="servletName" value="eventEdit" />
 					<input type="submit" class="btn btn-default" value="編集" />
 				</form>
 				</c:if>

@@ -1,4 +1,5 @@
 <%@ page pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -9,7 +10,7 @@
 <div class="container col-md-10 col-md-offset-1">
 <h1>イベント編集</h1>
 イベントの編集が完了しました。<br>
-<a href="eventinfo">イベント詳細に戻る</a>
+<a href="EventServlet?servletName=eventInfo">イベント詳細に戻る</a>
 </div>
 </body>
 </html>

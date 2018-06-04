@@ -1,4 +1,5 @@
 <%@ page pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -13,7 +14,7 @@
 				<h1>イベント登録</h1>
 				<!-- 入力画面-->
 				<div class="form-group">
-				<form action="eventinsert" method="post">
+				<form action="EventServlet" method="post">
 					<p class="bold">タイトル（必須）</p>
 					<p>
 						<input type="text" name="title" class="form-control" maxlength="50" required>
@@ -50,7 +51,8 @@
 						<textarea name="detail" rows="4" cols="40" class="form-control"></textarea>
 					</p>
 					<p>
-						<a href="eventlist" class="btn btn-default">キャンセル</a>
+						<a href="EventServlet?servletName=eventList" class="btn btn-default">キャンセル</a>
+						<input type="hidden" name="servletName" value="eventInsert">
 						<input type="submit" class="btn btn-primary" value="登録" />
 					</p>
 				</form>
