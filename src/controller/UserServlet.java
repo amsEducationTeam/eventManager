@@ -200,6 +200,7 @@ public class UserServlet extends HttpServlet {
 				request.getRequestDispatcher("view/userinsert.jsp").forward(request, response);
 			}
 			break;
+
 		case USER_EDIT:
 			String name = request.getParameter("name");
 			String login_id = request.getParameter("login_id");
