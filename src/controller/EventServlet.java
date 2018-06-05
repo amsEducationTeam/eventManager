@@ -249,7 +249,7 @@ public class EventServlet extends HttpServlet {
 			event2.setPlace_id(place_id2);
 			event2.setDep_id(dep_id2);
 			event2.setDetail(detail2);
-			event2.setRegistered_id((int) request.getSession().getAttribute("id"));
+			event2.setRegistered_id((int) request.getSession().getAttribute("member_id"));
 
 			try {
 				EventsDao eventsDao = DaoFactory.createEventsDao();
@@ -311,18 +311,18 @@ public class EventServlet extends HttpServlet {
 			page = 0; //navbarなどからこのページにきたときの処理
 			request.getSession().setAttribute("todayevent_page", page); //セッションに格納する
 		}
-		int id = (Integer)request.getSession().getAttribute("id");
+		int member_id = (Integer)request.getSession().getAttribute("member_id");
 		try {
 			//セッションに保存したtodayevent_pageを取得し、変数に格納する
 			int todayevent_page = (Integer) request.getSession().getAttribute("todayevent_page");
 			EventsDao eventsDao = DaoFactory.createEventsDao();
-			List<Events> eventsList = eventsDao.findfive(eventsDao.findToday(todayevent_page),id);
+			List<Events> eventsList = eventsDao.findfive(eventsDao.findToday(todayevent_page),member_id);
 			//lastpageを設定する
 			double a =(eventsDao.countAllToday());
 			int lastpage = (int) Math.ceil(a/5);
 			request.setAttribute("eventsList", eventsList);
 			request.setAttribute("lastpage", lastpage);
-			request.getRequestDispatcher("view/event.jsp").forward(request, response);
+			request.getRequestDispatcher("view/event_today.jsp").forward(request, response);
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}

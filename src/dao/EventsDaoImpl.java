@@ -53,7 +53,7 @@ public class EventsDaoImpl implements EventsDao {
 	 * @return users
 	 */
 	@Override
-	public List<Events> findfive(List<Events> events,int id) throws Exception {
+	public List<Events> findfive(List<Events> events,int member_id) throws Exception {
 		List<Events> eventsList = new ArrayList<>();
 
 		try (Connection con = ds.getConnection()) {
@@ -85,7 +85,7 @@ public class EventsDaoImpl implements EventsDao {
 						+ " 	EVENTS.event_id =?";
 
 				PreparedStatement stms = con.prepareStatement(sql);
-				stms.setObject(1, id);
+				stms.setObject(1, member_id);
 				stms.setObject(2, event.getEvent_id());
 				ResultSet rs = stms.executeQuery();
 				if (rs.next()) {

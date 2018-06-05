@@ -39,19 +39,17 @@
 
 					<p class="bold">場所（必須)</p>
 					<p>
-						<input type="text" name="place" class="form-control" value="${event.place}" maxlength="255" required>
+						<input type="text" name="place" class="form-control" value="${event.place_name}" maxlength="255" required>
 					</p>
 
 					<p class="bold">対象グループ</p>
-					<p><select name="group_id" class="form-control" id="group">
-							<option value="8">全員</option>
-							<option value="1">営業部</option>
-							<option value="2">人事部</option>
-							<option value="3">技術部</option>
-							<option value="4">総務部</option>
-							<option value="5">広報部</option>
-							<option value="6">経理部</option>
-							<option value="7">企画部</option>
+					<p><select name="dep_id" class="form-control" id="dep_id">
+							<option value="6">全員</option>
+							<option value="1">人事部</option>
+							<option value="2">経理部</option>
+							<option value="3">総務部</option>
+							<option value="4">営業部</option>
+							<option value="5">開発部</option>
 						</select>
 					</p>
 					<p class="bold">詳細</p>
@@ -59,8 +57,8 @@
 						<textarea name="detail" rows="4" cols="40" class="form-control" >${event.detail}</textarea>
 					</p>
 					<p>
-						<a href="EventServlet?servletName=eventInfo&info=${event.id}" type="button" class="btn btn-default">キャンセル</a>
-						<input type="hidden" name="info" value="${event.id}">
+						<a href="EventServlet?servletName=eventInfo&info=${event.event_id}" type="button" class="btn btn-default">キャンセル</a>
+						<input type="hidden" name="info" value="${event.event_id}">
 						<input type="hidden" name="servletName" value="eventEdit" />
 						<input type="submit" class="btn btn-primary" value="登録" />
 					</p>

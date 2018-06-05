@@ -11,7 +11,7 @@
 	session.setAttribute("disp", 0);
 %>
 <c:forEach items="${attendList}" var="attend">
-	<c:if test="${attend.user_id==id}">
+	<c:if test="${attend.member_id==member_id}">
 		<%
 			session.setAttribute("disp", 1);
 		%>
@@ -47,11 +47,11 @@
 			</tr>
 			<tr>
 				<th>場所</th>
-				<td><c:out value="${event.place}" /></td>
+				<td><c:out value="${event.place_name}" /></td>
 			</tr>
 			<tr>
 				<th>対象グループ</th>
-				<td><c:out value="${event.groups_name}" /></td>
+				<td><c:out value="${event.dep_name}" /></td>
 			</tr>
 			<tr>
 				<th>詳細</th>
@@ -60,8 +60,8 @@
 			<tr>
 				<th>登録者</th>
 				<td>
-					<c:if test="${event.users_name==null}">無効なユーザ</c:if>
-					<c:out value="${event.users_name}" />
+					<c:if test="${event.member_name==null}">無効なユーザ</c:if>
+					<c:out value="${event.member_name}" />
 				</td>
 			</tr>
 			<tr>
@@ -84,7 +84,7 @@
 				%>
 
 				<form action="attend" method="post">
-					<input type="hidden" name="info" value="${event.id}">
+					<input type="hidden" name="info" value="${event.event_id}">
 					<input type="hidden" name="switchId" value="1">
 					<input type="submit" class="btn btn-warning" value="参加を取り消す" />
 				</form>
@@ -93,7 +93,7 @@
 					} else {
 				%>
 				<form action="attend" method="post">
-					<input type="hidden" name="info" value="${event.id}">
+					<input type="hidden" name="info" value="${event.event_id}">
 					<input type="hidden" name="switchId" value="0">
 					<input type="submit" class="btn btn-info" value="参加する" />
 				</form>
@@ -106,14 +106,14 @@
 				%>
 				<%if(type_id==2){ %>
 				<form action="EventServlet?servletName=eventEdit" method="get">
-					<input type="hidden" name="info" value="${event.id}">
+					<input type="hidden" name="info" value="${event.event_id}">
 					<input type="hidden" name="servletName" value="eventEdit" />
 					<input type="submit" class="btn btn-default" value="編集" />
 				</form>
 				<%}else{ %>
-				<c:if test="${event.users_name==name }">
+				<c:if test="${event.member_name==member_name }">
 				<form action="EventServlet?servletName=eventEdit" method="get">
-					<input type="hidden" name="info" value="${event.id}">
+					<input type="hidden" name="info" value="${event.event_id}">
 					<input type="hidden" name="servletName" value="eventEdit" />
 					<input type="submit" class="btn btn-default" value="編集" />
 				</form>
@@ -130,7 +130,7 @@
 					</button>
 				</section>
 				<%}else{ %>
-				<c:if test="${event.users_name==name }">
+				<c:if test="${event.member_name==member_name }">
 				<section>
 					<!-- ボタンをクリックしたらモーダル・ダイアログが表示されます -->
 					<button type="button" class="btn btn-danger"
@@ -156,7 +156,7 @@
 					<h5 class="modal-title">本当に削除してよろしいですか？</h5></div>
 				<div class="modal-footer" align="right">
 					<form action="EventServlet?servletName=eventDelete" method="post">
-						<input type="hidden" name="info" value="${event.id}">
+						<input type="hidden" name="info" value="${event.event_id}">
 						<input type="submit" class="btn btn-primary pull-right" value="OK" />
 					</form>
 					<button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
