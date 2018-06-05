@@ -26,6 +26,7 @@ public class LoginServlet extends HttpServlet {
 	}
 
 
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -38,8 +39,8 @@ public class LoginServlet extends HttpServlet {
 		if(login_id.matches("[0-9a-zA-Z\\-\\_]+") && login_pass.matches("[0-9a-zA-Z\\-\\_]+")) {
 			try {
 				UsersDao UsersDao = DaoFactory.createUsersDao();
-				Users user = UsersDao.findByLoginIdAndLoginPass(login_id,  login_pass);
 				Users user2=UsersDao.login(login_id,  login_pass);
+				Users user = UsersDao.findByLoginIdAndLoginPass(login_id,  login_pass);
 				String pageName = "eventToday";
 				if(user != null) {
 					// セッションにユーザー情報"id,loginId,name,type_id"を登録
