@@ -65,8 +65,8 @@
 				<th>場所</th>
 				<th>対象グループ</th>
 				<th>詳細</th>
-
 			</tr>
+
 			<c:forEach items="${eventsList}" var="event">
 
 

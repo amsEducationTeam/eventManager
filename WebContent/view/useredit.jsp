@@ -30,25 +30,50 @@
 						<div class="alert alert-warning" role="alert">ログインIDが既に使用されています</div>
 						</c:if>
 					<p>
-						<input type="text" name="login_id" placeholder="ログインID" class="form-control" value="${user.loginId}" maxlength="20" required>
+						<input type="text" name="login_id" placeholder="ログインID" class="form-control" value="${user.login_Id}" maxlength="20" required>
+					</p>
+
+					<p class="bold">住所（必須）</p>
+					<p>
+						<input type="text" name="address" placeholder="(例)東京都新宿区○○△△-□□" class="form-control"  value="${user.address}" maxlength="255" required>
+					</p>
+
+					<p class="bold">電話番号（必須）</p>
+					<p>
+						<input type="tel" name="tel" placeholder="(例)090-1234-5678" class="form-control"  value="${user.tel}" maxlength="13" required>
+					</p>
+
+
+					<p class="bold">誕生日（必須）</p>
+					<p>
+						<input type="date" name="birthday" placeholder="yyyy-mm-dd" class="form-control"  value="${user.birthday}" required>
 					</p>
 
 					<p class="bold">パスワード（変更の場合のみ)</p>
 					<input type="text" name="login_pass" placeholder="パスワード" class="form-control" maxlength="60"  placeholder="パスワード">
 
 					<p class="bold">所属グループ</p>
-					<p><select name="group_id" class="form-control" >
-							<option value="1">営業部</option>
-							<option value="2">人事部</option>
-							<option value="3">技術部</option>
-							<option value="4">総務部</option>
-							<option value="5">広報部</option>
-							<option value="6">経理部</option>
-							<option value="7">企画部</option>
+					<p><select name="dep_id" class="form-control" >
+							<option value="1">人事部</option>
+							<option value="2">経理部</option>
+							<option value="3">総務部</option>
+							<option value="4">営業部</option>
+							<option value="5">開発部</option>
 						</select>
 					</p>
+
+					<p class="bold">役職</p>
+					<p><select name="position_type" class="form-control" >
+							<option value="0">一般社員</option>
+							<option value="1">部長</option>
+							<option value="2">課長</option>
+							<option value="3">係長</option>
+						</select>
+					</p>
+
 					<p>
 						<a href="User?userId=${user.id}&servletName=userInfo" type="button" class="btn btn-default">キャンセル</a>
+						<input type="hidden" name="oldlogin_id" value="${user.login_Id}"/>
 						<input type="hidden" name="servletName" value="userEdit"/>
 						<input type="submit" class="btn btn-primary" value="登録" />
 					</p>
