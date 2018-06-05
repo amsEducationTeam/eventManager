@@ -21,6 +21,12 @@
 					</c:if>
 					<div class="form-group">
 				<form action="User" method="post">
+
+				<p class="bold">社員番号（必須）</p>
+					<p>
+						<input type="text" name="member_id" placeholder="社員番号" class="form-control" maxlength="50" required>
+					</p>
+
 					<p class="bold">氏名（必須）</p>
 					<p>
 						<input type="text" name="name" placeholder="氏名" class="form-control" maxlength="50" required>
@@ -38,13 +44,18 @@
 
 					<p class="bold">電話番号（必須）</p>
 					<p>
-						<input type="tel" name="address" placeholder="(例)090-1234-5678" class="form-control" maxlength="13" required>
+						<input type="text" name="tel" placeholder="(例)090-1234-5678" class="form-control" maxlength="13" required>
 					</p>
 
 
 					<p class="bold">誕生日（必須）</p>
 					<p>
 						<input type="date" name="birthday" placeholder="yyyy-mm-dd" class="form-control" required>
+					</p>
+
+					<p class="bold">入社日（必須）</p>
+					<p>
+						<input type="date" name="hired" placeholder="yyyy-mm-dd" class="form-control" required>
 					</p>
 
 					<p class="bold">ログインID（必須）</p>
@@ -63,10 +74,15 @@
 							<option value="3">総務部</option>
 							<option value="4">営業部</option>
 							<option value="5">開発部</option>
-
-
-						</select>
+							</select>
 					</p>
+					<p class="bold">権限（必須）</p>
+					<p><select name="auth_id" class="form-control">
+							<option value="1">管理者</option>
+							<option value="2" selected>一般</option>
+							</select>
+					</p>
+
 					<p>
 						<a href="User?servletName=userList" class="btn btn-default">キャンセル</a>
 						<input type="hidden" name="servletName" value="userInsert">
