@@ -159,6 +159,8 @@ public class UsersDaoImpl implements UsersDao {
 		return users;
 	}
 
+
+
 	/**
 	 * ユーザー詳細時に処理
 	 * ResultSetをUsersクラスにセットします
