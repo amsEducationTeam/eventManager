@@ -66,7 +66,7 @@ public class EventsDaoImpl implements EventsDao {
 						+ "		EVENTS.place_id,"
 						+ "		PLACE.place,"
 						+ "		atn.member_id,"
-						+ "		DEPARTMENT.department AS department,"
+						+ "		DEPARTMENT.department,"
 						+ "		EVENTS.dep_id,"
 						+ "		EVENTS.detail,"
 						+ "		MEMBERS.name AS MEMBERS_name,"
@@ -150,10 +150,10 @@ public class EventsDaoImpl implements EventsDao {
 	events.setEnd(rs.getTimestamp("end"));
 	events.setPlace_id((Integer) rs.getObject("place_id"));
 	events.setPlace_name(rs.getString("place"));
-	events.setDep_name(rs.getString("dep_name"));
+	events.setDep_name(rs.getString("department"));
 	events.setDep_id((Integer) rs.getObject("dep_id"));
 	events.setDetail(rs.getString("detail"));
-	events.setMember_name(rs.getString("member_name"));
+	events.setMember_name(rs.getString("MEMBERS_name"));
 	events.setCreated(rs.getTimestamp("created"));
 	try {
 		events.setMember_id(rs.getString("member_id"));
