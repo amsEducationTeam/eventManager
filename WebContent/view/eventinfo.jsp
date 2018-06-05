@@ -106,14 +106,14 @@
 				%>
 				<%if(type_id==2){ %>
 				<form action="EventServlet?servletName=eventEdit" method="get">
-					<input type="hidden" name="info" value="${event.event_id}">
+					<input type="hidden" name="event_id" value="${event.event_id}">
 					<input type="hidden" name="servletName" value="eventEdit" />
 					<input type="submit" class="btn btn-default" value="編集" />
 				</form>
 				<%}else{ %>
 				<c:if test="${event.member_name==member_name }">
 				<form action="EventServlet?servletName=eventEdit" method="get">
-					<input type="hidden" name="info" value="${event.event_id}">
+					<input type="hidden" name="event_id" value="${event.event_id}">
 					<input type="hidden" name="servletName" value="eventEdit" />
 					<input type="submit" class="btn btn-default" value="編集" />
 				</form>
@@ -156,7 +156,7 @@
 					<h5 class="modal-title">本当に削除してよろしいですか？</h5></div>
 				<div class="modal-footer" align="right">
 					<form action="EventServlet?servletName=eventDelete" method="post">
-						<input type="hidden" name="info" value="${event.event_id}">
+						<input type="hidden" name="event_id" value="${event.event_id}">
 						<input type="submit" class="btn btn-primary pull-right" value="OK" />
 					</form>
 					<button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>

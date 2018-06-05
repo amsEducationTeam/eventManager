@@ -82,7 +82,7 @@
 					<td><c:out value="${event.groups_name}" /></td>
 					<td>
 						<form action="EventServlet" method="get">
-							<input type="hidden" name="info" value="${event.id}">
+							<input type="hidden" name="event_id" value="${event.event_id}">
 							<input type="hidden" name="servletName" value="eventInfo">
 							 <input
 								type="submit" class="btn btn-info" value="詳細" />
