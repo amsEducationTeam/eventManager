@@ -179,7 +179,7 @@ public class EventsDaoImpl implements EventsDao {
 	}
 
 	@Override
-	public Events findById(Integer id) throws Exception {
+	public Events findById(Integer event_id) throws Exception {
 		Events events = new Events();
 
 		try (Connection con = ds.getConnection()) {
@@ -205,7 +205,7 @@ public class EventsDaoImpl implements EventsDao {
 					+ " WHERE"
 					+ "		EVENTS.event_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, id);
+			stmt.setInt(1, event_id);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				events = mapToEventInfo(rs);
@@ -262,7 +262,6 @@ public class EventsDaoImpl implements EventsDao {
 			stmt.setInt(7, events.getEvent_id());
 			stmt.executeUpdate();
 		}
-
 	}
 
 	@Override
@@ -326,15 +325,4 @@ public class EventsDaoImpl implements EventsDao {
 		return count;
 	}
 
-	@Override
-	public List<Events> findAll() throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
-	}
-
-	@Override
-	public List<Events> findToday() throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
-	}
 }
