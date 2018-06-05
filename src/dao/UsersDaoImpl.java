@@ -95,7 +95,7 @@ public class UsersDaoImpl implements UsersDao {
 	private Users mapToUsers(ResultSet rs) throws SQLException {
 
 		domain.Users users = new Users();
-		users.setMember_id((Integer) rs.getObject("id"));
+		users.setMember_id(rs.getString("id"));
 		return users;
 	}
 
@@ -107,7 +107,7 @@ public class UsersDaoImpl implements UsersDao {
 	private Users mapToUsers2(ResultSet rs) throws SQLException {
 
 		domain.Users users = new Users();
-		users.setMember_id((Integer) rs.getObject("id"));
+		users.setMember_id(rs.getString("id"));
 		//users.setLoginId((rs.getString("login_id")));
 		users.setName(rs.getString("name"));
 		//users.setGroup((Integer)rs.getObject("group_id"));
@@ -124,7 +124,7 @@ public class UsersDaoImpl implements UsersDao {
 	private Users mapToUser(ResultSet rs) throws SQLException {
 
 		domain.Users users = new Users();
-		users.setMember_id((Integer) rs.getObject("id"));
+		users.setMember_id(rs.getObject("id"));
 		users.setLogin_id((rs.getString("login_id")));
 		users.setName(rs.getString("name"));
 		//users.setGroup((Integer)rs.getObject("group_id"));
@@ -237,20 +237,25 @@ public class UsersDaoImpl implements UsersDao {
 	 */
 	@Override
 	public void update(Users Users) throws Exception {
+
 		try (Connection con = ds.getConnection()) {
 			String sql ="UPDATE members SET name =?,kana=?,dep_id=?,address=?,tel=?,birthday=?,position_type=?,login_id = ? WHERE member_id = ?;"
 					+ "UPDATE account SET login_id=?,login_pass=?,auth_id=? WHERE login_id=?;";
 
-			Timestamp Birth = new Timestamp(user.getBirthday().getTime());
+			Timestamp Birth = new Timestamp(Users.getBirthday().getTime());
 
 			PreparedStatement stmt = con.prepareStatement(sql);
 
 			stmt.setString(1, Users.getName());
 			stmt.setString(2, Users.getKana());
-			stmt.setObject(3, Users.getDep_id());
-			stmt.setString(3, Users.getAddress());
-			stmt.setString(4, Users.getTel());
-			stmt.set(5, );
+			stmt.setObject(3, Users.getDep_id(),Types.INTEGER);
+			stmt.setString(4, Users.getAddress());
+			stmt.setString(5, Users.getTel());
+			stmt.setTimestamp(6,Birth);
+			stmt.setObject(7, Users.getPosition_type(),Types.INTEGER);
+			stmt.setString(8, Users.getLogin_id());
+			stmt.setString(8, Users.getMember_id());
+
 
 			stmt.executeUpdate();
 		}
