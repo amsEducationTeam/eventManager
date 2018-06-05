@@ -268,6 +268,7 @@ public class UsersDaoImpl implements UsersDao {
 
 					user = mapToLogin(rs1);
 
+
 			}
 
 		}
