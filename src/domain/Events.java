@@ -16,13 +16,14 @@ public class Events {
 	private String member_name;
 	private Date created;
 	private int member_id;
-
+	private String place_name;
 	/**
 	 * @return event_id
 	 */
 	public int getEvent_id() {
 		return event_id;
 	}
+
 	/**
 	 * @param event_id セットする event_id
 	 */
@@ -160,6 +161,12 @@ public class Events {
 	 */
 	public void setMember_id(int member_id) {
 		this.member_id = member_id;
+	}
+	public String getPlace_name() {
+		return place_name;
+	}
+	public void setPlace_name(String place_name) {
+		this.place_name = place_name;
 	}
 
 }

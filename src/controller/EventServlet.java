@@ -83,12 +83,12 @@ public class EventServlet extends HttpServlet {
 					page = 0; //navbarなどからこのページにきたときの処理
 					request.getSession().setAttribute("event_page", page); //セッションに格納する
 				}
-				int id = (Integer) request.getSession().getAttribute("id");
+				int member_id = (Integer) request.getSession().getAttribute("member_id");
 				try {
 					//セッションに保存したevent_pageを取得し、変数に格納する
 					int event_page = (Integer) request.getSession().getAttribute("event_page");
 					EventsDao eventsDao = DaoFactory.createEventsDao();
-					List<Events> eventsList = eventsDao.findfive(eventsDao.findAll(event_page), id);
+					List<Events> eventsList = eventsDao.findfive(eventsDao.findAll(event_page), member_id);
 					//lastpageを設定する
 					double a = (eventsDao.countAll());
 					int lastpage = (int) Math.ceil(a / 5);

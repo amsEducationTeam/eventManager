@@ -58,6 +58,7 @@
 <!-- pagenation -->
 
 
+
 		<table class="table table-bordered table-hover ">
 			<tr>
 				<th>タイトル</th>
@@ -72,7 +73,7 @@
 
 				<tr>
 					<td> <c:out value="${event.title}" />
-						<c:if test="${event.user_id==id}">
+						<c:if test="${event.member_id==member_id}">
 							<span class="label label-danger">参加</span>
 						</c:if>
 					</td>

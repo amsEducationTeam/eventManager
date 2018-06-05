@@ -64,6 +64,7 @@ public class EventsDaoImpl implements EventsDao {
 						+ "		EVENTS.start,"
 						+ "		EVENTS.end,"
 						+ "		EVENTS.place_id,"
+						+ "		PLACE.place,"
 						+ "		atn.member_id,"
 						+ "		DEPARTMENT.department AS department,"
 						+ "		EVENTS.dep_id,"
@@ -71,7 +72,9 @@ public class EventsDaoImpl implements EventsDao {
 						+ "		MEMBERS.name AS MEMBERS_name,"
 						+ "		EVENTS.created"
 						+ " FROM"
-						+ " 	EVENTS LEFT JOIN"
+						+ " 	EVENTS join"
+						+ "		   PLACE"
+						+ "     ON EVENTS.place_id=Place.place_id LEFT JOIN"
 						+ " 		(SELECT * FROM ATTENDS WHERE member_id= ?) AS atn"
 						+ " 	ON EVENTS.event_id = atn.event_id JOIN"
 						+ " 		DEPARTMENT"
@@ -80,6 +83,7 @@ public class EventsDaoImpl implements EventsDao {
 						+ " 	ON EVENTS.registered_id = MEMBERS.member_id"
 						+ " WHERE"
 						+ " 	EVENTS.event_id =?";
+
 				PreparedStatement stms = con.prepareStatement(sql);
 				stms.setObject(1, member_id);
 				stms.setObject(2, event.getEvent_id());
@@ -145,6 +149,7 @@ public class EventsDaoImpl implements EventsDao {
 	events.setStart(rs.getTimestamp("start"));
 	events.setEnd(rs.getTimestamp("end"));
 	events.setPlace_id((Integer) rs.getObject("place_id"));
+	events.setPlace_name(rs.getString("place"));
 	events.setDep_name(rs.getString("dep_name"));
 	events.setDep_id((Integer) rs.getObject("dep_id"));
 	events.setDetail(rs.getString("detail"));
@@ -160,11 +165,12 @@ public class EventsDaoImpl implements EventsDao {
 
 	private Events mapToEventInfo(ResultSet rs) throws SQLException {
 		Events events = new Events();
-		events.setEvent_id((Integer) rs.getObject("id"));
+		events.setEvent_id((Integer) rs.getObject("event_id"));
 		events.setTitle(rs.getString("title"));
 		events.setStart(rs.getTimestamp("start"));
 		events.setEnd(rs.getTimestamp("end"));
 		events.setPlace_id((Integer) rs.getObject("place_id"));
+		events.setPlace_name(rs.getString("place"));
 		events.setDep_name(rs.getString("dep_name"));
 		events.setDep_id((Integer) rs.getObject("dep_id"));
 		events.setDetail(rs.getString("detail"));
@@ -229,6 +235,7 @@ public class EventsDaoImpl implements EventsDao {
 			stmt.executeUpdate();
 		}
 	}
+
 
 	@Override
 	public void update(Events events) throws Exception {
