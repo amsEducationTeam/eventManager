@@ -80,6 +80,16 @@
 						</select>
 					</p>
 
+					<p class="bold">管理権限</p>
+					<p><select name="auth_id" class="form-control" >
+							<option value="1">管理者</option>
+							<option value="2">一般</option>
+
+
+						</select>
+					</p>
+
+
 					<p>
 						<a href="User?userId=${user.id}&servletName=userInfo" type="button" class="btn btn-default">キャンセル</a>
 						<input type="hidden" name="oldlogin_id" value="${user.login_Id}"/>
