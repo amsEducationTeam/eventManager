@@ -29,21 +29,22 @@
 					<input type="text" name="end" placeholder="0000-00-00 00:00:00" class="form-control">
 
 
-					<p class="bold">場所（必須)</p>
-					<p>
-						<input type="text" name="place" class="form-control" maxlength="255" required>
+					<p class="bold">場所</p>
+					<p><select name="place_id" class="form-control">
+							<option value="1">第一会議室</option>
+							<option value="2">第二会議室</option>
+							<option value="3">第三会議室</option>
+						</select>
 					</p>
 
 					<p class="bold">対象グループ</p>
-					<p><select name="group_id" class="form-control">
-							<option value="8">全員</option>
-							<option value="1">営業部</option>
-							<option value="2">人事部</option>
-							<option value="3">技術部</option>
-							<option value="4">総務部</option>
-							<option value="5">広報部</option>
-							<option value="6">経理部</option>
-							<option value="7">企画部</option>
+					<p><select name="dep_id" class="form-control">
+							<option value="6">全員</option>
+							<option value="1">人事部</option>
+							<option value="2">経理部</option>
+							<option value="3">総務部</option>
+							<option value="4">営業部</option>
+							<option value="5">開発部</option>
 						</select>
 					</p>
 					<p class="bold">詳細</p>
