@@ -78,8 +78,8 @@
 						</c:if>
 					</td>
 					<td><fmt:formatDate value="${event.start}" pattern="y年M月d日(E) HH時mm分" /></td>
-					<td><c:out value="${event.place}" /></td>
-					<td><c:out value="${event.groups_name}" /></td>
+					<td><c:out value="${event.place_name}" /></td>
+					<td><c:out value="${event.dep_name}" /></td>
 					<td>
 						<form action="EventServlet" method="get">
 							<input type="hidden" name="event_id" value="${event.event_id}">

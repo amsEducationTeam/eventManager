@@ -38,7 +38,7 @@
 
 
 					<p class="bold">場所</p>
-					<p><select name="place_id" class="form-control" id="place">
+					<p><select name="place_id" class="form-control" id="place_id">
 							<option value="1">第一会議室</option>
 							<option value="2">第二会議室</option>
 							<option value="3">第三会議室</option>
@@ -46,7 +46,7 @@
 					</p>
 
 					<p class="bold">対象グループ</p>
-					<p><select name="dep_id" class="form-control" id="group">
+					<p><select name="dep_id" class="form-control" id="dep_id">
 							<option value="6">全員</option>
 							<option value="1">人事部</option>
 							<option value="2">経理部</option>
@@ -60,8 +60,8 @@
 						<textarea name="detail" rows="4" cols="40" class="form-control" >${event.detail}</textarea>
 					</p>
 					<p>
-						<a href="EventServlet?servletName=eventInfo&info=${event.event_id}" type="button" class="btn btn-default">キャンセル</a>
-						<input type="hidden" name="info" value="${event.event_id}">
+						<a href="EventServlet?servletName=eventInfo&event_id=${event.event_id}" type="button" class="btn btn-default">キャンセル</a>
+						<input type="hidden" name="event_id" value="${event.event_id}">
 						<input type="hidden" name="servletName" value="eventEdit" />
 						<input type="submit" class="btn btn-primary" value="登録" />
 					</p>

@@ -84,7 +84,7 @@
 				%>
 
 				<form action="attend" method="post">
-					<input type="hidden" name="info" value="${event.event_id}">
+					<input type="hidden" name="event_id" value="${event.event_id}">
 					<input type="hidden" name="switchId" value="1">
 					<input type="submit" class="btn btn-warning" value="参加を取り消す" />
 				</form>
@@ -93,7 +93,7 @@
 					} else {
 				%>
 				<form action="attend" method="post">
-					<input type="hidden" name="info" value="${event.event_id}">
+					<input type="hidden" name="event_id" value="${event.event_id}">
 					<input type="hidden" name="switchId" value="0">
 					<input type="submit" class="btn btn-info" value="参加する" />
 				</form>

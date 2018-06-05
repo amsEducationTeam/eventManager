@@ -84,7 +84,7 @@
 					<td><c:out value="${event.dep_name}" /></td>
 					<td>
 						<form action="EventServlet" method="post">
-							<input type="hidden" name="info" value="${event.event_id}">
+							<input type="hidden" name="event_id" value="${event.event_id}">
 							<input type="hidden" name="servletName" value="eventInfo">
 							<input
 								type="submit" class="btn btn-info" value="詳細" />
