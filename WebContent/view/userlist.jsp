@@ -69,12 +69,12 @@
 			</tr>
 			<c:forEach items="${usersList}" var="user">
 				<tr>
-					<td><c:out value="${user.id}" /></td>
+					<td><c:out value="${user.member_id}" /></td>
 					<td><c:out value="${user.name}" /></td>
-					<td><c:out value="${user.groupName}" /></td>
+					<td><c:out value="${user.department}" /></td>
 					<td>
 						<form action="User" method="post">
-							<input type="hidden" name="userId" value="${user.id}">
+							<input type="hidden" name="member_id" value="${user.member_id}">
 							<input type="hidden" name="servletName" value="userInfo">
 							<input type="submit" class="btn btn-info" value="詳細" />
 						</form>
