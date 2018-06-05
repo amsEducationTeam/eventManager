@@ -30,7 +30,7 @@
 		<nav>
 			<ul class="pagination">
 				<% if(now!=1){ %>
-				<li><a href="event?prevnext=1" aria-label="前のページへ">
+				<li><a href="event_today?prevnext=1" aria-label="前のページへ">
 						<span aria-hidden="true">«</span>
 				</a></li>
 				<%}
@@ -42,7 +42,7 @@
 					<li <%
 
 				if (now == i) {%> class="active" <%}%>>
-						<a href="event?page=<%= i %>"><%= i %></a>
+						<a href="event_today?page=<%= i %>"><%= i %></a>
 					</li>
 					<%i++; %>
 				</c:forEach>
@@ -50,7 +50,7 @@
 					<%
 
 					if(now!=i-1){ %>
-					<li><a href="event?prevnext=2" aria-label="次のページへ">
+					<li><a href="event_today?prevnext=2" aria-label="次のページへ">
 							<span aria-hidden="true">»</span>
 					</a></li>
 					<%}
@@ -75,16 +75,16 @@
 			<c:forEach items="${eventsList}" var="event">
 				<tr>
 					<td> <c:out value="${event.title}" />
-						<c:if test="${event.user_id==id}">
+						<c:if test="${event.member_id==member_id}">
 							<span class="label label-danger">参加</span>
 						</c:if>
 					</td>
 					<td><fmt:formatDate value="${event.start}" pattern="y年M月d日(E) HH時mm分" /></td>
-					<td><c:out value="${event.place}" /></td>
-					<td><c:out value="${event.groups_name}" /></td>
+					<td><c:out value="${event.place_name}" /></td>
+					<td><c:out value="${event.dep_name}" /></td>
 					<td>
 						<form action="EventServlet" method="post">
-							<input type="hidden" name="info" value="${event.id}">
+							<input type="hidden" name="info" value="${event.event_id}">
 							<input type="hidden" name="servletName" value="eventInfo">
 							<input
 								type="submit" class="btn btn-info" value="詳細" />
