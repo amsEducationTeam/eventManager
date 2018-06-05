@@ -137,6 +137,8 @@ public class UsersDaoImpl implements UsersDao {
 
 
 
+
+
 	/**
 	 * ユーザー詳細時に処理
 	 * ResultSetをUsersクラスにセットします
@@ -245,6 +247,7 @@ public class UsersDaoImpl implements UsersDao {
 			if (rs1.next()) {
 
 					user = mapToLogin(rs1);
+
 
 			}
 

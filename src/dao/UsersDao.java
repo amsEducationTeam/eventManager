@@ -24,6 +24,5 @@ public interface UsersDao{
 	public void updateAccountWhithoutPass(Users Users) throws Exception;
 
 
-
 }
 

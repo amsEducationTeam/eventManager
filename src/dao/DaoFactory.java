@@ -20,7 +20,7 @@ public class DaoFactory {
 		DataSource ds=null;
 		try {
 			ctx=new InitialContext();
-			ds=(DataSource)ctx.lookup("java:comp/env/jdbc/eventdb2");
+			ds=(DataSource)ctx.lookup("java:comp/env/jdbc/eventdb");
 		} catch (NamingException e) {
 			if (ctx != null) {
 				try {
