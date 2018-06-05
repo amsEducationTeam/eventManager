@@ -12,18 +12,42 @@ public class Events {
 	private String dep_name;
 	private int dep_id;
 	private String detail;
-	private int registered_id;
+	private String registered_id;
 	private String member_name;
 	private Date created;
-	private int member_id;
+	private String member_id;
 	private String place_name;
+
+	/**
+	 * @return registered_id
+	 */
+	public String getRegistered_id() {
+		return registered_id;
+	}
+	/**
+	 * @param registered_id セットする registered_id
+	 */
+	public void setRegistered_id(String registered_id) {
+		this.registered_id = registered_id;
+	}
+	/**
+	 * @return member_id
+	 */
+	public String getMember_id() {
+		return member_id;
+	}
+	/**
+	 * @param member_id セットする member_id
+	 */
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
+	}
 	/**
 	 * @return event_id
 	 */
 	public int getEvent_id() {
 		return event_id;
 	}
-
 	/**
 	 * @param event_id セットする event_id
 	 */
@@ -115,18 +139,6 @@ public class Events {
 		this.detail = detail;
 	}
 	/**
-	 * @return registered_id
-	 */
-	public int getRegistered_id() {
-		return registered_id;
-	}
-	/**
-	 * @param registered_id セットする registered_id
-	 */
-	public void setRegistered_id(int registered_id) {
-		this.registered_id = registered_id;
-	}
-	/**
 	 * @return member_name
 	 */
 	public String getMember_name() {
@@ -151,20 +163,14 @@ public class Events {
 		this.created = created;
 	}
 	/**
-	 * @return user_id
+	 * @return place_name
 	 */
-	public int getMember_id() {
-		return member_id;
-	}
-	/**
-	 * @param user_id セットする user_id
-	 */
-	public void setMember_id(int member_id) {
-		this.member_id = member_id;
-	}
 	public String getPlace_name() {
 		return place_name;
 	}
+	/**
+	 * @param place_name セットする place_name
+	 */
 	public void setPlace_name(String place_name) {
 		this.place_name = place_name;
 	}
