@@ -27,6 +27,7 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 	public void insert(Users user) throws Exception {
 	}
 
+
 	/**
 	 * @param int userId, int eventId
 	 */

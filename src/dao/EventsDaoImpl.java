@@ -236,6 +236,7 @@ public class EventsDaoImpl implements EventsDao {
 		}
 	}
 
+
 	@Override
 	public void update(Events events) throws Exception {
 		Timestamp castStart = new Timestamp(events.getStart().getTime());

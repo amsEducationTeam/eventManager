@@ -23,6 +23,7 @@ public class Events {
 	public int getEvent_id() {
 		return event_id;
 	}
+
 	/**
 	 * @param event_id セットする event_id
 	 */
