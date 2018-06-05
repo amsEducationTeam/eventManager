@@ -37,13 +37,16 @@
 					<input type="text" name="end" placeholder="0000-00-00 00:00:00" class="form-control"value="${event.end}">
 
 
-					<p class="bold">場所（必須)</p>
-					<p>
-						<input type="text" name="place" class="form-control" value="${event.place_name}" maxlength="255" required>
+					<p class="bold">場所</p>
+					<p><select name="place_id" class="form-control" id="place">
+							<option value="1">第一会議室</option>
+							<option value="2">第二会議室</option>
+							<option value="3">第三会議室</option>
+						</select>
 					</p>
 
 					<p class="bold">対象グループ</p>
-					<p><select name="dep_id" class="form-control" id="dep_id">
+					<p><select name="dep_id" class="form-control" id="group">
 							<option value="6">全員</option>
 							<option value="1">人事部</option>
 							<option value="2">経理部</option>
