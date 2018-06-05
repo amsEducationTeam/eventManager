@@ -22,7 +22,7 @@
 
 					<p class="bold">社員番号（必須）</p>
 					<p>
-						<input type="text" name="member_id" placeholder="社員番号" class="form-control" value="${user.member_id}" maxlength="50" required>
+						<input type="text" name="member_id" placeholder="社員番号" class="form-control" value="${user.member_id}" maxlength="8" required>
 					</p>
 
 					<p class="bold">氏名（必須）</p>
