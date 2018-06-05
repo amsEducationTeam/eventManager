@@ -6,8 +6,6 @@ import domain.Events;
 
 public interface EventsDao {
 
-	List<Events> findAll() throws Exception;
-	List<Events> findToday() throws Exception;
 	Events findById(Integer id) throws Exception;
 	void insert(Events events) throws Exception;
 	void update(Events events) throws Exception;
