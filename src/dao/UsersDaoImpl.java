@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +34,10 @@ public class UsersDaoImpl implements UsersDao {
 
 		try (Connection con = ds.getConnection()) {
 
-			String sql = "SELECT "
-					+ " users.id "
-					+ " from users "
-					+ " ORDER BY id asc "
-					+ " LIMIT ?,5";
+			String sql = "SELECT"
+					+ " members.member_id "
+					+ "FROM members ORDER BY member_id "
+					+ "ASC LIMIT ? , 5;";
 
 			PreparedStatement stms = con.prepareStatement(sql);
 			stms.setObject(1, page);
@@ -65,13 +65,15 @@ public class UsersDaoImpl implements UsersDao {
 			for (Users fuga : hoge) {
 
 				String sql = "SELECT "
-						+ " users.id, users.name, groups.name as groupName "
-						+ " from users join groups "
-						+ " on users.group_id = groups.id "
-						+ " where users.id=?";
+						+ "members.member_id, members.name, department.department "
+						+ "AS groupName "
+						+ "FROM members JOIN department "
+						+ "ON members.dep_id = department.dep_id "
+						+ "WHERE members.member_id = ?;";
+
 
 				PreparedStatement stms = con.prepareStatement(sql);
-				stms.setObject(1, fuga.getId());
+				stms.setObject(1, fuga.getMember_id());
 				ResultSet rs = stms.executeQuery();
 
 				if (rs.next()) {
@@ -93,7 +95,7 @@ public class UsersDaoImpl implements UsersDao {
 	private Users mapToUsers(ResultSet rs) throws SQLException {
 
 		domain.Users users = new Users();
-		users.setId((Integer) rs.getObject("id"));
+		users.setMember_id((Integer) rs.getObject("id"));
 		return users;
 	}
 
@@ -105,11 +107,11 @@ public class UsersDaoImpl implements UsersDao {
 	private Users mapToUsers2(ResultSet rs) throws SQLException {
 
 		domain.Users users = new Users();
-		users.setId((Integer) rs.getObject("id"));
+		users.setMember_id((Integer) rs.getObject("id"));
 		//users.setLoginId((rs.getString("login_id")));
 		users.setName(rs.getString("name"));
 		//users.setGroup((Integer)rs.getObject("group_id"));
-		users.setGroupName(rs.getString("groupName"));
+		users.setDepartment(rs.getString("groupName"));
 		//users.setCreated(rs.getTimestamp("created"));
 		return users;
 	}
@@ -122,11 +124,11 @@ public class UsersDaoImpl implements UsersDao {
 	private Users mapToUser(ResultSet rs) throws SQLException {
 
 		domain.Users users = new Users();
-		users.setId((Integer) rs.getObject("id"));
-		users.setLoginId((rs.getString("login_id")));
+		users.setMember_id((Integer) rs.getObject("id"));
+		users.setLogin_id((rs.getString("login_id")));
 		users.setName(rs.getString("name"));
 		//users.setGroup((Integer)rs.getObject("group_id"));
-		users.setGroupName(rs.getString("groupName"));
+		users.setDepartment(rs.getString("groupName"));
 		//users.setCreated(rs.getTimestamp("created"));
 		return users;
 	}
@@ -139,11 +141,12 @@ public class UsersDaoImpl implements UsersDao {
 	private Users mapToLogin(ResultSet rs) throws SQLException {
 
 		domain.Users users = new Users();
-		users.setId((Integer) rs.getObject("id"));
+		users.setMember_id((Integer) rs.getObject("id"));
 		users.setName(rs.getString("name"));
-		users.setTypeId((Integer) rs.getObject("type_id"));
+		users.setDep_id((Integer) rs.getObject("type_id"));
 		return users;
 	}
+
 
 	/**
 	 * ユーザー詳細時に処理
@@ -155,10 +158,12 @@ public class UsersDaoImpl implements UsersDao {
 		Users user = null;
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT "
-					+ " users.id,login_id, users.name, groups.name as groupName "
-					+ " from users join groups "
-					+ " on users.group_id = groups.id WHERE users.id=?";
-			PreparedStatement stmt = con.prepareStatement(sql);
+					+ "members.member_id, members.login_id, members.name, department.department "
+					+ "AS groupName FROM members "
+					+ "JOIN department ON members.dep_id = department.dep_id "
+					+ "WHERE members.member_id = ?;";
+
+					PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, id, Types.INTEGER);
 			ResultSet rs = stmt.executeQuery();
 
@@ -179,17 +184,28 @@ public class UsersDaoImpl implements UsersDao {
 	@Override
 	public void insert(Users user) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "INSERT INTO users"
-					+ " (id, login_id, login_pass, name, type_id, group_id, created) "
-					+ "values(null,?,?,?,1,?,now())";// id=null(auto), type_id = 1(デフォルトで一般ユーザー)
+			String sql = "INSERT INTO members(member_id,name,kana,birthday,address,tel,hired,dep_id,position_type,login_id)"
+					+ "VALUES(?,?,?,?,?,?,?,?,?,?);";
+			Timestamp Birth = new Timestamp(user.getBirthday().getTime());
+			Timestamp  Hire= new Timestamp(user.getHired().getTime());
+
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, user.getLoginId());
-			stmt.setString(2, user.getLoginPass());
-			stmt.setString(3, user.getName());
-			stmt.setObject(4, user.getGroup(), Types.INTEGER);
+
+			stmt.setObject(1, user.getMember_id(),Types.INTEGER);
+			stmt.setString(2, user.getName());
+			stmt.setString(3, user.getKana());
+			stmt.setTimestamp(4,Birth);
+			stmt.setString(5, user.getAddress());
+			stmt.setString(6, user.getTel());
+			stmt.setTimestamp(7, Hire);
+			stmt.setObject(8, user.getDep_id(),Types.INTEGER);
+			stmt.setObject(9, user.getPosition_type(),Types.INTEGER);
+			stmt.setString(10, user.getLogin_id());
+
 			stmt.executeUpdate();
 		}
 	}
+
 
 	/**
 	 * ログイン時に処理
@@ -200,8 +216,8 @@ public class UsersDaoImpl implements UsersDao {
 	public Users findByLoginIdAndLoginPass(String loginId, String loginPass) throws Exception {
 		Users user = null;
 		try (Connection con = ds.getConnection()) {
-			String sql = "SELECT * "
-					+ "FROM users WHERE login_id=?";
+			String sql = "SELECT  * FROM members WHERE login_id = ?;";
+
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, loginId);
 			ResultSet rs = stmt.executeQuery();
@@ -222,19 +238,24 @@ public class UsersDaoImpl implements UsersDao {
 	@Override
 	public void update(Users Users) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "Update users set "
-					+ " name=?, login_id=?, "
-					+ " login_pass=?, group_id=? "
-					+ " WHERE id=?";
+			String sql ="UPDATE members SET name =?,kana=?,dep_id=?,address=?,tel=?,birthday=?,position_type=?,login_id = ? WHERE member_id = ?;"
+					+ "UPDATE account SET login_id=?,login_pass=?,auth_id=? WHERE login_id=?;";
+
+			Timestamp Birth = new Timestamp(user.getBirthday().getTime());
+
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(5, Users.getId());
+
 			stmt.setString(1, Users.getName());
-			stmt.setObject(2, Users.getLoginId());
-			stmt.setObject(3, Users.getLoginPass());
-			stmt.setObject(4, Users.getGroup());
+			stmt.setString(2, Users.getKana());
+			stmt.setObject(3, Users.getDep_id());
+			stmt.setString(3, Users.getAddress());
+			stmt.setString(4, Users.getTel());
+			stmt.set(5, );
 
 			stmt.executeUpdate();
 		}
+
+
 	}
 	/**
 	 * パスワードの変更なしの場合のユーザ情報の更新
@@ -318,29 +339,6 @@ public class UsersDaoImpl implements UsersDao {
 		}
 	}
 
-
-//	public void countAll(int count) throws Exception {
-//		try (Connection con = ds.getConnection()) {
-//			String sql = "SELECT COUNT( id ) FROM users";
-//			PreparedStatement stmt = con.prepareStatement(sql);
-//			ResultSet rs = stmt.executeQuery();
-//
-//			while (rs.next()) {
-//				count = mapToCount(rs);
-//			}
-//
-//		}
-//
-//		return count;
-//
-//	}
-//
-//	private Users mapToCount(ResultSet rs) throws SQLException {
-//
-//		domain.Users users = new Users();
-//		users.setCount((Integer) rs.getObject("id"));
-//		return users;
-//	}
 
 	@Override
 	public List<Users> findAll() throws Exception {
