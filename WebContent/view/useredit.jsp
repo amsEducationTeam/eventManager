@@ -93,6 +93,7 @@
 					<p>
 						<a href="User?userId=${user.id}&servletName=userInfo" type="button" class="btn btn-default">キャンセル</a>
 						<input type="hidden" name="oldlogin_id" value="${user.login_Id}"/>
+						<input type="hidden" name="oldmember_id" value="${user.member_id}"/>
 						<input type="hidden" name="servletName" value="userEdit"/>
 						<input type="submit" class="btn btn-primary" value="登録" />
 					</p>

@@ -7,7 +7,7 @@ import domain.Users;
 
 public interface UsersDao{
 	List<Users> findAll()throws Exception;
-	Users findById(Integer id) throws Exception;
+	Users findById(String id) throws Exception;
 	void insert(Users user)throws Exception;
 	void update(Users user)throws Exception;
 	void delete(Users user)throws Exception;
@@ -18,6 +18,10 @@ public interface UsersDao{
 	boolean CheckLoginId(String loginId) throws Exception;
 	void updateWhithoutPass(Users Users) throws Exception;
 
+	public Users login(String loginId, String loginPass)throws Exception;
+	public void insertacount(Users user) throws Exception;
+	public void updateaccount(Users Users) throws Exception;
+	public void updateAccountWhithoutPass(Users Users) throws Exception;
 
 }
 

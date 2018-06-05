@@ -25,7 +25,6 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 	public void insert(Users user) throws Exception {
 	}
 
-
 	/**
 	 * @param int userId, int eventId
 	 */
@@ -96,13 +95,10 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 		return users;
 	}
 
-
 	@Override
 	public Users findByLoginIdAndLoginPass(String loginId, String loginPass) throws Exception {
 		return null;
 	}
-
-
 
 	/**
 	 * userDeleteServletから削除したﾕｰｻﾞｰが参加していたイベント情報を削除します
@@ -135,8 +131,6 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
-
-
 
 	public List<Users> findfive(List<Users> userList) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
@@ -173,13 +167,37 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 	}
 
 	@Override
-	public Users findById(Integer id) throws Exception {
+	public void update(Users user) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
+	@Override
+	public Users findById(String id) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
 
 	@Override
-	public void update(Users user) throws Exception {
+	public Users login(String loginId, String loginPass) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
+	}
+
+	@Override
+	public void insertacount(Users user) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
+	@Override
+	public void updateaccount(Users Users) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
+	@Override
+	public void updateAccountWhithoutPass(Users Users) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 
 	}

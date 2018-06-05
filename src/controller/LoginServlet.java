@@ -39,13 +39,14 @@ public class LoginServlet extends HttpServlet {
 			try {
 				UsersDao UsersDao = DaoFactory.createUsersDao();
 				Users user = UsersDao.findByLoginIdAndLoginPass(login_id,  login_pass);
+				Users user2=UsersDao.login(login_id,  login_pass);
 				String pageName = "eventToday";
 				if(user != null) {
 					// セッションにユーザー情報"id,loginId,name,type_id"を登録
 					request.getSession().setAttribute("member_id", user.getMember_id());
 					request.getSession().setAttribute("login_id", user.getLogin_id());
 					request.getSession().setAttribute("name", user.getName());
-					request.getSession().setAttribute("auth_type", user.getAuth_type());
+					request.getSession().setAttribute("auth_id", user2.getAuth_id());
 					request.setAttribute("servletName", pageName);
 					request.getRequestDispatcher("EventServlet").forward(request,  response);
 				} else {

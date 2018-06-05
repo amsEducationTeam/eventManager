@@ -1,6 +1,9 @@
 package controller;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -22,7 +25,7 @@ import domain.Users;
 @WebServlet("/User")
 public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private int editId;
+	private String editId;
 	private String loginId;
 
 	protected final String USER_LIST = "userList";
@@ -93,13 +96,14 @@ public class UserServlet extends HttpServlet {
 			break;
 		case USER_INFO:
 			try {
-				int userId = Integer.parseInt(request.getParameter("userId"));
+				String userId = request.getParameter("member_id");
 
 				request.getSession().setAttribute("editingId", userId);
 			} catch (Exception e) {
 
+
 			}
-			int editingId = (int) request.getSession().getAttribute("editingId");
+			String editingId = (String) request.getSession().getAttribute("editingId");
 
 			try {
 				UsersDao UsersDao = DaoFactory.createUsersDao();
@@ -114,12 +118,12 @@ public class UserServlet extends HttpServlet {
 			request.getRequestDispatcher("view/userinsert.jsp").forward(request, response);
 			break;
 		case USER_EDIT:
-			this.editId = (int) request.getSession().getAttribute("editingId");
+			this.editId = (String) request.getSession().getAttribute("editingId");
 
 			try {
 				UsersDao UsersDao = DaoFactory.createUsersDao();
 				Users user = UsersDao.findById(this.editId);
-				this.loginId = user.getLoginId();
+				this.loginId = user.getLogin_id();
 				request.setAttribute("user", user);
 				request.getRequestDispatcher("view/useredit.jsp").forward(request, response);
 			} catch (Exception e) {
@@ -138,19 +142,47 @@ public class UserServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		String servlet_id = request.getParameter("servletName");
+		String member_id=request.getParameter("member_id");
+		String name = request.getParameter("name");
+		String kana=request.getParameter("kana");
+		String address=request.getParameter("address");
+		String tel =request.getParameter("tel");
+
+		//birthdayの定義
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date birthday=null;
+		Date hired=null;
+
+		try {
+			birthday = sdf.parse(request.getParameter("birthday"));
+			hired = sdf.parse(request.getParameter("hired"));
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+
+		String login_id = request.getParameter("login_id");
+		String login_pass = request.getParameter("login_pass");
+		int dep_id = Integer.parseInt(request.getParameter("dep_id"));
+		int position_type=Integer.parseInt(request.getParameter("position_type"));
+		int auth_id= Integer.parseInt(request.getParameter("auth_id"));
+		String oldlogin_id=request.getParameter("oldlogin_id");
+		String oldmember_id=request.getParameter("oldmember_id");
+
+
 		switch (servlet_id) {
 		case USER_LIST:
 
 			break;
 		case USER_INFO:
 			try {
-				int userId = Integer.parseInt(request.getParameter("userId"));
+				String userId = request.getParameter("member_id");
 
 				request.getSession().setAttribute("editingId", userId);
 			} catch (Exception e) {
+				throw new ServletException(e);
 
 			}
-			int editingId = (int) request.getSession().getAttribute("editingId");
+			String editingId = (String) request.getSession().getAttribute("editingId");
 
 			try {
 				UsersDao UsersDao = DaoFactory.createUsersDao();
@@ -163,28 +195,35 @@ public class UserServlet extends HttpServlet {
 
 			break;
 		case USER_INSERT:
-			String insertName = request.getParameter("name");
-			String loginId = request.getParameter("login_id");
-			String loginPass = request.getParameter("login_pass");
-			int insertGroup = Integer.parseInt(request.getParameter("group_id"));
+
 
 			// loginIdとloginPassの正規化チェック 半角英数字、ハイフン、アンダースコアのみ許可
-			if (loginId.matches("[0-9a-zA-Z\\-\\_]+") && loginPass.matches("[0-9a-zA-Z\\-\\_]+")) {
+			if (login_id.matches("[0-9a-zA-Z\\-\\_]+") && login_pass.matches("[0-9a-zA-Z\\-\\_]+")) {
 				// パスワードのハッシュ化
-				String hashedPass = BCrypt.hashpw(loginPass, BCrypt.gensalt());
+				String hashedPass = BCrypt.hashpw(login_pass, BCrypt.gensalt());
 
 				// データの追加
 				Users user = new Users();
-				user.setName(insertName);
-				user.setLoginId(loginId);
-				user.setLoginPass(hashedPass);
-				user.setGroup(insertGroup);
+				user.setMember_id(member_id);
+				user.setName(name);
+				user.setKana(kana);
+				user.setAddress(address);
+				user.setTel(tel);
+				user.setBirthday(birthday);
+				user.setHired(hired);
+				user.setLogin_id(login_id);
+				user.setLogin_pass(hashedPass);
+				user.setDep_id(dep_id);
+				user.setAuth_id(auth_id);
+
+
 
 				try {
 					UsersDao UsersDao = DaoFactory.createUsersDao();
 					// login_idが使われているかチェックする
-					if (UsersDao.CheckLoginId(loginId)) {
+					if (UsersDao.CheckLoginId(login_id)) {
 						UsersDao.insert(user);
+						UsersDao.insertacount(user);
 						request.getRequestDispatcher("view/userinsertDone.jsp").forward(request, response);
 					} else {
 						// login_idが他のユーザーのlogin_idとかぶった場合の処理内容
@@ -201,28 +240,62 @@ public class UserServlet extends HttpServlet {
 			}
 			break;
 
+
 		case USER_EDIT:
-			String name = request.getParameter("name");
-			String login_id = request.getParameter("login_id");
-			String login_pass = request.getParameter("login_pass");
-			int group = Integer.parseInt(request.getParameter("group_id"));
+
+//			String member_id=request.getParameter("member_id");
+//			String name = request.getParameter("name");
+//			String kana=request.getParameter("kana");
+//			String address=request.getParameter("address");
+//			String tel=request.getParameter("tel");
+//			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//			Date birthday=null;
+//			Date hired=null;
+//
+//			try {
+//				birthday = sdf.parse(request.getParameter("birthday"));
+//				hired = sdf.parse(request.getParameter("hired"));
+//			} catch (ParseException e1) {
+//				e1.printStackTrace();
+//			}
+//			String login_id = request.getParameter("login_id");
+//			String login_pass = request.getParameter("login_pass");
+//			int dep_id = Integer.parseInt(request.getParameter("dep_id"));
+//			int position_type=Integer.parseInt(request.getParameter("position_type"));
+//			int auth_id= Integer.parseInt(request.getParameter("auth_id"));
+//			String login_id = request.getParameter("login_id");
+//			String login_pass = request.getParameter("login_pass");
+			//int group = Integer.parseInt(request.getParameter("group_id"));
 
 			// loginIdとloginPassの正規化チェック 半角英数字、ハイフン、アンダースコアのみ許可
 			if (login_id.matches("[0-9a-zA-Z\\-\\_]+") && login_pass.matches("[0-9a-zA-Z\\-\\_]+")) {
 				String hashedPass = BCrypt.hashpw(login_pass, BCrypt.gensalt());
 				// メンバーからユーザーIdを取得しインスタンスにセット
 				Users user = new Users();
-				user.setId(editId);
+
+				user.setMember_id(member_id);
 				user.setName(name);
-				user.setLoginId(login_id);
-				user.setLoginPass(hashedPass);
-				user.setGroup(group);
+				user.setKana(kana);
+				user.setAddress(address);
+				user.setTel(tel);
+				user.setBirthday(birthday);
+				user.setLogin_id(hashedPass);
+				user.setLogin_pass(login_pass);
+				user.setDep_id(dep_id);
+				user.setPosition_type(position_type);
+				user.setAuth_id(auth_id);
+				user.setOldlogin_id(oldlogin_id);
+				user.setOldmember_id(oldmember_id);
+
+
 
 				try {
 					UsersDao UsersDao = DaoFactory.createUsersDao();
 					// login_idが使われているかチェックする
 					if (UsersDao.CheckLoginId(login_id) || this.loginId.equals(login_id)) {
 						UsersDao.update(user);
+						UsersDao.updateaccount(user);
+
 						request.setAttribute("userId", editId);
 						request.getRequestDispatcher("view/usereditDone.jsp").forward(request, response);
 					} else {
@@ -235,15 +308,28 @@ public class UserServlet extends HttpServlet {
 				}
 			} else if (login_id.matches("[0-9a-zA-Z\\-\\_]+") && login_pass == "") {// パスワード無しの場合の更新処理
 				Users user = new Users();
-				user.setId(editId);
+
+				user.setMember_id(member_id);
 				user.setName(name);
-				user.setLoginId(login_id);
-				user.setGroup(group);
+				user.setKana(kana);
+				user.setAddress(address);
+				user.setTel(tel);
+				user.setBirthday(birthday);
+
+				user.setLogin_pass(login_pass);
+				user.setDep_id(dep_id);
+				user.setPosition_type(position_type);
+				user.setAuth_id(auth_id);
+				user.setOldlogin_id(oldlogin_id);
+				user.setOldmember_id(oldmember_id);
+
+
 				try {
 					UsersDao UsersDao = DaoFactory.createUsersDao();
 					// login_idが使われているかチェックする
 					if (UsersDao.CheckLoginId(login_id) || this.loginId.equals(login_id)) {
 						UsersDao.updateWhithoutPass(user);
+						UsersDao.updateAccountWhithoutPass(user);
 						request.setAttribute("userId", editId);
 						request.getRequestDispatcher("view/usereditDone.jsp").forward(request, response);
 					} else {
@@ -260,13 +346,18 @@ public class UserServlet extends HttpServlet {
 			}
 			break;
 
+
+
+
 		case USER_DELETE:
-			int userId = Integer.parseInt(request.getParameter("userId"));
+			String userId = request.getParameter("member_id");
+			//String login_id=request.getParameter("login_id");
 			try {
 				UsersDao UsersDao = DaoFactory.createUsersDao();
 				AttendDao attendDao = DaoFactory.createAttendDao();
 				Users user = new Users();
-				user.setId(userId);
+				user.setMember_id(userId);
+				user.setLogin_id(login_id);
 				attendDao.deleteByUserId(user);
 				UsersDao.delete(user);
 

@@ -19,10 +19,17 @@ public class Users {
 	private Integer auth_id;
 	private String auth_type;
 	private String oldlogin_id;
+	private String oldmember_id;
 
 
 
 
+	public String getOldmember_id() {
+		return oldmember_id;
+	}
+	public void setOldmember_id(String oldmember_id) {
+		this.oldmember_id = oldmember_id;
+	}
 	public String getOldlogin_id() {
 		return oldlogin_id;
 	}
