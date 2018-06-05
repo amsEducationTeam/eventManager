@@ -16,16 +16,54 @@
 
 			<tr>
 				<th class="col-xs-2">ID</th>
-				<td class="col-xs-10"><c:out value="${user.id}" /></td>
+				<td class="col-xs-10"><c:out value="${user.member_id}" /></td>
 			</tr>
 			<tr>
 				<th>氏名</th>
 				<td><c:out value="${user.name}" /></td>
 			</tr>
 			<tr>
-				<th>所属グループ</th>
-				<td><c:out value="${user.groupName}" /></td>
+				<th>フリガナ</th>
+				<td><c:out value="${user.kana}" /></td>
 			</tr>
+			<tr>
+				<th>住所</th>
+				<td><c:out value="${user.address}" /></td>
+			</tr>
+			<tr>
+				<th>電話番号</th>
+				<td><c:out value="${user.tel}" /></td>
+			</tr>
+			<tr>
+				<th>誕生日</th>
+				<td><c:out value="${user.birthday}" /></td>
+			</tr>
+			<tr>
+				<th>入社日</th>
+				<td><c:out value="${user.hired}" /></td>
+			</tr>
+			<tr>
+				<th>所属グループ</th>
+				<td><c:out value="${user.department}" /></td>
+			</tr>
+			<tr>
+				<th>役職</th>
+				<td>
+				<c:if test="${user.position_type==1}">
+							部長
+				</c:if>
+				<c:if test="${user.position_type==2}">
+							課長
+				</c:if>
+				<c:if test="${user.position_type==3}">
+							係長
+				</c:if>
+				<c:if test="${user.position_type==0}">
+							一般社員
+				</c:if>
+				</td>
+			</tr>
+
 		</table>
 		<div class="btn-toolbar">
   <div class="btn-group">
