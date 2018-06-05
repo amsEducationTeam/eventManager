@@ -67,7 +67,7 @@
 			<tr>
 				<th>参加者</th>
 				<td><c:forEach items="${attendList}" var="attend" varStatus="status">
-						<c:out value="${attend.user_name}" />
+						<c:out value="${attend.member_name}" />
 						<c:if test="${!status.last}">,
 						</c:if>
 					</c:forEach></td>
