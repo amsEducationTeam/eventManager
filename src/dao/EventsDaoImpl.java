@@ -53,7 +53,7 @@ public class EventsDaoImpl implements EventsDao {
 	 * @return users
 	 */
 	@Override
-	public List<Events> findfive(List<Events> events,int member_id) throws Exception {
+	public List<Events> findfive(List<Events> events,String member_id) throws Exception {
 		List<Events> eventsList = new ArrayList<>();
 
 		try (Connection con = ds.getConnection()) {
@@ -135,7 +135,7 @@ public class EventsDaoImpl implements EventsDao {
 	 */
 	private Events mapToEvents(ResultSet rs) throws SQLException {
 		Events events = new Events();
-		events.setEvent_id((Integer) rs.getObject("id"));
+		events.setEvent_id((Integer) rs.getObject("event_id"));
 		return events;
 	}
 
@@ -156,7 +156,7 @@ public class EventsDaoImpl implements EventsDao {
 	events.setMember_name(rs.getString("member_name"));
 	events.setCreated(rs.getTimestamp("created"));
 	try {
-		events.setMember_id((Integer) rs.getObject("member_id"));
+		events.setMember_id(rs.getString("member_id"));
 	} catch (NullPointerException e) {
 
 	}
@@ -230,7 +230,7 @@ public class EventsDaoImpl implements EventsDao {
 			stmt.setInt(4, events.getPlace_id());
 			stmt.setInt(5, events.getDep_id());
 			stmt.setString(6, events.getDetail());
-			stmt.setInt(7, events.getRegistered_id());
+			stmt.setString(7, events.getRegistered_id());
 			stmt.executeUpdate();
 		}
 	}
