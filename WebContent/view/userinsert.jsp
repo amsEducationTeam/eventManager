@@ -76,7 +76,6 @@
 							<option value="5">開発部</option>
 							</select>
 					</p>
-
 					<p class="bold">権限（必須）</p>
 					<p><select name="auth_id" class="form-control">
 							<option value="1">管理者</option>
