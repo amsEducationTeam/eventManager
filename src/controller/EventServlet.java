@@ -43,9 +43,13 @@ public class EventServlet extends HttpServlet {
 			pageName = (String)request.getParameter("servletName");
 		}
 		switch(pageName){
+			default:
+				// doGetメソッドでは無効な処理 404ページへ遷移
+				break;
 			case EVENT_TODAY:
 				eventToday(request, response);
 				break;
+
 			case EVENT_LIST:
 				int page = 0;
 				try {
@@ -94,6 +98,7 @@ public class EventServlet extends HttpServlet {
 					throw new ServletException(e);
 				}
 				break;
+
 			case EVENT_INFO:
 				try {
 					int infoId = Integer.parseInt(request.getParameter("info"));
@@ -115,6 +120,7 @@ public class EventServlet extends HttpServlet {
 					throw new ServletException(e);
 				}
 				break;
+
 			case EVENT_EDIT:
 				int infoId = Integer.parseInt(request.getParameter("info"));
 				try {
@@ -126,11 +132,13 @@ public class EventServlet extends HttpServlet {
 					throw new ServletException(e);
 				}
 				break;
+
 			case EVENT_INSERT:
 				request.getRequestDispatcher("view/eventinsert.jsp").forward(request, response);
 				break;
+
 			case EVENT_DELETE:
-				// doGetメソッドでは無効な処理 404ページへ遷移
+				// doGetメソッドでは無効な処理 404ページへ遷移予定
 				break;
 		}
 
@@ -140,18 +148,24 @@ public class EventServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//EventServName eventServName = EventServName.valueOf(request.getParameter("servName"));
+
 		String pageName = (String)request.getAttribute("servletName");
 		if(pageName==null) {
 			pageName = (String)request.getParameter("servletName");
 		}
 		switch(pageName) {
+		default:
+			// doPostメソッドでは無効な処理 404ページへ遷移
+			break;
+
 		case EVENT_TODAY:
 			eventToday(request, response);
 			break;
+
 		case EVENT_LIST:
-			// doGetメソッドでは無効な処理 404ページへ遷移
+			// doPostメソッドでは無効な処理 404ページへ遷移
 			break;
+
 		case EVENT_INFO:
 			try {
 				int infoId = Integer.parseInt(request.getParameter("info"));
@@ -173,82 +187,86 @@ public class EventServlet extends HttpServlet {
 				throw new ServletException(e);
 			}
 			break;
+
 		case EVENT_EDIT:
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			int id = Integer.parseInt(request.getParameter("info"));
-			String title=request.getParameter("title");
-			Date start =null;
+			int event_id = Integer.parseInt(request.getParameter("info"));
+			String title = request.getParameter("title");
+			Date start = null;
 			Date end = null;
 			try {
 				start = sdf.parse(request.getParameter("start"));
-				end=sdf.parse(request.getParameter("end"));
+				end = sdf.parse(request.getParameter("end"));
 			} catch (ParseException e1) {
 				e1.printStackTrace();
 			}
-			String place=request.getParameter("place");
-			int group_id=Integer.parseInt(request.getParameter("group_id"));
-			String detail=request.getParameter("detail");
 
-			Events event=new Events();
-			event.setId(id);
+			int place_id = Integer.parseInt(request.getParameter("place_id"));
+			int dep_id = Integer.parseInt(request.getParameter("dep_id"));
+			String detail = request.getParameter("detail");
+
+			Events event = new Events();
+			event.setEvent_id(event_id);
 			event.setTitle(title);
 			event.setStart(start);
 			event.setEnd(end);
-			event.setPlace(place);
-			event.setGroup_id(group_id);
+			event.setPlace_id(place_id);
+			event.setDep_id(dep_id);
 			event.setDetail(detail);
-			event.setRegistered_by((int)request.getSession().getAttribute("id"));
+			event.setRegistered_id((int)request.getSession().getAttribute("member_id"));
 
 			try {
-				EventsDao eventsDao=DaoFactory.createEventsDao();
+				EventsDao eventsDao = DaoFactory.createEventsDao();
 				eventsDao.update(event);
-				request.setAttribute("eventId", id);
+				request.setAttribute("eventId", event_id);
 				request.getRequestDispatcher("view/eventeditDone.jsp").forward(request, response);
 				} catch (Exception e) {
 				throw new ServletException(e);
 				}
 			break;
+
 		case EVENT_INSERT:
 			SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-			String title2=request.getParameter("title");
-			Date start2 =null;
+			String title2 = request.getParameter("title");
+			Date start2 = null;
 			Date end2 = null;
 			try {
 				start2 = sdf2.parse(request.getParameter("start"));
-				end2=sdf2.parse(request.getParameter("end"));
+				end2 = sdf2.parse(request.getParameter("end"));
 			} catch (ParseException e1) {
 				e1.printStackTrace();
 			}
-			String place2=request.getParameter("place");
-			int group_id2=Integer.parseInt(request.getParameter("group_id"));
-			String detail2=request.getParameter("detail");
+			int place_id2 = Integer.parseInt(request.getParameter("place_id"));
+			int dep_id2 = Integer.parseInt(request.getParameter("dep_id"));
+			String detail2 = request.getParameter("detail");
 
-			Events event2=new Events();
+			Events event2 = new Events();
 			event2.setTitle(title2);
 			event2.setStart(start2);
 			event2.setEnd(end2);
-			event2.setPlace(place2);
-			event2.setGroup_id(group_id2);
+			event2.setPlace_id(place_id2);
+			event2.setDep_id(dep_id2);
 			event2.setDetail(detail2);
-			event2.setRegistered_by((int)request.getSession().getAttribute("id"));
+			event2.setRegistered_id((int) request.getSession().getAttribute("id"));
 
 			try {
-				EventsDao eventsDao=DaoFactory.createEventsDao();
+				EventsDao eventsDao = DaoFactory.createEventsDao();
 				eventsDao.insert(event2);
 				request.getRequestDispatcher("view/eventinsertDone.jsp").forward(request, response);
-				} catch (Exception e) {
+			} catch (Exception e) {
 				throw new ServletException(e);
-				}
+			}
 			break;
+
 		case EVENT_DELETE:
-			//int eventId = Integer.parseInt(request.getParameter("info"));
-			int eventId = Integer.parseInt(request.getParameter("info"));
+
+			int event_id3 = Integer.parseInt(request.getParameter("info"));
 			try {
 				EventsDao eventsDao = DaoFactory.createEventsDao();
 				AttendDao attendDao = DaoFactory.createAttendDao();
 				Events event3 = new Events();
-				event3.setId(eventId);
+				event3.setEvent_id(event_id3);
 				attendDao.deleteByEventId(event3);
 				eventsDao.delete(event3);
 				request.getRequestDispatcher("view/eventdelDone.jsp").forward(request, response);
@@ -259,6 +277,7 @@ public class EventServlet extends HttpServlet {
 		}
 	}
 
+//-- switch文内のメソッドの記述 -----------------------------------------------------------------------------------
 
 	protected void eventToday(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		// 処理内容
@@ -370,23 +389,55 @@ public class EventServlet extends HttpServlet {
 	protected void eventEditPost() {
 		//
 	}
-	protected void eventInsertPost() {
+	protected void eventInsertPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
 		//
+		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		String title2 = request.getParameter("title");
+		Date start2 = null;
+		Date end2 = null;
+		try {
+			start2 = sdf2.parse(request.getParameter("start"));
+			end2 = sdf2.parse(request.getParameter("end"));
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+		//String place2=request.getParameter("place");
+		int place_id2 = Integer.parseInt(request.getParameter("place_id"));
+		int dep_id2 = Integer.parseInt(request.getParameter("dep_id"));
+		String detail2 = request.getParameter("detail");
+
+		Events event2 = new Events();
+		event2.setTitle(title2);
+		event2.setStart(start2);
+		event2.setEnd(end2);
+		event2.setPlace_id(place_id2);
+		event2.setDep_id(dep_id2);
+		event2.setDetail(detail2);
+		event2.setRegistered_id((int) request.getSession().getAttribute("id"));
+
+		try {
+			EventsDao eventsDao = DaoFactory.createEventsDao();
+			eventsDao.insert(event2);
+			request.getRequestDispatcher("view/eventinsertDone.jsp").forward(request, response);
+		} catch (Exception e) {
+			throw new ServletException(e);
+		}
 	}
 	protected void eventDeletePost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-		//
-		int eventId = Integer.parseInt(request.getParameter("info"));
-	try {
-		EventsDao eventsDao = DaoFactory.createEventsDao();
-		AttendDao attendDao = DaoFactory.createAttendDao();
-		Events event = new Events();
-		event.setId(eventId);
-		attendDao.deleteByEventId(event);
-		eventsDao.delete(event);
-		request.getRequestDispatcher("view/eventdelDone.jsp").forward(request, response);
-	} catch (Exception e) {
-		throw new ServletException(e);
-	}
+		//今は使ってないメソッド
+		int event_id3 = Integer.parseInt(request.getParameter("info"));
+		try {
+			EventsDao eventsDao = DaoFactory.createEventsDao();
+			AttendDao attendDao = DaoFactory.createAttendDao();
+			Events event3 = new Events();
+			event3.setEvent_id(event_id3);
+			attendDao.deleteByEventId(event3);
+			eventsDao.delete(event3);
+			request.getRequestDispatcher("view/eventdelDone.jsp").forward(request, response);
+		} catch (Exception e) {
+			throw new ServletException(e);
+		}
 	}
 
 
