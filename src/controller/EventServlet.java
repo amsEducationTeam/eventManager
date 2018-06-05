@@ -249,7 +249,7 @@ public class EventServlet extends HttpServlet {
 			event2.setPlace_id(place_id2);
 			event2.setDep_id(dep_id2);
 			event2.setDetail(detail2);
-			event2.setRegistered_id((int) request.getSession().getAttribute("id"));
+			event2.setRegistered_id((int) request.getSession().getAttribute("member_id"));
 
 			try {
 				EventsDao eventsDao = DaoFactory.createEventsDao();
