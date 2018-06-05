@@ -9,8 +9,6 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.mindrot.jbcrypt.BCrypt;
-
 import domain.Attend;
 import domain.Events;
 import domain.Users;
@@ -32,14 +30,14 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 	 * @param int userId, int eventId
 	 */
 	@Override
-	public void insert(int memberId, int eventId) throws Exception {
+	public void insert(String member_id, int event_Id) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "INSERT INTO attends "
 					+ " (attends_id, member_id,event_id) "
 					+ "values(null,?,?);";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, memberId);
-			stmt.setObject(2, eventId);
+			stmt.setObject(1, member_id);
+			stmt.setObject(2, event_Id);
 			stmt.executeUpdate();
 		}
 	}
@@ -49,12 +47,12 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 	 */
 	//テーブルattendから参加者を削除するメソッド
 	@Override
-	public void delete(int memberId, int eventId) throws Exception {
+	public void delete(String member_id, int event_Id) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "delete from attends  where  member_id=? AND event_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, memberId);
-			stmt.setObject(2, eventId);
+			stmt.setObject(1, member_id);
+			stmt.setObject(2, event_Id);
 			stmt.executeUpdate();
 		}
 	}
@@ -92,62 +90,29 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 		Attend users = new Attend();
 		users.setMember_name(rs.getString("name"));
 		try {
-			users.setMember_id((Integer) rs.getObject("user_id"));
+			users.setMember_id((Integer) rs.getObject("member_id"));
 		} catch (NullPointerException e) {
 		}
 		return users;
 	}
 
-	/**
-	 * ログイン時に処理
-	 * ResultSetをUsersクラスにセットします
-	 * @return users
-	 */
-	private Users mapToLogin(ResultSet rs) throws SQLException {
-		domain.Users users = new Users();
-		users.setMember_id((String) rs.getObject("member_id"));
-		users.setName(rs.getString("name"));
-		return users;
-	}
-
-	@Override
-	public Users findById(Integer id) throws Exception {
-		return null;
-	}
 
 	@Override
 	public Users findByLoginIdAndLoginPass(String loginId, String loginPass) throws Exception {
-		Users user = null;
-		try (Connection con = ds.getConnection()) {
-			String sql = "SELECT * "
-					+ "FROM members WHERE login_id = ?";
-			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, loginId);
-			ResultSet rs = stmt.executeQuery();
-
-			if (rs.next()) {
-				if (BCrypt.checkpw(loginPass, rs.getString("login_pass"))) {
-					user = mapToLogin(rs);
-				}
-			}
-		}
-		return user;
+		return null;
 	}
 
-	@Override
-	public void update(Users Users) throws Exception {
 
-	}
 
 	/**
 	 * userDeleteServletから削除したﾕｰｻﾞｰが参加していたイベント情報を削除します
 	 */
 	@Override
-	public void deleteByUserId(Users user) throws Exception {
+	public void deleteByUserId(Users member_id) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "delete from attends  where member_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, user.getMember_id());
+			stmt.setObject(1, member_id.getMember_id());
 			stmt.executeUpdate();
 		}
 	}
@@ -171,11 +136,7 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 		return null;
 	}
 
-	@Override
-	public void insert(Events event) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
 
-	}
 
 	public List<Users> findfive(List<Users> userList) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
@@ -207,6 +168,18 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 
 	@Override
 	public void delete(Users user) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
+	@Override
+	public Users findById(Integer id) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
+	}
+
+	@Override
+	public void update(Users user) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 
 	}

@@ -34,7 +34,7 @@ public class AttendServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		try {
-			int userId = (int)request.getSession().getAttribute("id");
+			String userId = (String)request.getSession().getAttribute("member_id");
 			int eventId = Integer.parseInt(request.getParameter("info"));
 			int switchId = Integer.parseInt(request.getParameter("switchId"));
 
