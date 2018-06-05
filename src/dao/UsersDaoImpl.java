@@ -124,7 +124,7 @@ public class UsersDaoImpl implements UsersDao {
 	private Users mapToUser(ResultSet rs) throws SQLException {
 
 		domain.Users users = new Users();
-		users.setMember_id(rs.getObject("id"));
+		users.setMember_id(rs.getString("id"));
 		users.setLogin_id((rs.getString("login_id")));
 		users.setName(rs.getString("name"));
 		//users.setGroup((Integer)rs.getObject("group_id"));
@@ -141,7 +141,7 @@ public class UsersDaoImpl implements UsersDao {
 	private Users mapToLogin(ResultSet rs) throws SQLException {
 
 		domain.Users users = new Users();
-		users.setMember_id((Integer) rs.getObject("id"));
+		users.setMember_id(rs.getString("id"));
 		users.setName(rs.getString("name"));
 		users.setDep_id((Integer) rs.getObject("type_id"));
 		return users;
@@ -181,17 +181,21 @@ public class UsersDaoImpl implements UsersDao {
 	 * ユーザ情報の入力
 	 * @param user
 	 */
+	//書き換え必須
 	@Override
 	public void insert(Users user) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "INSERT INTO members(member_id,name,kana,birthday,address,tel,hired,dep_id,position_type,login_id)"
-					+ "VALUES(?,?,?,?,?,?,?,?,?,?);";
+					+ "VALUES(?,?,?,?,?,?,?,?,?,?);"
+					+ "INSERT INTO account(login_id,login_pass,auth_id)VALUES(?,?,?)";
+			//accountも編集
+
 			Timestamp Birth = new Timestamp(user.getBirthday().getTime());
 			Timestamp  Hire= new Timestamp(user.getHired().getTime());
 
 			PreparedStatement stmt = con.prepareStatement(sql);
 
-			stmt.setObject(1, user.getMember_id(),Types.INTEGER);
+			stmt.setString(1, user.getMember_id());
 			stmt.setString(2, user.getName());
 			stmt.setString(3, user.getKana());
 			stmt.setTimestamp(4,Birth);
@@ -201,6 +205,10 @@ public class UsersDaoImpl implements UsersDao {
 			stmt.setObject(8, user.getDep_id(),Types.INTEGER);
 			stmt.setObject(9, user.getPosition_type(),Types.INTEGER);
 			stmt.setString(10, user.getLogin_id());
+
+			stmt.setString(11, user.getLogin_id());
+			stmt.setString(12, user.getLogin_pass());
+			stmt.setObject(13, user.getAuth_id(),Types.INTEGER);
 
 			stmt.executeUpdate();
 		}
@@ -254,7 +262,13 @@ public class UsersDaoImpl implements UsersDao {
 			stmt.setTimestamp(6,Birth);
 			stmt.setObject(7, Users.getPosition_type(),Types.INTEGER);
 			stmt.setString(8, Users.getLogin_id());
-			stmt.setString(8, Users.getMember_id());
+			stmt.setString(9, Users.getMember_id());
+
+			//アカウントの扱い
+			stmt.setString(10, Users.getLogin_id());
+			stmt.setString(11, Users.getLogin_pass());
+			stmt.setObject(12, Users.getAuth_id(),Types.INTEGER);
+			stmt.setString(13, Users.getOldlogin_id());
 
 
 			stmt.executeUpdate();
@@ -268,14 +282,26 @@ public class UsersDaoImpl implements UsersDao {
 	@Override
 	public void updateWhithoutPass(Users Users) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "Update users set "
-					+ " name=?, login_id=?, group_id=? "
-					+ " WHERE id=?";
+			String sql = "UPDATE members SET name = ?,kana=?,dep_id=?,address=?,tel=?,birthday=?, position_type=?,login_id = ? WHERE member_id = ?;"
+					+ "UPDATE account SET login_id=? auth_id=? WHERE login_id=?;";
+
+			Timestamp Birth = new Timestamp(Users.getBirthday().getTime());
+			//アカウントの扱い
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(4, Users.getId());
 			stmt.setString(1, Users.getName());
-			stmt.setObject(2, Users.getLoginId());
-			stmt.setObject(3, Users.getGroup());
+			stmt.setString(2, Users.getKana());
+			stmt.setObject(3, Users.getDep_id(),Types.INTEGER);
+			stmt.setString(4, Users.getAddress());
+			stmt.setString(5, Users.getTel());
+			stmt.setTimestamp(6,Birth);
+			stmt.setObject(7, Users.getPosition_type(),Types.INTEGER);
+			stmt.setString(8, Users.getLogin_id());
+			stmt.setString(9, Users.getMember_id());
+
+			//account
+			stmt.setString(10, Users.getLogin_id());
+			stmt.setObject(11, Users.getAuth_id(),Types.INTEGER);
+			stmt.setString(12, Users.getOldlogin_id());
 
 			stmt.executeUpdate();
 		}
@@ -288,10 +314,11 @@ public class UsersDaoImpl implements UsersDao {
 	@Override
 	public void delete(Users Users) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "DELETE "
-					+ "FROM users WHERE id=?";
+			String sql ="DELETE "
+					+ "FROM members "
+					+ "WHERE member_id = ?;";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, Users.getId(), Types.INTEGER);
+			stmt.setString(1, Users.getMember_id());
 			stmt.executeUpdate();
 		}
 	}
@@ -304,9 +331,9 @@ public class UsersDaoImpl implements UsersDao {
 
 		try (Connection con = ds.getConnection()) {
 
-			String sql = "SELECT "
-					+ " users.id "
-					+ " from users";
+			String sql ="SELECT "
+					+ "members.member_id "
+					+ "FROM members;";
 
 			PreparedStatement stms = con.prepareStatement(sql);
 			ResultSet rs = stms.executeQuery();
@@ -329,8 +356,9 @@ public class UsersDaoImpl implements UsersDao {
 		boolean check = true;
 		int count = 0;
 		try(Connection con=ds.getConnection()) {
-			String sql="SELECT count(*) from users"
-					+ " WHERE users.login_id=?";
+			String sql=	"SELECT "
+					+ "COUNT(*) FROM members "
+					+ "WHERE members.login_id = ?;";
 			PreparedStatement stmt=con.prepareStatement(sql);
 			stmt.setString(1, loginId);
 			ResultSet rs =stmt.executeQuery();
