@@ -143,7 +143,7 @@ public class UsersDaoImpl implements UsersDao {
 	private Users mapToLogin(ResultSet rs) throws SQLException {
 
 		domain.Users users = new Users();
-		users.setMember_id(rs.getString("id"));
+		users.setMember_id(rs.getString("member_id"));
 		users.setName(rs.getString("name"));
 
 		users.setLogin_id(rs.getString("login_id"));
