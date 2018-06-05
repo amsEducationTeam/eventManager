@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,7 +104,7 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 	 */
 	private Users mapToLogin(ResultSet rs) throws SQLException {
 		domain.Users users = new Users();
-		users.setId((Integer) rs.getObject("id"));
+		users.setMember_id((String) rs.getObject("member_id"));
 		users.setName(rs.getString("name"));
 		return users;
 	}
@@ -147,7 +146,7 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 		try (Connection con = ds.getConnection()) {
 			String sql = "delete from attends  where member_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, user.getId(), Types.INTEGER);
+			stmt.setObject(1, user.getMember_id());
 			stmt.executeUpdate();
 		}
 	}
@@ -160,7 +159,7 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 		try (Connection con = ds.getConnection()) {
 			String sql = "delete from attends  where event_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, event.getId(), Types.INTEGER);
+			stmt.setObject(1, event.getMember_id());
 			stmt.executeUpdate();
 		}
 	}
