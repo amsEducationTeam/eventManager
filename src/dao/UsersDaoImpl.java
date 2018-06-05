@@ -145,13 +145,19 @@ public class UsersDaoImpl implements UsersDao {
 		domain.Users users = new Users();
 		users.setMember_id(rs.getString("id"));
 		users.setName(rs.getString("name"));
+		return users;
+	}
+
+
+	private Users mapToLoginAccount(ResultSet rs) throws SQLException {
+
+		domain.Users users = new Users();
 
 		users.setLogin_id(rs.getString("login_id"));
 		users.setLogin_pass(rs.getString("login_pass"));
 		users.setAuth_id((Integer) rs.getObject("auth_id"));
 		return users;
 	}
-
 
 	/**
 	 * ユーザー詳細時に処理
@@ -280,7 +286,7 @@ public class UsersDaoImpl implements UsersDao {
 			if (rs2.next()) {
 				if (BCrypt.checkpw(loginPass, rs2.getString("login_pass"))) {
 
-				user = mapToLogin(rs2);
+				user = mapToLoginAccount(rs2);
 				}
 			}
 			return user;
