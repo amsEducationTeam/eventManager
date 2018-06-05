@@ -135,29 +135,7 @@ public class UsersDaoImpl implements UsersDao {
 		return users;
 	}
 
-	/**
-	 * ログイン時に処理
-	 * ResultSetをUsersクラスにセットします
-	 * @return users
-	 */
-	private Users mapToLogin(ResultSet rs) throws SQLException {
 
-		domain.Users users = new Users();
-		users.setMember_id(rs.getString("id"));
-		users.setName(rs.getString("name"));
-		return users;
-	}
-
-
-	private Users mapToLoginAccount(ResultSet rs) throws SQLException {
-
-		domain.Users users = new Users();
-
-		users.setLogin_id(rs.getString("login_id"));
-		users.setLogin_pass(rs.getString("login_pass"));
-		users.setAuth_id((Integer) rs.getObject("auth_id"));
-		return users;
-	}
 
 
 
@@ -295,6 +273,31 @@ public class UsersDaoImpl implements UsersDao {
 			return user;
 		}
 	}
+
+	/**
+	 * ログイン時に処理
+	 * ResultSetをUsersクラスにセットします
+	 * @return users
+	 */
+	private Users mapToLogin(ResultSet rs) throws SQLException {
+
+		domain.Users users = new Users();
+		users.setMember_id(rs.getString("member_id"));
+		users.setName(rs.getString("name"));
+
+
+		return users;
+	}
+
+	private Users mapToLoginAccount(ResultSet rs) throws SQLException {
+		domain.Users users = new Users();
+		users.setLogin_id(rs.getString("login_id"));
+		users.setLogin_pass(rs.getString("login_pass"));
+		users.setAuth_id((Integer) rs.getObject("auth_id"));
+		return users;
+
+	}
+
 	/**
 	 * ユーザ情報更新処理
 	 * @param Users
