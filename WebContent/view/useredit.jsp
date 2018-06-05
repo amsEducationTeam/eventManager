@@ -19,9 +19,35 @@
 					</c:if>
 					<div class="form-group">
 				<form action="User" method="post">
+
+					<p class="bold">社員番号（必須）</p>
+					<p>
+						<input type="text" name="member_id" placeholder="社員番号" class="form-control" value="${user.member_id}" maxlength="50" required>
+					</p>
+
 					<p class="bold">氏名（必須）</p>
 					<p>
 						<input type="text" name="name" placeholder="氏名" class="form-control" value="${user.name}" maxlength="50" required >
+					</p>
+
+					<p class="bold">フリガナ（必須）</p>
+					<p>
+						<input type="text" name="kana" placeholder="フリガナ" class="form-control" value="${user.kana}" maxlength="100" required >
+					</p>
+
+					<p class="bold">住所（必須）</p>
+					<p>
+						<input type="text" name="address" placeholder="(例)東京都新宿区○○△△-□□" class="form-control" value="${user.address}" maxlength="255" required >
+					</p>
+
+					<p class="bold">電話番号（必須）</p>
+					<p>
+						<input type="text" name="tel" placeholder="(例)090-1234-5678" class="form-control" value="${user.tel}" maxlength="13" required >
+					</p>
+
+					<p class="bold">誕生日（必須）</p>
+					<p>
+						<input type="date" name="birthday" placeholder="yyyy-mm-dd" class="form-control"  value="${user.birthday}" required>
 					</p>
 
 					<p class="bold">ログインID（必須）</p>
@@ -32,23 +58,6 @@
 					<p>
 						<input type="text" name="login_id" placeholder="ログインID" class="form-control" value="${user.login_Id}" maxlength="20" required>
 					</p>
-
-					<p class="bold">住所（必須）</p>
-					<p>
-						<input type="text" name="address" placeholder="(例)東京都新宿区○○△△-□□" class="form-control"  value="${user.address}" maxlength="255" required>
-					</p>
-
-					<p class="bold">電話番号（必須）</p>
-					<p>
-						<input type="tel" name="tel" placeholder="(例)090-1234-5678" class="form-control"  value="${user.tel}" maxlength="13" required>
-					</p>
-
-
-					<p class="bold">誕生日（必須）</p>
-					<p>
-						<input type="date" name="birthday" placeholder="yyyy-mm-dd" class="form-control"  value="${user.birthday}" required>
-					</p>
-
 					<p class="bold">パスワード（変更の場合のみ)</p>
 					<input type="text" name="login_pass" placeholder="パスワード" class="form-control" maxlength="60"  placeholder="パスワード">
 

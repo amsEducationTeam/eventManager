@@ -22,7 +22,7 @@
 					<div class="form-group">
 				<form action="User" method="post">
 
-				<p class="bold">社員番号（必須）</p>
+					<p class="bold">社員番号（必須）</p>
 					<p>
 						<input type="text" name="member_id" placeholder="社員番号" class="form-control" maxlength="50" required>
 					</p>
