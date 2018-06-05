@@ -9,14 +9,14 @@ public class Events {
 	private Date start;
 	private Date end;
 	private int place_id;
+	private String place_name;
 	private String dep_name;
 	private int dep_id;
 	private String detail;
 	private String registered_id;
+	private String member_id;
 	private String member_name;
 	private Date created;
-	private String member_id;
-	private String place_name;
 
 	/**
 	 * @return registered_id
