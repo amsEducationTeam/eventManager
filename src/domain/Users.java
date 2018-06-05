@@ -3,7 +3,7 @@ package domain;
 import java.util.Date;
 
 public class Users {
-	private Integer member_id;
+	private String member_id;
 	private String name;
 	private String kana;
 	private Integer dep_id;
@@ -18,10 +18,17 @@ public class Users {
 	private String login_pass;
 	private Integer auth_id;
 	private String auth_type;
+	private String oldlogin_id;
 
 
 
 
+	public String getOldlogin_id() {
+		return oldlogin_id;
+	}
+	public void setOldlogin_id(String oldlogin_id) {
+		this.oldlogin_id = oldlogin_id;
+	}
 	public String getLogin_pass() {
 		return login_pass;
 	}
@@ -52,10 +59,10 @@ public class Users {
 	public void setFloor(Integer floor) {
 		this.floor = floor;
 	}
-	public Integer getMember_id() {
+	public String getMember_id() {
 		return member_id;
 	}
-	public void setMember_id(Integer member_id) {
+	public void setMember_id(String member_id) {
 		this.member_id = member_id;
 	}
 	public String getName() {
