@@ -163,6 +163,7 @@ public class EventsDaoImpl implements EventsDao {
 	return events;
 }
 
+
 	private Events mapToEventInfo(ResultSet rs) throws SQLException {
 		Events events = new Events();
 		events.setEvent_id((Integer) rs.getObject("event_id"));
