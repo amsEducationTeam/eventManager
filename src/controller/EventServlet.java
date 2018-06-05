@@ -42,6 +42,7 @@ public class EventServlet extends HttpServlet {
 		if(pageName==null || pageName == "") {
 			pageName = (String)request.getParameter("servletName");
 		}
+
 		switch(pageName){
 			default:
 				// doGetメソッドでは無効な処理 404ページへ遷移
