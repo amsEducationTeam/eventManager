@@ -169,12 +169,11 @@ public class EventsDaoImpl implements EventsDao {
 		events.setTitle(rs.getString("title"));
 		events.setStart(rs.getTimestamp("start"));
 		events.setEnd(rs.getTimestamp("end"));
-		events.setPlace_id((Integer) rs.getObject("place_id"));
 		events.setPlace_name(rs.getString("place"));
-		events.setDep_name(rs.getString("dep_name"));
+		events.setDep_name(rs.getString("department"));
 		events.setDep_id((Integer) rs.getObject("dep_id"));
 		events.setDetail(rs.getString("detail"));
-		events.setMember_name(rs.getString("member_name"));
+		events.setMember_name(rs.getString("registered"));
 		events.setCreated(rs.getTimestamp("created"));
 		return events;
 	}
