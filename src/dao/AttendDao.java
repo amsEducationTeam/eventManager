@@ -18,3 +18,4 @@ public interface AttendDao{
 	void insert(String member_Id, int event_Id) throws Exception;
 	void delete(String member_Id, int event_Id) throws Exception;
 }
+
