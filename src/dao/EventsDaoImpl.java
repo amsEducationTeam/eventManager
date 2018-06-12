@@ -250,7 +250,7 @@ public class EventsDaoImpl implements EventsDao {
 					+ "     end = ?,"
 					+ "     place_id = ?,"
 					+ "     dep_id = ?,"
-					+ "     detail = ?,"
+					+ "     detail = ?"
 					+ " WHERE"
 					+ "     event_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
@@ -261,6 +261,7 @@ public class EventsDaoImpl implements EventsDao {
 			stmt.setInt(5, events.getDep_id());
 			stmt.setString(6, events.getDetail());
 			stmt.setInt(7, events.getEvent_id());
+			System.out.println(stmt);
 			stmt.executeUpdate();
 		}
 	}

@@ -6,11 +6,6 @@
 <head>
 <title>イベント編集</title>
 <script src="js/jquery-3.3.1.min.js"></script>
-<script>
-// $(document).ready(function(){
-// $('#group').val(${event.group_id});
-// });
-</script>
 
 </head>
 <body>
