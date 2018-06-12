@@ -370,7 +370,7 @@ public class MemberServlet extends HttpServlet {
 				Members member = new Members();
 				member.setMember_id(memberId);
 				member.setLogin_id(dlete_login_id);
-				attendDao.deleteByUserId(member);
+				attendDao.deleteByMemberId(member);
 				MembersDao.delete(member);
 				MembersDao.deleteAccount(member);
 
