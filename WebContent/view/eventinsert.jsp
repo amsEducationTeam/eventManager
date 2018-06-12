@@ -2,8 +2,10 @@
 
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
 <title>イベント登録</title>
+
 </head>
 <body>
 <%@ include file="navbar.jsp"%>
@@ -22,7 +24,7 @@
 
 					<p class="bold">開始日時（必須）</p>
 					<p>
-						<input type="text" name="start" placeholder="0000-00-00 00:00:00" class="form-control" required>
+						<input type="text" name="start" placeholder="0000-00-00 00:00:00" class="form-control"  required>
 					</p>
 
 					<p class="bold">終了日時</p>
