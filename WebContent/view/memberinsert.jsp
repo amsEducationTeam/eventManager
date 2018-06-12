@@ -20,7 +20,7 @@
 						<div class="alert alert-warning" role="alert">ログインIDが既に使用されています</div>
 					</c:if>
 					<div class="form-group">
-				<form action="User" method="post">
+				<form action="Member" method="post">
 
 					<p class="bold">社員番号（必須）</p>
 					<p>
@@ -84,8 +84,8 @@
 					</p>
 
 					<p>
-						<a href="User?servletName=userList" class="btn btn-default">キャンセル</a>
-						<input type="hidden" name="servletName" value="userInsert">
+						<a href="Member?servletName=memberList" class="btn btn-default">キャンセル</a>
+						<input type="hidden" name="servletName" value="memberInsert">
 						<input type="submit" class="btn btn-primary" value="登録" />
 					</p>
 				</form>

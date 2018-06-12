@@ -16,8 +16,8 @@
 		Object lastpage = session.getAttribute("lastpage");
 
 			//現在のページ番号を計算する
-			Object user_page = session.getAttribute("user_page");
-			int a = (int) user_page;
+			Object member_page = session.getAttribute("member_page");
+			int a = (int) member_page;
 			int now = (a / 5) + 1;
 		%>
 
@@ -25,7 +25,7 @@
 		<nav>
 			<ul class="pagination">
 				<% if(now!=1){ %>
-				<li><a href="User?prevnext=1&servletName=userList" aria-label="前のページへ">
+				<li><a href="Member?prevnext=1&servletName=memberList" aria-label="前のページへ">
 						<span aria-hidden="true">«</span>
 				</a></li>
 				<%}
@@ -37,14 +37,14 @@
 					<li <%
 
 				if (now == i) {%> class="active" <%}%>>
-						<a href="User?servletName=userList&page=<%= i %>"><%= i %></a>
+						<a href="Member?servletName=memberList&page=<%= i %>"><%= i %></a>
 					</li>
 					<%i++; %>
 				</c:forEach>
 
 					<%
 					if(now!=i-1){ %>
-					<li><a href="User?servletName=userList&prevnext=2" aria-label="次のページへ">
+					<li><a href="Member?servletName=memberList&prevnext=2" aria-label="次のページへ">
 							<span aria-hidden="true">»</span>
 					</a></li>
 					<%}
@@ -67,15 +67,16 @@
 				<th>詳細</th>
 
 			</tr>
-			<c:forEach items="${usersList}" var="user">
+			<c:forEach items="${membersList}" var="member">
 				<tr>
-					<td><c:out value="${user.member_id}" /></td>
-					<td><c:out value="${user.name}" /></td>
-					<td><c:out value="${user.department}" /></td>
+					<td><c:out value="${member.member_id}" /></td>
+					<td><c:out value="${member.name}" /></td>
+					<td><c:out value="${member.department}" /></td>
 					<td>
-						<form action="User" method="post">
-							<input type="hidden" name="member_id" value="${user.member_id}">
-							<input type="hidden" name="servletName" value="userInfo">
+						<form action="Member" method="post">
+							<input type="hidden" name="member_id" value="${member.member_id}">
+							<input type="hidden" name="login_id" value="${member.login_id }">
+							<input type="hidden" name="servletName" value="memberInfo">
 							<input type="submit" class="btn btn-info" value="詳細" />
 						</form>
 					</td>
@@ -83,9 +84,9 @@
 				</tr>
 			</c:forEach>
 		</table>
-		<form action="User" method="get">
+		<form action="Member" method="get">
 			<!--  view/addMember.jsp-->
-			<input type="hidden" name="servletName" value="userInsert">
+			<input type="hidden" name="servletName" value="memberInsert">
 			<input type="submit" class="btn btn-primary" value="ユーザの登録" />
 		</form>
 	</div>

@@ -18,36 +18,36 @@
 						<div class="alert alert-warning" role="alert">ログインID、パスワードは半角英数字のみ入力できます</div>
 					</c:if>
 					<div class="form-group">
-				<form action="User" method="post">
+				<form action="Member" method="post">
 
 					<p class="bold">社員番号（必須）</p>
 					<p>
-						<input type="text" name="member_id" placeholder="社員番号" class="form-control" value="${user.member_id}" maxlength="8" required>
+						<input type="text" name="member_id" placeholder="社員番号" class="form-control" value="${member.member_id}" maxlength="8" required>
 					</p>
 
 					<p class="bold">氏名（必須）</p>
 					<p>
-						<input type="text" name="name" placeholder="氏名" class="form-control" value="${user.name}" maxlength="50" required >
+						<input type="text" name="name" placeholder="氏名" class="form-control" value="${member.name}" maxlength="50" required >
 					</p>
 
 					<p class="bold">フリガナ（必須）</p>
 					<p>
-						<input type="text" name="kana" placeholder="フリガナ" class="form-control" value="${user.kana}" maxlength="100" required >
+						<input type="text" name="kana" placeholder="フリガナ" class="form-control" value="${member.kana}" maxlength="100" required >
 					</p>
 
 					<p class="bold">住所（必須）</p>
 					<p>
-						<input type="text" name="address" placeholder="(例)東京都新宿区○○△△-□□" class="form-control" value="${user.address}" maxlength="255" required >
+						<input type="text" name="address" placeholder="(例)東京都新宿区○○△△-□□" class="form-control" value="${member.address}" maxlength="255" required >
 					</p>
 
 					<p class="bold">電話番号（必須）</p>
 					<p>
-						<input type="text" name="tel" placeholder="(例)090-1234-5678" class="form-control" value="${user.tel}" maxlength="13" required >
+						<input type="text" name="tel" placeholder="(例)090-1234-5678" class="form-control" value="${member.tel}" maxlength="13" required >
 					</p>
 
 					<p class="bold">誕生日（必須）</p>
 					<p>
-						<input type="date" name="birthday" placeholder="yyyy-mm-dd" class="form-control"  value="${user.birthday}" required>
+						<input type="date" name="birthday" placeholder="yyyy-mm-dd" class="form-control"  value="${member.birthday}" required>
 					</p>
 
 					<p class="bold">ログインID（必須）</p>
@@ -56,7 +56,7 @@
 						<div class="alert alert-warning" role="alert">ログインIDが既に使用されています</div>
 						</c:if>
 					<p>
-						<input type="text" name="login_id" placeholder="ログインID" class="form-control" value="${user.login_Id}" maxlength="20" required>
+						<input type="text" name="login_id" placeholder="ログインID" class="form-control" value="${member.login_id}" maxlength="20" required>
 					</p>
 					<p class="bold">パスワード（変更の場合のみ)</p>
 					<input type="text" name="login_pass" placeholder="パスワード" class="form-control" maxlength="60"  placeholder="パスワード">
@@ -91,10 +91,11 @@
 
 
 					<p>
-						<a href="User?userId=${user.id}&servletName=userInfo" type="button" class="btn btn-default">キャンセル</a>
-						<input type="hidden" name="oldlogin_id" value="${user.login_Id}"/>
-						<input type="hidden" name="oldmember_id" value="${user.member_id}"/>
-						<input type="hidden" name="servletName" value="userEdit"/>
+						<a href="Member?member_id=${member.member_id}&servletName=memberInfo" type="button" class="btn btn-default">キャンセル</a>
+
+						<input type="hidden" name="oldlogin_id" value="${member.login_id}"/>
+						<input type="hidden" name="oldmember_id" value="${member.member_id}"/>
+						<input type="hidden" name="servletName" value="memberEdit"/>
 						<input type="submit" class="btn btn-primary" value="登録" />
 					</p>
 				</form>

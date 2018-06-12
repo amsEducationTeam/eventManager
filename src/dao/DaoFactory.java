@@ -5,8 +5,8 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 public class DaoFactory {
-	public static UsersDao createUsersDao() {
-		return new UsersDaoImpl(getDataSource());
+	public static MembersDao createMembersDao() {
+		return new MembersDaoImpl(getDataSource());
 
 	}
 	public static EventsDao createEventsDao() {
@@ -20,7 +20,7 @@ public class DaoFactory {
 		DataSource ds=null;
 		try {
 			ctx=new InitialContext();
-			ds=(DataSource)ctx.lookup("java:comp/env/jdbc/eventdb");
+			ds=(DataSource)ctx.lookup("java:comp/env/jdbc/eventdb2");
 		} catch (NamingException e) {
 			if (ctx != null) {
 				try {

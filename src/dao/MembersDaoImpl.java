@@ -13,12 +13,12 @@ import javax.sql.DataSource;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import domain.Users;
+import domain.Members;
 
-public class UsersDaoImpl implements UsersDao {
+public class MembersDaoImpl implements MembersDao {
 	private DataSource ds;
 
-	public UsersDaoImpl(DataSource ds) {
+	public MembersDaoImpl(DataSource ds) {
 		this.ds = ds;
 	}
 
@@ -29,8 +29,8 @@ public class UsersDaoImpl implements UsersDao {
 	 * @return users
 	 */
 	@Override
-	public List<Users> findAll(int page) throws Exception {
-		List<Users> userList = new ArrayList<>();
+	public List<Members> findAll(int page) throws Exception {
+		List<Members> userList = new ArrayList<>();
 
 		try (Connection con = ds.getConnection()) {
 
@@ -57,12 +57,12 @@ public class UsersDaoImpl implements UsersDao {
 	 * @return users
 	 */
 	@Override
-	public List<Users> findfive(List<Users> hoge) throws Exception {
-		List<Users> userList = new ArrayList<>();
+	public List<Members> findfive(List<Members> hoge) throws Exception {
+		List<Members> userList = new ArrayList<>();
 
 		try (Connection con = ds.getConnection()) {
 
-			for (Users fuga : hoge) {
+			for (Members fuga : hoge) {
 
 				String sql = "SELECT "
 						+ "members.member_id, members.name, department.department "
@@ -91,9 +91,9 @@ public class UsersDaoImpl implements UsersDao {
 	 * ResultSetをUsersクラスにセットします
 	 * @return users
 	 */
-	private Users mapToUsers(ResultSet rs) throws SQLException {
+	private Members mapToUsers(ResultSet rs) throws SQLException {
 
-		domain.Users users = new Users();
+		domain.Members users = new Members();
 		users.setMember_id(rs.getString("member_id"));
 		return users;
 	}
@@ -103,9 +103,9 @@ public class UsersDaoImpl implements UsersDao {
 	 * ResultSetをUsersクラスにセットします
 	 * @return users
 	 */
-	private Users mapToUsers2(ResultSet rs) throws SQLException {
+	private Members mapToUsers2(ResultSet rs) throws SQLException {
 
-		domain.Users users = new Users();
+		domain.Members users = new Members();
 		users.setMember_id(rs.getString("member_id"));
 		users.setName(rs.getString("name"));
 		users.setDepartment(rs.getString("department"));
@@ -118,9 +118,9 @@ public class UsersDaoImpl implements UsersDao {
 	 * ResultSetをUsersクラスにセットします
 	 * @return users
 	 */
-	private Users mapToUser(ResultSet rs) throws SQLException {
+	private Members mapToUser(ResultSet rs) throws SQLException {
 
-		domain.Users users = new Users();
+		domain.Members users = new Members();
 		users.setMember_id(rs.getString("member_id"));
 		users.setLogin_id((rs.getString("login_id")));
 		users.setName(rs.getString("name"));
@@ -145,12 +145,12 @@ public class UsersDaoImpl implements UsersDao {
 	 * @return users
 	 */
 	@Override
-	public Users findById(String member_id) throws Exception {
-		Users user = null;
+	public Members findById(String member_id) throws Exception {
+		Members member = null;
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT "
 					+ "members.member_id, members.login_id, members.name, members.kana, department.department,"
-					+ "members.address,members.tel,members,birthday,members.position_type,members.hired"
+					+ "members.address,members.tel,members.birthday,members.position_type,members.hired"
 					+ " FROM members "
 					+ "JOIN department ON members.dep_id = department.dep_id "
 					+ "WHERE members.member_id = ?;";
@@ -160,62 +160,62 @@ public class UsersDaoImpl implements UsersDao {
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
-				user = mapToUser(rs);
+				member = mapToUser(rs);
 			}
-			//user=mapToUsers(rs);
+			//member=mapToUsers(rs);
 		}
 
-		return user;
+		return member;
 
 	}
 
 	/**
 	 * ユーザ情報の入力
-	 * @param user
+	 * @param member
 	 */
 	//書き換え必須
 	@Override
-	public void insert(Users user) throws Exception {
+	public void insert(Members member) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "INSERT INTO members(member_id,name,kana,birthday,address,tel,hired,dep_id,position_type,login_id)"
 					+ "VALUES(?,?,?,?,?,?,?,?,?,?);";
 
 			//accountも編集
 
-			Timestamp Birth = new Timestamp(user.getBirthday().getTime());
-			Timestamp  Hire= new Timestamp(user.getHired().getTime());
+			Timestamp Birth = new Timestamp(member.getBirthday().getTime());
+			Timestamp  Hire= new Timestamp(member.getHired().getTime());
 
 			PreparedStatement stmt = con.prepareStatement(sql);
 
-			stmt.setString(1, user.getMember_id());
-			stmt.setString(2, user.getName());
-			stmt.setString(3, user.getKana());
+			stmt.setString(1, member.getMember_id());
+			stmt.setString(2, member.getName());
+			stmt.setString(3, member.getKana());
 			stmt.setTimestamp(4,Birth);
-			stmt.setString(5, user.getAddress());
-			stmt.setString(6, user.getTel());
+			stmt.setString(5, member.getAddress());
+			stmt.setString(6, member.getTel());
 			stmt.setTimestamp(7, Hire);
-			stmt.setObject(8, user.getDep_id(),Types.INTEGER);
+			stmt.setObject(8, member.getDep_id(),Types.INTEGER);
 			stmt.setObject(9, 0);
-			stmt.setString(10, user.getLogin_id());
+			stmt.setString(10, member.getLogin_id());
 
-			//account
-			stmt.setString(11, user.getLogin_id());
-			stmt.setString(12, user.getLogin_pass());
-			stmt.setObject(13, user.getAuth_id(),Types.INTEGER);
-
+//			//account
+//			stmt.setString(11, member.getLogin_id());
+//			stmt.setString(12, member.getLogin_pass());
+//			stmt.setObject(13, member.getAuth_id(),Types.INTEGER);
+//
 			stmt.executeUpdate();
 		}
 	}
 
 	@Override
-	public void insertacount(Users user) throws Exception {
+	public void insertacount(Members member) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "INSERT INTO account(login_id,login_pass,auth_id)VALUES(?,?,?)";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			//account
-			stmt.setString(1, user.getLogin_id());
-			stmt.setString(2, user.getLogin_pass());
-			stmt.setObject(3, user.getAuth_id(),Types.INTEGER);
+			stmt.setString(1, member.getLogin_id());
+			stmt.setString(2, member.getLogin_pass());
+			stmt.setObject(3, member.getAuth_id(),Types.INTEGER);
 
 			stmt.executeUpdate();
 		}
@@ -230,8 +230,8 @@ public class UsersDaoImpl implements UsersDao {
 	 * @return users
 	 */
 	@Override
-	public Users findByLoginIdAndLoginPass(String loginId, String loginPass) throws Exception {
-		Users user = null;
+	public Members findByLoginIdAndLoginPass(String loginId, String loginPass) throws Exception {
+		Members member = null;
 		try (Connection con = ds.getConnection()) {
 			String sql1 = "SELECT  * FROM members WHERE login_id = ?;";
 
@@ -246,18 +246,18 @@ public class UsersDaoImpl implements UsersDao {
 
 			if (rs1.next()) {
 
-					user = mapToLogin(rs1);
+					member = mapToLogin(rs1);
 
 
 			}
 
 		}
-		return user;
+		return member;
 	}
 
 	@Override
-	public Users login(String loginId, String loginPass)throws Exception {
-		Users user = null;
+	public Members login(String loginId, String loginPass)throws Exception {
+		Members member = null;
 		try (Connection con = ds.getConnection()) {
 			String sql2="SELECT*FROM account WHERE login_id=?";
 			PreparedStatement stmt2 = con.prepareStatement(sql2);
@@ -267,10 +267,10 @@ public class UsersDaoImpl implements UsersDao {
 			if (rs2.next()) {
 				if (BCrypt.checkpw(loginPass, rs2.getString("login_pass"))) {
 
-				user = mapToLoginAccount(rs2);
+				member = mapToLoginAccount(rs2);
 				}
 			}
-			return user;
+			return member;
 		}
 	}
 
@@ -279,9 +279,9 @@ public class UsersDaoImpl implements UsersDao {
 	 * ResultSetをUsersクラスにセットします
 	 * @return users
 	 */
-	private Users mapToLogin(ResultSet rs) throws SQLException {
+	private Members mapToLogin(ResultSet rs) throws SQLException {
 
-		domain.Users users = new Users();
+		domain.Members users = new Members();
 		users.setMember_id(rs.getString("member_id"));
 		users.setName(rs.getString("name"));
 
@@ -289,8 +289,8 @@ public class UsersDaoImpl implements UsersDao {
 		return users;
 	}
 
-	private Users mapToLoginAccount(ResultSet rs) throws SQLException {
-		domain.Users users = new Users();
+	private Members mapToLoginAccount(ResultSet rs) throws SQLException {
+		domain.Members users = new Members();
 		users.setLogin_id(rs.getString("login_id"));
 		users.setLogin_pass(rs.getString("login_pass"));
 		users.setAuth_id((Integer) rs.getObject("auth_id"));
@@ -300,44 +300,42 @@ public class UsersDaoImpl implements UsersDao {
 
 	/**
 	 * ユーザ情報更新処理
-	 * @param Users
+	 * @param Members
 	 */
 	@Override
-	public void update(Users Users) throws Exception {
+	public void update(Members Members) throws Exception {
 
 		try (Connection con = ds.getConnection()) {
 			String sql ="UPDATE members SET member_id=?,name =?,kana=?,dep_id=?,address=?,tel=?,birthday=?,position_type=?,login_id = ? WHERE member_id = ?;";
 
-			Timestamp Birth = new Timestamp(Users.getBirthday().getTime());
+			Timestamp Birth = new Timestamp(Members.getBirthday().getTime());
 
 			PreparedStatement stmt = con.prepareStatement(sql);
 
-			stmt.setString(1, Users.getMember_id());
-			stmt.setString(2, Users.getName());
-			stmt.setString(3, Users.getKana());
-			stmt.setObject(4, Users.getDep_id(),Types.INTEGER);
-			stmt.setString(5, Users.getAddress());
-			stmt.setString(6, Users.getTel());
+			stmt.setString(1, Members.getMember_id());
+			stmt.setString(2, Members.getName());
+			stmt.setString(3, Members.getKana());
+			stmt.setObject(4, Members.getDep_id(),Types.INTEGER);
+			stmt.setString(5, Members.getAddress());
+			stmt.setString(6, Members.getTel());
 			stmt.setTimestamp(7,Birth);
-			stmt.setObject(8, Users.getPosition_type(),Types.INTEGER);
-			stmt.setString(9, Users.getLogin_id());
-			stmt.setString(10, Users.getOldmember_id());
-
-
+			stmt.setObject(8, Members.getPosition_type(),Types.INTEGER);
+			stmt.setString(9, Members.getLogin_id());
+			stmt.setString(10, Members.getOldmember_id());
 			stmt.executeUpdate();
 		}
 	}
 
-	public void updateaccount(Users Users) throws Exception {
+	public void updateaccount(Members Members) throws Exception {
 
 		try (Connection con = ds.getConnection()) {
 			String sql= "UPDATE account SET login_id=?,login_pass=?,auth_id=? WHERE login_id=?;";
 
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, Users.getLogin_id());
-			stmt.setString(2, Users.getLogin_pass());
-			stmt.setObject(3, Users.getAuth_id(),Types.INTEGER);
-			stmt.setString(4, Users.getOldlogin_id());
+			stmt.setString(1, Members.getLogin_id());
+			stmt.setString(2, Members.getLogin_pass());
+			stmt.setObject(3, Members.getAuth_id(),Types.INTEGER);
+			stmt.setString(4, Members.getOldlogin_id());
 
 			stmt.executeUpdate();
 		}
@@ -347,38 +345,37 @@ public class UsersDaoImpl implements UsersDao {
 	 * パスワードの変更なしの場合のユーザ情報の更新
 	 */
 	@Override
-	public void updateWhithoutPass(Users Users) throws Exception {
+	public void updateWhithoutPass(Members Members) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "UPDATE members SET member_id=?,name = ?,kana=?,dep_id=?,address=?,tel=?,birthday=?,position_type=?,login_id = ? WHERE member_id = ?;";
 
-			Timestamp Birth = new Timestamp(Users.getBirthday().getTime());
+			Timestamp Birth = new Timestamp(Members.getBirthday().getTime());
 			//アカウントの扱い
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, Users.getMember_id());
-			stmt.setString(1, Users.getName());
-			stmt.setString(2, Users.getKana());
-			stmt.setObject(3, Users.getDep_id(),Types.INTEGER);
-			stmt.setString(4, Users.getAddress());
-			stmt.setString(5, Users.getTel());
-			stmt.setTimestamp(6,Birth);
-			stmt.setObject(7, Users.getPosition_type(),Types.INTEGER);
-			stmt.setString(8, Users.getLogin_id());
-			stmt.setString(10, Users.getOldmember_id());
+			stmt.setString(1, Members.getMember_id());
+			stmt.setString(2, Members.getName());
+			stmt.setString(3, Members.getKana());
+			stmt.setObject(4, Members.getDep_id(),Types.INTEGER);
+			stmt.setString(5, Members.getAddress());
+			stmt.setString(6, Members.getTel());
+			stmt.setTimestamp(7,Birth);
+			stmt.setObject(8, Members.getPosition_type(),Types.INTEGER);
+			stmt.setString(9, Members.getLogin_id());
+			stmt.setString(10, Members.getOldmember_id());
 
 			stmt.executeUpdate();
 		}
 	}
 
-	public void updateAccountWhithoutPass(Users Users) throws Exception{
+	public void updateAccountWhithoutPass(Members Members) throws Exception{
 
 		try (Connection con = ds.getConnection()) {
 			String sql= "UPDATE account SET login_id=?,auth_id=? WHERE login_id=?;";
 
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, Users.getLogin_id());
-			stmt.setObject(2, Users.getAuth_id(),Types.INTEGER);
-			stmt.setString(3, Users.getOldlogin_id());
-
+			stmt.setString(1, Members.getLogin_id());
+			stmt.setObject(2, Members.getAuth_id(),Types.INTEGER);
+			stmt.setString(3, Members.getOldlogin_id());
 			stmt.executeUpdate();
 	}
 	}
@@ -387,24 +384,25 @@ public class UsersDaoImpl implements UsersDao {
 	 * @return users
 	 */
 	@Override
-	public void delete(Users Users) throws Exception {
+	public void delete(Members Members) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql ="DELETE "
 					+ "FROM members "
 					+ "WHERE login_id = ?;";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, Users.getLogin_id());
+			stmt.setString(1, Members.getLogin_id());
 			stmt.executeUpdate();
 		}
 	}
-	public void deleteAccount(Users Users) throws Exception{
+	@Override
+	public void deleteAccount(Members Members) throws Exception{
 
 		try (Connection con = ds.getConnection()) {
 			String sql ="DELETE "
 					+ "FROM account "
 					+ "WHERE login_id = ?;";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, Users.getLogin_id());
+			stmt.setString(1, Members.getLogin_id());
 			stmt.executeUpdate();
 		}
 	}
@@ -414,7 +412,7 @@ public class UsersDaoImpl implements UsersDao {
 	 * @return count
 	 */
 	public double countAll() throws Exception {
-		List<Users> userList = new ArrayList<>();
+		List<Members> userList = new ArrayList<>();
 
 		try (Connection con = ds.getConnection()) {
 
@@ -461,7 +459,7 @@ public class UsersDaoImpl implements UsersDao {
 
 
 	@Override
-	public List<Users> findAll() throws Exception {
+	public List<Members> findAll() throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}

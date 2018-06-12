@@ -11,8 +11,11 @@
 <h1>ユーザ編集</h1>
 ユーザの編集が完了しました。<br>
 
-<a href="User?userId=${userId}&servletName=userInfo">ユーザー詳細に戻る </a>
-
+<form action="Member" method="get">
+<input type="hidden" name="member_id" value="${member.member_id}"/>
+<input type="hidden" name="servletName" value="memberInfo"/>
+<input type="submit" class="btn btn-link" value="ユーザー詳細に戻る" style="padding:0"/>
+</form>
 
 </div>
 </body>

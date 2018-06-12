@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.DaoFactory;
-import dao.UsersDao;
-import domain.Users;
+import dao.MembersDao;
+import domain.Members;
 
 /**
  * Servlet implementation class Login
@@ -38,16 +38,16 @@ public class LoginServlet extends HttpServlet {
 		// loginIdとloginPassの正規化チェック 半角英数字、ハイフン、アンダースコアのみ許可
 		if(login_id.matches("[0-9a-zA-Z\\-\\_]+") && login_pass.matches("[0-9a-zA-Z\\-\\_]+")) {
 			try {
-				UsersDao UsersDao = DaoFactory.createUsersDao();
-				Users user2=UsersDao.login(login_id,  login_pass);
-				Users user = UsersDao.findByLoginIdAndLoginPass(login_id,  login_pass);
+				MembersDao UsersDao = DaoFactory.createMembersDao();
+				Members member2=UsersDao.login(login_id,  login_pass);
+				Members member = UsersDao.findByLoginIdAndLoginPass(login_id,  login_pass);
 				String pageName = "eventToday";
-				if(user != null) {
+				if(member != null) {
 					// セッションにユーザー情報"id,loginId,name,type_id"を登録
-					request.getSession().setAttribute("member_id", user.getMember_id());
-					request.getSession().setAttribute("login_id", user.getLogin_id());
-					request.getSession().setAttribute("name", user.getName());
-					request.getSession().setAttribute("auth_id", user2.getAuth_id());
+					request.getSession().setAttribute("member_id", member.getMember_id());
+					request.getSession().setAttribute("login_id", member.getLogin_id());
+					request.getSession().setAttribute("name", member.getName());
+					request.getSession().setAttribute("auth_id", member2.getAuth_id());
 					request.setAttribute("servletName", pageName);
 					request.getRequestDispatcher("EventServlet").forward(request,  response);
 				} else {

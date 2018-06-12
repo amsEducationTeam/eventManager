@@ -12,53 +12,53 @@
 
 		<table class="table">
 
-		<!--<c:out value="${user.name}" />-->
+
 
 			<tr>
 				<th class="col-xs-2">ID</th>
-				<td class="col-xs-10"><c:out value="${user.member_id}" /></td>
+				<td class="col-xs-10"><c:out value="${member.member_id}" /></td>
 			</tr>
 			<tr>
 				<th>氏名</th>
-				<td><c:out value="${user.name}" /></td>
+				<td><c:out value="${member.name}" /></td>
 			</tr>
 			<tr>
 				<th>フリガナ</th>
-				<td><c:out value="${user.kana}" /></td>
+				<td><c:out value="${member.kana}" /></td>
 			</tr>
 			<tr>
 				<th>住所</th>
-				<td><c:out value="${user.address}" /></td>
+				<td><c:out value="${member.address}" /></td>
 			</tr>
 			<tr>
 				<th>電話番号</th>
-				<td><c:out value="${user.tel}" /></td>
+				<td><c:out value="${member.tel}" /></td>
 			</tr>
 			<tr>
 				<th>誕生日</th>
-				<td><c:out value="${user.birthday}" /></td>
+				<td><c:out value="${member.birthday}" /></td>
 			</tr>
 			<tr>
 				<th>入社日</th>
-				<td><c:out value="${user.hired}" /></td>
+				<td><c:out value="${member.hired}" /></td>
 			</tr>
 			<tr>
 				<th>所属グループ</th>
-				<td><c:out value="${user.department}" /></td>
+				<td><c:out value="${member.department}" /></td>
 			</tr>
 			<tr>
 				<th>役職</th>
 				<td>
-				<c:if test="${user.position_type==1}">
+				<c:if test="${member.position_type==1}">
 							部長
 				</c:if>
-				<c:if test="${user.position_type==2}">
+				<c:if test="${member.position_type==2}">
 							課長
 				</c:if>
-				<c:if test="${user.position_type==3}">
+				<c:if test="${member.position_type==3}">
 							係長
 				</c:if>
-				<c:if test="${user.position_type==0}">
+				<c:if test="${member.position_type==0}">
 							一般社員
 				</c:if>
 				</td>
@@ -67,11 +67,12 @@
 		</table>
 		<div class="btn-toolbar">
   <div class="btn-group">
-			<a href="User?servletName=userList"><button type="button" class="btn btn-primary" >一覧に戻る</button></a>
+			<a href="Member?servletName=memberList"><button type="button" class="btn btn-primary" >一覧に戻る</button></a>
 
-		<form action="User" method="get">
-			<input type="hidden" name="userId" value="${user.id}">
-			<input type="hidden" name="servletName" value="userEdit">
+		<form action="Member" method="get">
+			<input type="hidden" name="memberId" value="${member.member_id}">
+			<input type="hidden" name="login_id" value="${member.login_id}">
+			<input type="hidden" name="servletName" value="memberEdit">
 			<input type="submit" class="btn btn-default" value="編集" />
 		</form>
 		<section>
@@ -93,9 +94,10 @@
 						<h5 class="modal-title">本当に削除してよろしいですか？</h5></div>
 					<div class="modal-footer" align="right">
 
-						<form action="User" method="post" >
-							<input type="hidden" name="userId" value="${user.id}">
-							<input type="hidden" name="servletName" value="userDelete">
+						<form action="Member" method="post" >
+							<input type="hidden" name="member_id" value="${member.member_id}">
+							<input type="hidden" name="login_id" value="${member.login_id}">
+							<input type="hidden" name="servletName" value="memberDelete">
 							<input type="submit" class="btn btn-primary pull-right"  value="OK" />
 						</form>
 						<button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>

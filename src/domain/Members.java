@@ -2,11 +2,11 @@ package domain;
 
 import java.util.Date;
 
-public class Users {
+public class Members {
 	private String member_id;
 	private String name;
 	private String kana;
-	private Integer dep_id;
+	private int dep_id;
 	private String address;
 	private String tel;
 	private Date birthday;
