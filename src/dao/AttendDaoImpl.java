@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 
 import domain.Attend;
 import domain.Events;
-import domain.Users;
+import domain.Members;
 
 public class AttendDaoImpl implements UsersDao, AttendDao {
 	private DataSource ds;
@@ -20,16 +20,13 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 		this.ds = ds;
 	}
 
-	//テーブルattendに新しい参加者を追加するメソッド
-	@Override
-	public void insert(Users user) throws Exception {
-	}
 
 	/**
+	 * テーブルattendに新しい参加者を追加するメソッド
 	 * @param int userId, int eventId
 	 */
 	@Override
-	public void insert(String member_id, int event_Id) throws Exception {
+	public void insert(String member_id, int event_Id) throws SQLException {
 		try (Connection con = ds.getConnection()) {
 			String sql = "INSERT INTO attends "
 					+ " (attends_id, member_id,event_id) "
@@ -42,11 +39,11 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 	}
 
 	/**
+	 * テーブルattendから参加者を削除するメソッド
 	 * @param int userId, int eventId
 	 */
-	//テーブルattendから参加者を削除するメソッド
 	@Override
-	public void delete(String member_id, int event_Id) throws Exception {
+	public void delete(String member_id, int event_Id) throws SQLException {
 		try (Connection con = ds.getConnection()) {
 			String sql = "delete from attends  where  member_id=? AND event_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
@@ -61,7 +58,7 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 	 *@return List<Attend> attendList
 	 */
 	@Override
-	public List<Attend> findAttends(Integer event_id) throws Exception {
+	public List<Attend> findAttends(Integer event_id) throws SQLException {
 		List<Attend> attendList = new ArrayList<>();
 
 		try (Connection con = ds.getConnection()) {
@@ -89,22 +86,19 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 		Attend users = new Attend();
 		users.setMember_name(rs.getString("name"));
 		try {
-			users.setMember_id((Integer) rs.getObject("member_id"));
+			users.setMember_id( rs.getString("member_id"));
 		} catch (NullPointerException e) {
 		}
 		return users;
 	}
 
-	@Override
-	public Users findByLoginIdAndLoginPass(String loginId, String loginPass) throws Exception {
-		return null;
-	}
+
 
 	/**
 	 * userDeleteServletから削除したﾕｰｻﾞｰが参加していたイベント情報を削除します
 	 */
 	@Override
-	public void deleteByUserId(Users member_id) throws Exception {
+	public void deleteByMemberId(Members member_id) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "delete from attends  where member_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
@@ -114,30 +108,36 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 	}
 
 	/**
-	 * userDeleteServletから削除したﾕｰｻﾞｰが参加していたイベント情報を削除します
+	 * userDeleteServletから削除したイベントのアテンド情報を削除します
 	 */
 	@Override
 	public void deleteByEventId(Events event) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "delete from attends  where event_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, event.getMember_id());
+			stmt.setObject(1, event.getEvent_id());
 			stmt.executeUpdate();
 		}
 	}
 
 	@Override
-	public List<Users> findAll() throws Exception {
+	public Members findByLoginIdAndLoginPass(String loginId, String loginPass) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
 
-	public List<Users> findfive(List<Users> userList) throws Exception {
+	@Override
+	public List<Members> findAll() throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
 
-	public List<Users> findAll(int page) throws Exception {
+	public List<Members> findfive(List<Members> userList) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
+	}
+
+	public List<Members> findAll(int page) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
@@ -155,49 +155,55 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 	}
 
 	@Override
-	public void updateWhithoutPass(Users Users) throws Exception {
+	public void updateWhithoutPass(Members Users) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
 	@Override
-	public void delete(Users user) throws Exception {
+	public void delete(Members user) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
 	@Override
-	public void update(Users user) throws Exception {
+	public void update(Members user) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
 	@Override
-	public Users findById(String id) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
-	}
-
-	@Override
-	public Users login(String loginId, String loginPass) throws Exception {
+	public Members findById(String id) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
 
 	@Override
-	public void insertacount(Users user) throws Exception {
+	public Members login(String loginId, String loginPass) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
+	}
+
+	@Override
+	public void insertacount(Members user) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
 	@Override
-	public void updateaccount(Users Users) throws Exception {
+	public void updateaccount(Members Users) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
 	@Override
-	public void updateAccountWhithoutPass(Users Users) throws Exception {
+	public void updateAccountWhithoutPass(Members Users) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
+	@Override
+	public void insert(Members user) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 
 	}
