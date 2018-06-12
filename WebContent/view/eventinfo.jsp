@@ -102,9 +102,9 @@
 				%>
 
 				<%
-				int type_id=(int)session.getAttribute("type_id");
+				int auth_id=(int)session.getAttribute("auth_id");
 				%>
-				<%if(type_id==2){ %>
+				<%if(auth_id==1){ %>
 				<form action="EventServlet?servletName=eventEdit" method="get">
 					<input type="hidden" name="event_id" value="${event.event_id}">
 					<input type="hidden" name="servletName" value="eventEdit" />
@@ -120,9 +120,9 @@
 				</c:if>
 				<%} %>
 				<%
-				type_id=(int)session.getAttribute("type_id");
+				auth_id=(int)session.getAttribute("auth_id");
 				%>
-				<%if(type_id==2){ %>
+				<%if(auth_id==1){ %>
 				<section>
 					<!-- ボタンをクリックしたらモーダル・ダイアログが表示されます -->
 					<button type="button" class="btn btn-danger"
