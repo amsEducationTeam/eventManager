@@ -2,7 +2,7 @@ package domain;
 
 public class Attend {
 	private int attends_id;
-	private int member_id;
+	private String member_id;
 	private int event_id;
 	private String member_name;
 
@@ -14,11 +14,11 @@ public class Attend {
 		this.attends_id = attends_id;
 	}
 
-	public int getMember_id() {
+	public String getMember_id() {
 		return member_id;
 	}
 
-	public void setMember_id(int member_id) {
+	public void setMember_id(String member_id) {
 		this.member_id = member_id;
 	}
 
