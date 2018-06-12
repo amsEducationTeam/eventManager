@@ -35,7 +35,7 @@ public class AttendServlet extends HttpServlet {
 
 		try {
 			String userId = (String)request.getSession().getAttribute("member_id");
-			int eventId = Integer.parseInt(request.getParameter("info"));
+			int eventId = Integer.parseInt(request.getParameter("event_id"));
 			int switchId = Integer.parseInt(request.getParameter("switchId"));
 
 			if(switchId == 0) {

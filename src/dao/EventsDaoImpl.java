@@ -221,7 +221,6 @@ public class EventsDaoImpl implements EventsDao {
 		Timestamp castEnd = new Timestamp(events.getEnd().getTime());
 		try (Connection con = ds.getConnection()) {
 			String sql = "INSERT INTO events"
-					+ " EVENTS"
 					+ " 	(event_id, title, start, end, place_id, dep_id, detail, registered_id, created)"
 					+ " VALUES(null,?,?,?,?,?,?,?,NOW())";
 			PreparedStatement stmt = con.prepareStatement(sql);
@@ -232,6 +231,7 @@ public class EventsDaoImpl implements EventsDao {
 			stmt.setInt(5, events.getDep_id());
 			stmt.setString(6, events.getDetail());
 			stmt.setString(7, events.getRegistered_id());
+			System.out.println(stmt);
 			stmt.executeUpdate();
 		}
 	}
