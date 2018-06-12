@@ -13,7 +13,7 @@ import domain.Attend;
 import domain.Events;
 import domain.Members;
 
-public class AttendDaoImpl implements UsersDao, AttendDao {
+public class AttendDaoImpl implements MembersDao, AttendDao {
 	private DataSource ds;
 
 	public AttendDaoImpl(DataSource ds) {
@@ -120,11 +120,6 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 		}
 	}
 
-	@Override
-	public Members findByLoginIdAndLoginPass(String loginId, String loginPass) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
-	}
 
 	@Override
 	public List<Members> findAll() throws Exception {
@@ -132,45 +127,6 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 		return null;
 	}
 
-	public List<Members> findfive(List<Members> userList) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
-	}
-
-	public List<Members> findAll(int page) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
-	}
-
-	@Override
-	public boolean CheckLoginId(String loginId) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-		return false;
-	}
-
-	@Override
-	public double countAll() throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-		return 0;
-	}
-
-	@Override
-	public void updateWhithoutPass(Members Users) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-
-	}
-
-	@Override
-	public void delete(Members user) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-
-	}
-
-	@Override
-	public void update(Members user) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-
-	}
 
 	@Override
 	public Members findById(String id) throws Exception {
@@ -178,32 +134,100 @@ public class AttendDaoImpl implements UsersDao, AttendDao {
 		return null;
 	}
 
+
+	@Override
+	public void insert(Members member) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
+
+	@Override
+	public void update(Members member) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
+
+	@Override
+	public void delete(Members member) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
+
+	@Override
+	public Members findByLoginIdAndLoginPass(String loginId, String loginPass) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
+	}
+
+
+	@Override
+	public List<Members> findAll(int page) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
+	}
+
+
+	@Override
+	public List<Members> findfive(List<Members> userList) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
+	}
+
+
+	@Override
+	public double countAll() throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+		return 0;
+	}
+
+
+	@Override
+	public boolean CheckLoginId(String loginId) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+		return false;
+	}
+
+
+	@Override
+	public void updateWhithoutPass(Members Members) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
+
 	@Override
 	public Members login(String loginId, String loginPass) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
 
+
 	@Override
-	public void insertacount(Members user) throws Exception {
+	public void insertacount(Members member) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
+
 	@Override
-	public void updateaccount(Members Users) throws Exception {
+	public void updateaccount(Members Members) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
+
 	@Override
-	public void updateAccountWhithoutPass(Members Users) throws Exception {
+	public void updateAccountWhithoutPass(Members Members) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
+
 	@Override
-	public void insert(Members user) throws Exception {
+	public void deleteAccount(Members Members) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 
 	}
