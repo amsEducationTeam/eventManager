@@ -320,8 +320,8 @@ public class EventServlet extends HttpServlet {
 			//lastpageを設定する
 			double setpage =(eventsDao.countAllToday());
 			int lastpage = (int) Math.ceil(setpage/5);
-			request.setAttribute("eventsList", eventsList);
 			request.setAttribute("lastpage", lastpage);
+			request.setAttribute("eventsList", eventsList);
 			request.getRequestDispatcher("view/event_today.jsp").forward(request, response);
 		} catch (Exception e) {
 			throw new ServletException(e);

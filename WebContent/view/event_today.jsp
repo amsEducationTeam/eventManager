@@ -14,6 +14,7 @@
 	<section>
 		<h1>本日のイベント</h1>
 
+
 <!-- pagenation -->
 <div align="right">
 		<%
@@ -30,7 +31,7 @@
 		<nav>
 			<ul class="pagination">
 				<% if(now!=1){ %>
-				<li><a href="event_today?prevnext=1" aria-label="前のページへ">
+				<li><a href="EventServlet?servletName=eventToday&prevnext=1" aria-label="前のページへ">
 						<span aria-hidden="true">«</span>
 				</a></li>
 				<%}
@@ -42,22 +43,22 @@
 					<li <%
 
 				if (now == i) {%> class="active" <%}%>>
-						<a href="event_today?page=<%= i %>"><%= i %></a>
+						<a href="EventServlet?servletName=eventToday&page=<%= i %>"><%= i %></a>
 					</li>
 					<%i++; %>
 				</c:forEach>
 
 					<%
-
 					if(now!=i-1){ %>
-					<li><a href="event_today?prevnext=2" aria-label="次のページへ">
+					<li><a href="EventServlet?servletName=eventToday&prevnext=2" aria-label="次のページへ">
 							<span aria-hidden="true">»</span>
 					</a></li>
-					<%}
-				%>
+					<%}%>
+
 
 			</ul>
 		</nav>
+
 </div>
 <!-- pagenation -->
 
