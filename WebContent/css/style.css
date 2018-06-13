@@ -22,4 +22,5 @@
 /* 太字	*/
 .bold{font-weight: bold;}
 
+/* 表示するデータが0のときのページネーションボタン非表示 */
 .invisible{visility:hidden}
