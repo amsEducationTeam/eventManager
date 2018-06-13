@@ -82,8 +82,8 @@ public class MemberServlet extends HttpServlet {
 				List<Members> memberList = membersDao.findfive(membersDao.findAll(member_page));
 
 				//lastpageを設定する
-				double a = (membersDao.countAll());
-				int lastpage = (int) Math.ceil(a / 5);
+				int a = (membersDao.countAll());
+				int lastpage =  (int) Math.ceil((double)a / 5);
 
 				request.setAttribute("membersList", memberList);
 				request.setAttribute("lastpage", lastpage);
