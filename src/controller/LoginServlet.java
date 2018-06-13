@@ -42,7 +42,7 @@ public class LoginServlet extends HttpServlet {
 				Members member2=UsersDao.login(login_id,  login_pass);
 				Members member = UsersDao.findByLoginIdAndLoginPass(login_id,  login_pass);
 				String pageName = "eventToday";
-				if(member != null) {
+				if(member2 != null) {
 					// セッションにユーザー情報"id,loginId,name,type_id"を登録
 					request.getSession().setAttribute("member_id", member.getMember_id());
 					request.getSession().setAttribute("login_id", member.getLogin_id());
