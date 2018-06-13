@@ -27,9 +27,12 @@
 			int now = (a / 5) + 1;
 		%>
 
-
+<%Object pageExist=session.getAttribute("pageExist");
+String objStr = pageExist.toString();
+int numC = new Integer(objStr);
+%>
 		<nav>
-			<ul class="pagination">
+			<ul class="pagination <%if(numC==0){ %>invisible<%}%>">
 				<% if(now!=1){ %>
 				<li><a href="EventServlet?servletName=eventToday&prevnext=1" aria-label="前のページへ">
 						<span aria-hidden="true">«</span>

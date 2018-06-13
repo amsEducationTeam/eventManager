@@ -5,6 +5,12 @@
 <html lang="ja">
 <head>
 <title>イベント一覧</title>
+
+
+<%Object pageExist=session.getAttribute("pageExist");
+String objStr = pageExist.toString();
+int numC = new Integer(objStr);
+%>
 </head>
 <body>
 	<%@ include file="navbar.jsp"%>
@@ -24,7 +30,7 @@
 
 
 		<nav>
-			<ul class="pagination">
+			<ul class="pagination <%if(numC==0){ %>invisible<%}%>">
 				<% if(now!=1){ %>
 				<li><a href="EventServlet?servletName=eventList&prevnext=1" aria-label="前のページへ">
 						<span aria-hidden="true">«</span>
