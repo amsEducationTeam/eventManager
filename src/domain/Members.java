@@ -6,7 +6,7 @@ public class Members {
 	private String member_id;
 	private String name;
 	private String kana;
-	private int dep_id;
+	private Integer dep_id;
 	private String address;
 	private String tel;
 	private Date birthday;
