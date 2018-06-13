@@ -23,7 +23,6 @@ public class Members {
 
 
 
-
 	public String getOldmember_id() {
 		return oldmember_id;
 	}
