@@ -411,7 +411,7 @@ public class MembersDaoImpl implements MembersDao {
 	/**
 	 * @return count
 	 */
-	public double countAll() throws Exception {
+	public int countAll() throws Exception {
 		List<Members> userList = new ArrayList<>();
 
 		try (Connection con = ds.getConnection()) {
@@ -427,7 +427,8 @@ public class MembersDaoImpl implements MembersDao {
 				userList.add(mapToUsers(rs));
 			}
 		}
-		double count = userList.size();
+		double count2 = userList.size();
+		int count=(int)count2;
 		return count;
 	}
 

@@ -14,7 +14,7 @@ public interface MembersDao{
 	Members findByLoginIdAndLoginPass(String loginId,String loginPass) throws Exception;
 	List<Members> findAll(int page) throws Exception;
 	List<Members> findfive(List<Members> userList) throws Exception;
-	double countAll() throws Exception;
+	int countAll() throws Exception;
 	boolean CheckLoginId(String loginId) throws Exception;
 	void updateWhithoutPass(Members Members) throws Exception;
 

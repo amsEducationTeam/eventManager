@@ -178,7 +178,7 @@ public class AttendDaoImpl implements MembersDao, AttendDao {
 
 
 	@Override
-	public double countAll() throws Exception {
+	public int countAll() throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 		return 0;
 	}
