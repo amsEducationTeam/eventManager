@@ -231,7 +231,6 @@ public class EventsDaoImpl implements EventsDao {
 			stmt.setInt(5, events.getDep_id());
 			stmt.setString(6, events.getDetail());
 			stmt.setString(7, events.getRegistered_id());
-			System.out.println(stmt);
 			stmt.executeUpdate();
 		}
 	}
@@ -261,7 +260,6 @@ public class EventsDaoImpl implements EventsDao {
 			stmt.setInt(5, events.getDep_id());
 			stmt.setString(6, events.getDetail());
 			stmt.setInt(7, events.getEvent_id());
-			System.out.println(stmt);
 			stmt.executeUpdate();
 		}
 	}
