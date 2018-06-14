@@ -3,10 +3,9 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -19,46 +18,109 @@ public class PlaceDaoImpl implements PlaceDao {
 		this.ds = ds;
 	}
 
-	public void insert(List<Place> place, int count)throws Exception{
+	public String insert(List<Place> place, int count)throws Exception{
 		try(Connection con=ds.getConnection()){
-			String sql="INSERT INTO place"
-					+ "(place,capa,equ_mic,equ_whitebord,equ_projector, admin_id,locking_time) "
-					+ "VALUES(?,?,?,?,?,?,?);";
+
+			try {
+				con.setAutoCommit(false);
+
 			for(int i=0;i<count;i++) {
-			Timestamp LockTime = new Timestamp(place.get(i).getLocking_time().getTime());
-			PreparedStatement stmt=con.prepareStatement(sql);
-			stmt.setString(1, place.get(i).getPlace());
-			stmt.setObject(2, place.get(i).getCapa());
-			stmt.setObject(3, place.get(i).getEqu_mic());
-			stmt.setObject(4, place.get(i).getEqu_whitebord());
-			stmt.setObject(5, place.get(i).getEqu_projector());
-			stmt.setObject(6, place.get(i).getAdmin_id());
-			stmt.setTimestamp(7, LockTime);
-			stmt.executeUpdate();
+			String sql1="SELECT member_id from members where member_id=?;";
+			PreparedStatement stmt1 = con.prepareStatement(sql1);
+			stmt1.setString(1, place.get(i).getAdmin_id().toString());
+			ResultSet rs =stmt1.executeQuery();
+			//System.out.println(rs);
+			if(rs==null) {
+				con.rollback();
+				return "302";
+			}else {
+
+				String sql2="SELECT COUNT(*) from place where place=?";
+				PreparedStatement stmt2 = con.prepareStatement(sql2);
+				stmt2.setString(1, place.get(i).getPlace());
+				//System.out.println(stmt2);
+				//Statement stmt2 = (Statement) con.createStatement();
+
+				ResultSet rs2 = stmt2.executeQuery(sql2);
+
+				int counter=0;
+				while(rs2.next()) {
+					counter=Integer.parseInt(rs.getString("count(*)"));
+				}
+				System.out.println(counter);
+				if(counter!=0) {
+					con.rollback();
+					return "302";
+				}else {
+
+
+					String sql="INSERT INTO place"
+							+ "(place,capa,equ_mic,equ_whitebord,equ_projector, admin_id,locking_time) "
+							+ "VALUES(?,?,?,?,?,?,?);";
+					Timestamp LockTime = new Timestamp(place.get(i).getLocking_time().getTime());
+					PreparedStatement stmt=con.prepareStatement(sql);
+					stmt.setString(1, place.get(i).getPlace());
+					stmt.setObject(2, place.get(i).getCapa());
+					stmt.setObject(3, place.get(i).getEqu_mic());
+					stmt.setObject(4, place.get(i).getEqu_whitebord());
+					stmt.setObject(5, place.get(i).getEqu_projector());
+					stmt.setObject(6, place.get(i).getAdmin_id());
+					stmt.setTimestamp(7, LockTime);
+					stmt.executeUpdate();
+				}
+
 			}
 
+
+			}
+
+			con.commit();
+			return "100";
+
+		}catch(Exception e) {
+
+			System.out.println("error1");
+			e.printStackTrace();
+				con.rollback();
+				return "300";
+		}finally {
+			try {
+				if(con!=null) {
+					con.close();
+				}
+			}catch(SQLException e) {
+				System.out.println("error2");
+			}
 		}
+		}
+
 	}
 
 	@Override
 	public void findMember() throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
-		try(Connection con=ds.getConnection()){
-			
-			Map<Integer,String> nameMap=new HashMap<Integer,String>();
-			String sql="SELECT member_id FROM eventdb2.members;";
-			
-			PreparedStatement stmt=con.prepareStatement(sql);
-			ResultSet rs=stmt.executeQuery();
-			
-			int i=1;
-			if(rs.next()) {
-				nameMap.put(i, rs.getString("member_id"));
-				i++;
-			}
-		}
 
 	}
+
+//	@Override
+//	public void findMember() throws Exception {
+//		// TODO 自動生成されたメソッド・スタブ
+//		try(Connection con=ds.getConnection()){
+//
+//			Map<Integer,String> nameMap=new HashMap<Integer,String>();
+//			String sql="SELECT member_id FROM eventdb2.members;";
+//
+//			PreparedStatement stmt=con.prepareStatement(sql);
+//			ResultSet rs=stmt.executeQuery();
+//
+//			int i=1;
+//			if(rs.next()) {
+//				nameMap.put(i, rs.getString("member_id"));
+//				i++;
+//			}
+//		}
+
+	//}
 
 
 
