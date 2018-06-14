@@ -43,14 +43,16 @@ public class AttendDaoImpl implements MembersDao, AttendDao {
 	 * @param int userId, int eventId
 	 */
 	@Override
-	public void delete(String member_id, int event_Id) throws SQLException {
+	public int delete(String member_id, int event_Id) throws SQLException {
+		int line = 0;
 		try (Connection con = ds.getConnection()) {
 			String sql = "delete from attends  where  member_id=? AND event_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, member_id);
 			stmt.setObject(2, event_Id);
-			stmt.executeUpdate();
+			line = stmt.executeUpdate();
 		}
+		return line;
 	}
 
 	/**
@@ -98,26 +100,30 @@ public class AttendDaoImpl implements MembersDao, AttendDao {
 	 * userDeleteServletから削除したﾕｰｻﾞｰが参加していたイベント情報を削除します
 	 */
 	@Override
-	public void deleteByMemberId(Members member_id) throws Exception {
+	public int deleteByMemberId(Members member_id) throws Exception {
+		int line=0;
 		try (Connection con = ds.getConnection()) {
 			String sql = "delete from attends  where member_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, member_id.getMember_id());
-			stmt.executeUpdate();
+			line = stmt.executeUpdate();
 		}
+		return line;
 	}
 
 	/**
 	 * userDeleteServletから削除したイベントのアテンド情報を削除します
 	 */
 	@Override
-	public void deleteByEventId(Events event) throws Exception {
+	public int deleteByEventId(Events event) throws Exception {
+		int line=0;
 		try (Connection con = ds.getConnection()) {
 			String sql = "delete from attends  where event_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, event.getEvent_id());
-			stmt.executeUpdate();
+			line = stmt.executeUpdate();
 		}
+		return line;
 	}
 
 
