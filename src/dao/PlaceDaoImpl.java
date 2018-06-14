@@ -14,6 +14,7 @@ import domain.Place;
 public class PlaceDaoImpl implements PlaceDao {
 	private DataSource ds;
 
+
 	public PlaceDaoImpl(DataSource ds) {
 		this.ds = ds;
 	}
