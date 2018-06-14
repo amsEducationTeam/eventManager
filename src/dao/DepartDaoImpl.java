@@ -1,15 +1,12 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 import javax.sql.DataSource;
-
-import com.mysql.jdbc.Statement;
 
 import domain.Depart;
 import domain.Events;
@@ -100,32 +97,6 @@ public class DepartDaoImpl implements DepartDao {
 		}
 	}
 
-	public static boolean checkDataBassExit(String str, String tableName, String calamName) throws Exception {
-		boolean result=false;
-		int count = 0;
-
-		try(Connection conn=DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/eventdb2?useUnicode=true&characterEncoding=utf8&useSSL=false", "root",
-				"rootpass")) {
-			Class.forName("com.mysql.jdbc.Driver");
-			String sql=	" SELECT "
-					+  " COUNT(*) FROM ";
-			sql += tableName + " WHERE ";
-			sql += tableName + "." + calamName;
-			sql += " = '" + str + "';";
-			Statement stmt=(Statement)conn.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
-			while(rs.next()) {
-				count = Integer.parseInt(rs.getString("count(*)"));
-			}
-			if(count > 0) {
-				result = true;
-			}
-		} catch (Exception e) {
-			result = false;
-			throw  new Exception(e);
-		}
-		return result;
-	}
 
 	@Override
 	public void delete(String member_Id, int event_Id) throws Exception {
