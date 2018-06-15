@@ -73,7 +73,6 @@ public class PlaceDaoImplTest {
 			String sql2 = "DELETE FROM eventdb2.place WHERE place='会議室100';";
 			PreparedStatement stmt2 = conn.prepareStatement(sql2);
 			stmt2.executeUpdate();
-
 		}
 	}
 
@@ -96,44 +95,9 @@ public class PlaceDaoImplTest {
 		testList.add(place);
 
 		//上で作成した不完全なリストをインサートする
+		//エラーコード300が返ってくる
 		int count = 1;
 		PlaceDao placeDao = DaoFactory.createPlaceDao();
-		try {
-			placeDao.insert(testList, count);
-		}
-		//null不可なので例外のメッセージが返ってくる
-		catch (Exception e) {
-			assertThat(e.getMessage(), is("Column 'capa' cannot be null"));
-		}
-	}
-
-	@Test
-	public void 異常系2testInsert() throws Exception {
-
-		//インサート用のサンプルデータをセットしリストに格納
-		//not nullに設定されているデータ「capa」に何もセットしない
-		Date date = new Date();
-		Place place = new Place();
-		place.setAdmin_id(9);
-		place.setCapa(90);
-		place.setEqu_mic(0);
-		place.setEqu_projector(100000000);
-		place.setEqu_whitebord(0);
-		place.setLocking_time(date);
-		place.setPlace("会議室100");
-
-		List<Place> testList = new ArrayList();
-		testList.add(place);
-
-		//上で作成した不完全なリストをインサートする
-		int count = 1;
-		PlaceDao placeDao = DaoFactory.createPlaceDao();
-		try {
-			placeDao.insert(testList, count);
-		}
-		//null不可なので例外のメッセージが返ってくる
-		catch (Exception e) {
-			assertThat(e.getMessage(), is("Column 'capa' cannot be null"));
-		}
+		assertThat(placeDao.insert(testList, count), is("300"));
 	}
 }
