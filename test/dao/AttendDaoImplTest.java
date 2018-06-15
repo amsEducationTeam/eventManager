@@ -202,7 +202,6 @@ public class AttendDaoImplTest extends TestDBAccess {
 
 		assertThat(member_name, is(NORMAL_MEMBER_NAME2));//equalTo()
 		assertThat(member_id, is(NORMAL_MEMBER_ID2));//equalTo()
-
 		// test後にdeleteメソッドで情報を削除する
 		attendDao.delete(NORMAL_MEMBER_ID2,NORMAL_NEW_EVENT_ID1);
 	}
