@@ -15,6 +15,14 @@ public class DaoFactory {
 	public static AttendDao createAttendDao() {
 		return new AttendDaoImpl(getDataSource());
 	}
+	public static PlaceDao createPlaceDao() {
+		return new PlaceDaoImpl(getDataSource());
+	}
+	public static DepartDao createDepartDao() {
+		return new DepartDaoImpl(getDataSource());
+	}
+
+
 	private static DataSource getDataSource() {
 		InitialContext ctx=null;
 		DataSource ds=null;

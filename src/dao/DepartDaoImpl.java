@@ -30,7 +30,7 @@ public class DepartDaoImpl implements DepartDao {
 
 		try (Connection con = ds.getConnection()){
 			//必ず決まっているデータのスタート地点をセット（テーブルによって量、数値が変わります）
-			int data1 = 2;
+			int data1 = 0;
 			//int data2 = 2;
 			//Connection conn = null;
 			try {
@@ -42,6 +42,8 @@ public class DepartDaoImpl implements DepartDao {
 				//departmentテーブルに部署名とフロア情報を挿入
 				//membersテーブルにpositionタイプ（役職情報）を挿入
 				for (int i = 0; i < datacounter; i++) {
+
+
 					String sql = "insert into department (dep_id,department,floor)  values (null,?,?)";
 					PreparedStatement stmt = con.prepareStatement(sql);
 					stmt.setObject(1, department.get(data1).getDepartment());

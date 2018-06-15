@@ -93,7 +93,6 @@ public abstract class EventMgFileIO {
 
 				String[] columns = line.split(SEPARATE); // 区切り文字","で分割する
 				int columnCounter = 1;
-
 				//１列目が S H D E以外の行が存在しないか確認
 				if (!matchType(columns[0])) {
 					setResult("不明行存在");
