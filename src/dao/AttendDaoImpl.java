@@ -20,7 +20,6 @@ public class AttendDaoImpl implements MembersDao, AttendDao {
 		this.ds = ds;
 	}
 
-
 	/**
 	 * テーブルattendに新しい参加者を追加するメソッド
 	 * @param int userId, int eventId
