@@ -156,13 +156,6 @@ public class AttendDaoImpl implements MembersDao, AttendDao {
 
 
 	@Override
-	public void delete(Members member) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-
-	}
-
-
-	@Override
 	public Members findByLoginIdAndLoginPass(String loginId, String loginPass) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
@@ -197,11 +190,7 @@ public class AttendDaoImpl implements MembersDao, AttendDao {
 	}
 
 
-	@Override
-	public void updateWhithoutPass(Members Members) throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
 
-	}
 
 
 	@Override
@@ -212,30 +201,50 @@ public class AttendDaoImpl implements MembersDao, AttendDao {
 
 
 	@Override
-	public void insertacount(Members member) throws Exception {
+	public int delete(Members member) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
-
+		return 0;
 	}
 
 
 	@Override
-	public void updateaccount(Members Members) throws Exception {
+	public int updateWhithoutPass(Members Members) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
-
+		return 0;
 	}
 
 
 	@Override
-	public void updateAccountWhithoutPass(Members Members) throws Exception {
+	public int insertacount(Members member) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
-
+		return 0;
 	}
 
 
 	@Override
-	public void deleteAccount(Members Members) throws Exception {
+	public int updateaccount(Members Members) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
-
+		return 0;
 	}
+
+
+	@Override
+	public int updateAccountWhithoutPass(Members Members) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+		return 0;
+	}
+
+
+	@Override
+	public int deleteAccount(Members Members) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+		return 0;
+	}
+
+
+
+
+
+
 
 }
