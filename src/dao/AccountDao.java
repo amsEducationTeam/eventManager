@@ -7,5 +7,5 @@ import domain.Account;
 public interface AccountDao{
 	List<Account> findAll()throws Exception;
 
-	public void insertAcount(Account Account) throws Exception;
+	public String insertAcount(List<Account> Account) throws Exception;
 }
