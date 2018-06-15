@@ -208,7 +208,8 @@ public class MembersDaoImpl implements MembersDao {
 	}
 
 	@Override
-	public void insertacount(Members member) throws Exception {
+	public int insertacount(Members member) throws Exception {
+		int line=0;
 		try (Connection con = ds.getConnection()) {
 			String sql = "INSERT INTO account(login_id,login_pass,auth_id)VALUES(?,?,?)";
 			PreparedStatement stmt = con.prepareStatement(sql);
@@ -217,8 +218,10 @@ public class MembersDaoImpl implements MembersDao {
 			stmt.setString(2, member.getLogin_pass());
 			stmt.setObject(3, member.getAuth_id(),Types.INTEGER);
 
-			stmt.executeUpdate();
+			line= stmt.executeUpdate();
+
 		}
+		return line;
 		}
 
 
@@ -326,8 +329,9 @@ public class MembersDaoImpl implements MembersDao {
 		}
 	}
 
-	public void updateaccount(Members Members) throws Exception {
+	public int updateaccount(Members Members) throws Exception {
 
+			int line=0;
 		try (Connection con = ds.getConnection()) {
 			String sql= "UPDATE account SET login_id=?,login_pass=?,auth_id=? WHERE login_id=?;";
 
@@ -337,15 +341,18 @@ public class MembersDaoImpl implements MembersDao {
 			stmt.setObject(3, Members.getAuth_id(),Types.INTEGER);
 			stmt.setString(4, Members.getOldlogin_id());
 
-			stmt.executeUpdate();
+			line=stmt.executeUpdate();
 		}
+		return line;
 	}
 
 	/**
 	 * パスワードの変更なしの場合のユーザ情報の更新
 	 */
 	@Override
-	public void updateWhithoutPass(Members Members) throws Exception {
+	public int updateWhithoutPass(Members Members) throws Exception {
+
+		int line=0;
 		try (Connection con = ds.getConnection()) {
 			String sql = "UPDATE members SET member_id=?,name = ?,kana=?,dep_id=?,address=?,tel=?,birthday=?,position_type=?,login_id = ? WHERE member_id = ?;";
 
@@ -363,11 +370,14 @@ public class MembersDaoImpl implements MembersDao {
 			stmt.setString(9, Members.getLogin_id());
 			stmt.setString(10, Members.getOldmember_id());
 
-			stmt.executeUpdate();
+			line=stmt.executeUpdate();
 		}
+		return line;
 	}
 
-	public void updateAccountWhithoutPass(Members Members) throws Exception{
+	public int updateAccountWhithoutPass(Members Members) throws Exception{
+
+		int line=0;
 
 		try (Connection con = ds.getConnection()) {
 			String sql= "UPDATE account SET login_id=?,auth_id=? WHERE login_id=?;";
@@ -376,26 +386,30 @@ public class MembersDaoImpl implements MembersDao {
 			stmt.setString(1, Members.getLogin_id());
 			stmt.setObject(2, Members.getAuth_id(),Types.INTEGER);
 			stmt.setString(3, Members.getOldlogin_id());
-			stmt.executeUpdate();
+			line=stmt.executeUpdate();
 	}
+		return line;
 	}
 	/**
 	 * ユーザー情報の削除
 	 * @return users
 	 */
 	@Override
-	public void delete(Members Members) throws Exception {
+	public int delete(Members Members) throws Exception {
+		int line=0;
 		try (Connection con = ds.getConnection()) {
 			String sql ="DELETE "
 					+ "FROM members "
 					+ "WHERE login_id = ?;";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, Members.getLogin_id());
-			stmt.executeUpdate();
+			line=stmt.executeUpdate();
 		}
+		return line;
 	}
 	@Override
-	public void deleteAccount(Members Members) throws Exception{
+	public int deleteAccount(Members Members) throws Exception{
+		int line=0;
 
 		try (Connection con = ds.getConnection()) {
 			String sql ="DELETE "
@@ -403,8 +417,9 @@ public class MembersDaoImpl implements MembersDao {
 					+ "WHERE login_id = ?;";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, Members.getLogin_id());
-			stmt.executeUpdate();
+			line=stmt.executeUpdate();
 		}
+		return line;
 	}
 
 
