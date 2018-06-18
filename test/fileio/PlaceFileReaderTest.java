@@ -1,6 +1,12 @@
 package fileio;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+
+import java.io.IOException;
+import java.nio.file.NoSuchFileException;
+
+import javax.naming.NamingException;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -8,7 +14,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.javaranch.unittest.helper.sql.pool.JNDIUnitTestHelper;
+
 public class PlaceFileReaderTest {
+	private final String FILE_NAME = "C:\\work_1\\place_20180601.csv";
+	private final int COLUMNS = 8;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -28,7 +38,25 @@ public class PlaceFileReaderTest {
 
 	@Test
 	public void testMain() {
-		fail("まだ実装されていません");
+		try {
+			PlaceFileReader PlaceFileReader = new PlaceFileReader(FILE_NAME, COLUMNS);
+			/*
+			 *Junitを使うまではこれで接続します
+			 */
+			try {
+				JNDIUnitTestHelper.init("WebContent/WEB-INF/classes/jndi_unit_test_helper.properties");
+			} catch (NamingException | IOException e) {
+				e.printStackTrace();
+			}
+
+			String result = PlaceFileReader.main();
+			assertThat(result, is("100"));
+
+			System.out.print(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	@Test
@@ -36,14 +64,23 @@ public class PlaceFileReaderTest {
 		fail("まだ実装されていません");
 	}
 
+	//クラスのメインメソッド
+	//ここでインスタンス宣言してファイル名のセットを行っている
 	@Test
 	public void testMainStringArray() {
+
 		fail("まだ実装されていません");
 	}
 
+	//コンストラクタ
 	@Test
 	public void testPlaceFileReader() {
-		fail("まだ実装されていません");
+		try {
+			PlaceFileReader placeFileReader = new PlaceFileReader(FILE_NAME, COLUMNS);
+			fail("test");
+		} catch (NoSuchFileException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test
