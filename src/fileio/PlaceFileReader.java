@@ -2,13 +2,19 @@ package fileio;
 
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.naming.NamingException;
 
 import com.javaranch.unittest.helper.sql.pool.JNDIUnitTestHelper;
 
+import dao.DaoFactory;
+import dao.PlaceDao;
+import domain.DataValid;
 import domain.Place;
 
 public class PlaceFileReader extends EventMgFileIO {
@@ -16,7 +22,7 @@ public class PlaceFileReader extends EventMgFileIO {
 	public static void main(String args[]) {
 		int valid_data_quantity = 8;
 		try {
-			PlaceFileReader PlaceFileReader = new PlaceFileReader("c:\\work_1\\place_20180601.csv",
+			PlaceFileReader PlaceFileReader = new PlaceFileReader("C:\\work_1\\最終版place_20180601.csv",
 					valid_data_quantity);
 
 			/*
@@ -25,11 +31,12 @@ public class PlaceFileReader extends EventMgFileIO {
 			try {
 				JNDIUnitTestHelper.init("WebContent/WEB-INF/classes/jndi_unit_test_helper.properties");
 			} catch (NamingException | IOException e) {
-				// TODO 自動生成された catch ブロック
+
 				e.printStackTrace();
 			}
 
 			String result = PlaceFileReader.main();
+
 			System.out.print(result);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -76,33 +83,44 @@ public class PlaceFileReader extends EventMgFileIO {
 			if (enableLine(columns)) {
 				// ドメインにセット
 				Place acoData = new Place();
-				//				acoData.setMemberId(columns[1]);
-				//				acoData.setLoginId(columns[2]);
-				//				acoData.setLoginPass(columns[3]);
-				//				acoData.setAuthId(new Integer(Integer.parseInt(columns[4])));
-				// リストに追加
-				PlaceList.add(acoData);
+	            SimpleDateFormat sdFormat = new SimpleDateFormat("hh:mm");
+	            Date locktime;
+				try {
+					locktime = sdFormat.parse(columns[7]);
+					acoData.setPlace(columns[1]);
+					acoData.setCapa(new Integer(Integer.parseInt(columns[2])));
+					acoData.setEqu_mic(new Integer(Integer.parseInt(columns[3])));
+					acoData.setEqu_whitebord(new Integer(Integer.parseInt(columns[4])));
+					acoData.setEqu_projector(new Integer(Integer.parseInt(columns[5])));
+					acoData.setAdmin_id(new Integer(Integer.parseInt(columns[6])));
+					acoData.setLocking_time(locktime);
+
+					// リストに追加
+					PlaceList.add(acoData);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 			} else {
 				result = "データ有効性エラー";
 				return result;
 			}
 
-			//リストをDB登録
-			for (Place Place : PlaceList) {
-				// Placeリストデータをinsert
-				try {
-					//					PlaceDao PlaceDao = DaoFactory.createPlaceDao();
-					//					result = PlaceDao.insertAcount(Place);
+			}
+		//リストをDB登録
+		for (Place Place : PlaceList) {
+			// Placeリストデータをinsert
+			try {
+				PlaceDao PlaceDao = DaoFactory.createPlaceDao();
+				result = PlaceDao.insert(Place);
 
-				} catch (Exception e) {
-					e.printStackTrace();
-					result = "DB接続エラー";
-					return result;
-				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				result = "DB接続エラー";
+				return result;
 			}
 		}
 
-		return SUCCESS;
+		return result;
 	}
 
 	/**
@@ -119,28 +137,25 @@ public class PlaceFileReader extends EventMgFileIO {
 
 		// データ行の列で空のデータがないか
 		for (int i = 1; i < columns.length; i++) {
-//			//空のデータがあれば終了
-//			if (!DataValid.isNotNull(columns[i])) {
-//				return false;
-//			}
+		//空のデータがあれば終了
+			if (!DataValid.isNotNull(columns[i])) {
+				return false;
+			}
 		}
 
-		//データ行の
-		//		if (!DataValid.checkCharLimit(columns[1], 8) ||
-		//			!DataValid.checkNumberOnly(columns[1]) ||
-		//			!DataValid.checkCharLimit(columns[2], 20) ||
-		//			!DataValid.checkLiteAndNumOnly(columns[2]) ||
-		//			!DataValid.checkLiteAndNumOnly(columns[3]) ||
-		//			!checkCharMin(columns[3], 8) ||
-		//			!DataValid.checkNumberOnly(columns[4]) ||
-		//			!check1or2(columns[4])){
-		//			return false;
-		//
-		//		}
+		//データ行のチェック
+				if (!DataValid.limitChar(columns[1], 20) ||
+					!DataValid.limitChar(columns[6],8) ||
+					!DataValid.isTimeFormat(columns[7])||
+					!(columns[3].equals("0")||columns[3].equals("1"))||
+					!(columns[4].equals("0")||columns[4].equals("1"))||
+					!(columns[5].equals("0")||columns[5].equals("1"))
+					){
+					return false;
+
+				}
 		return true;
 
 	}
-
-
 
 }
