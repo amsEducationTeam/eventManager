@@ -33,7 +33,6 @@ public class MemberFileReader extends EventMgFileIO {
 			try {
 				JNDIUnitTestHelper.init("WebContent/WEB-INF/classes/jndi_unit_test_helper.properties");
 			} catch (NamingException | IOException e) {
-				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
 			}
 
@@ -81,41 +80,11 @@ public class MemberFileReader extends EventMgFileIO {
 
 			// データ有効性チェック
 			if (enableLine(columns)) {
+
 				// ドメインにセット
 				Members domain = new Members();
 				Date birthday =null;
 				Date hired = null;
-				//--ここから
-				if(!DataValid.isNotNull(columns[1]))
-					return "REQUIRED_SPECIFICATION";
-				if(!DataValid.limitChar(columns[1],8))
-					return "INCORRECT_FORMAT_ERROR";
-				if(!DataValid.isNotNull(columns[2]))
-					return "REQUIRED_SPECIFICATION";
-				if(!DataValid.limitChar(columns[2], 50))
-					return "INCORRECT_FORMAT_ERROR";
-				if(!DataValid.isKana(columns[3]))
-					return "INCORRECT_FORMAT_ERROR";
-				if(!DataValid.limitChar(columns[3],50))
-					return "INCORRECT_FORMAT_ERROR";
-				if(!DataValid.isNotNull(columns[4]))
-					return "REQUIRED_SPECIFICATION";
-				if(!DataValid.isDateFormat(columns[4],"yyyy/M/d"))
-					return "DATE_FORMAT_ERROR";
-				if(!DataValid.isNotNull(columns[5]))
-					return "REQUIRED_SPECIFICATION";
-				if(!DataValid.isNotNull(columns[6]))
-					return "REQUIRED_SPECIFICATION";
-				if(!DataValid.isTelFormat(columns[6]))
-					return "INCORRECT_FORMAT_ERROR";
-				if(!DataValid.isNotNull(columns[7]))
-					return "REQUIRED_SPECIFICATION";
-				if(!DataValid.isDateFormat(columns[7], "M月d日"))
-					return "DATE_FORMAT_ERROR";
-				if(!DataValid.isNotNull(columns[8]))
-					return "REQUIRED_SPECIFICATION";
-				if(!DataValid.isRange(Integer.parseInt(columns[8]),1,5))
-					return "OUT_OF_INDEX_ERROR";
 
 				// 誕生日の型をDate型に変換
 				try {
@@ -127,7 +96,6 @@ public class MemberFileReader extends EventMgFileIO {
 
 				// 入社日をDate型に変換
 				try {
-
 					String fileNames[] = fileName.split("_",0);
 					String year = fileNames[2].substring(0, 4) + "年";
 					DateFormat df = new SimpleDateFormat("yyyy年M月d日");
@@ -181,29 +149,40 @@ public class MemberFileReader extends EventMgFileIO {
 	 *			index0には"D"が格納されています
 	 *			検査対象はindex1からになります
 	 * **/
-
 	public boolean enableLine(String[] columns) {
 
 		// データ行の列で空のデータがないか
 		for (int i = 1; i < columns.length; i++) {
-//			//空のデータがあれば終了
-//			if (!DataValid.isNotNull(columns[i])) {
-//				return false;
-//			}
+			//空のデータがあれば終了
+			if (!DataValid.isNotNull(columns[i]))
+				return false;
 		}
+		// データ項目の個別チェック
+		if(!DataValid.limitChar(columns[1],8))
+			return false;
+//			return "INCORRECT_FORMAT_ERROR";
+		if(!DataValid.limitChar(columns[2], 50))
+			return false;
+//			return "INCORRECT_FORMAT_ERROR";
+		if(!DataValid.isKana(columns[3]))
+			return false;
+//			return "INCORRECT_FORMAT_ERROR";
+		if(!DataValid.limitChar(columns[3],50))
+			return false;
+//			return "INCORRECT_FORMAT_ERROR";
+		if(!DataValid.isDateFormat(columns[4],"yyyy/M/d"))
+			return false;
+//			return "DATE_FORMAT_ERROR";
+		if(!DataValid.isTelFormat(columns[6]))
+			return false;
+//			return "INCORRECT_FORMAT_ERROR";
+		if(!DataValid.isDateFormat(columns[7], "M月d日"))
+			return false;
+//			return "DATE_FORMAT_ERROR";
+		if(!DataValid.isRange(Integer.parseInt(columns[8]),1,5))
+			return false;
+//			return "OUT_OF_INDEX_ERROR";
 
-		//データ行の
-		//		if (!DataValid.checkCharLimit(columns[1], 8) ||
-		//			!DataValid.checkNumberOnly(columns[1]) ||
-		//			!DataValid.checkCharLimit(columns[2], 20) ||
-		//			!DataValid.checkLiteAndNumOnly(columns[2]) ||
-		//			!DataValid.checkLiteAndNumOnly(columns[3]) ||
-		//			!checkCharMin(columns[3], 8) ||
-		//			!DataValid.checkNumberOnly(columns[4]) ||
-		//			!check1or2(columns[4])){
-		//			return false;
-		//
-		//		}
 		return true;
 
 	}
