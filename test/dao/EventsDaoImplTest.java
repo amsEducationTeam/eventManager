@@ -45,6 +45,57 @@ public class EventsDaoImplTest extends TestDBAccess{
 		try {
 			ctx = new InitialContext();
 			ds = (DataSource)ctx.lookup("java:comp/env/jdbc/eventdb2");
+
+			try (Connection con = ds.getConnection()) {
+				String sql = "TRUNCATE TABLE eventdb2.events;";
+				Statement stmt = (Statement) con.createStatement();
+				stmt.executeUpdate(sql);
+
+				// イベントテーブルデータ
+				File file = new File("testEvents.csv");
+				FileInputStream fis = new FileInputStream(file);
+				InputStreamReader isr = new InputStreamReader(fis, "SJIS");
+				BufferedReader br = new BufferedReader(isr);
+
+				List<Events> eventList = new ArrayList<>();
+				String line;
+
+				// ファイル有効性、データ有効性チェックは省略
+				while ((line = br.readLine()) != null) {
+					byte[] b = line.getBytes();
+					line = new String(b, "UTF-8");
+					String[] lineArray = line.split(","); // 区切り文字","で分割する
+					if (lineArray[0].equals("D")) {
+						Events eveData = new Events();
+						eveData.setEvent_id(new Integer(Integer.parseInt(lineArray[1])));
+						eveData.setTitle(lineArray[2]);
+						eveData.setStart(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(lineArray[3]));
+						eveData.setEnd(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(lineArray[4]));
+						eveData.setPlace_id(new Integer(Integer.parseInt(lineArray[5])));
+						eveData.setDep_id(new Integer(Integer.parseInt(lineArray[6])));
+						eveData.setDetail(lineArray[7]);
+						eveData.setRegistered_id(lineArray[8]);
+						eveData.setCreated(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(lineArray[9]));
+						eventList.add(eveData);
+
+						// Eventリストデータをinsert
+						try {
+							EventsDao event = DaoFactory.createEventsDao();
+							event.insert(eveData);
+						} catch (SQLException e) {
+							System.out.println("INSERTエラー");
+							throw new IOException(e);
+						}
+
+					}
+				}
+				br.close();
+
+			}catch (Exception e) {
+				System.out.println("DB/ファイルエラー");
+				e.printStackTrace();
+			}
+
 		} catch (NamingException e) {
 			if (ctx != null) {
 				try {
@@ -54,7 +105,7 @@ public class EventsDaoImplTest extends TestDBAccess{
 				}
 			}
 			throw new RuntimeException(e);
-		  }
+		}
 
 	}
 
@@ -62,7 +113,8 @@ public class EventsDaoImplTest extends TestDBAccess{
 	/**
 	 * DBのイベントテーブルを削除し、csvのデータをINSERTする
 	 */
-	@Test
+/*
+	@BeforeClass
 	public void testEventsDaoImpl() {
 		try (Connection con = ds.getConnection()) {
 			String sql = "TRUNCATE TABLE eventdb2.events;";
@@ -114,6 +166,7 @@ public class EventsDaoImplTest extends TestDBAccess{
 			e.printStackTrace();
 		}
 	}
+*/
 
 
 	/**
@@ -122,18 +175,12 @@ public class EventsDaoImplTest extends TestDBAccess{
 	 */
 	@Test
 	public void testFindAll() throws Exception {
-		// numは0～6の範囲で指定。num=0～2：[5]件、num=3～6：[7-num]件
-		final int num = 1;
+		// numは0～6の範囲で指定。NUM=0～2：[5]件、NUM=3～6：[7-NUM]件
+		final int NUM = 1;
 		EventsDao eventsDao = DaoFactory.createEventsDao();
-		List<Events> evList = eventsDao.findAll(num);
+		List<Events> evList = eventsDao.findAll(NUM);
 
 		assertThat(evList.size(), is(5));
-	}
-
-
-	private Object evList(int i) {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
 	}
 
 
@@ -166,9 +213,9 @@ public class EventsDaoImplTest extends TestDBAccess{
 		List<Events> eventList = eventsDao.findToday(0);
 
 		// DBのeventsテーブルでstartが今日のイベントid
-		final int id = 2;
+		final int ID = 3;
 
-		assertThat(eventList.get(0).getEvent_id(), is(id));
+		assertThat(eventList.get(0).getEvent_id(), is(ID));
 	}
 
 
@@ -178,12 +225,11 @@ public class EventsDaoImplTest extends TestDBAccess{
 	 */
 	@Test
 	public void testFindById() throws Exception {
-		final Integer id = 1;
+		final Integer ID = 1;
 
 		EventsDao eventsDao = DaoFactory.createEventsDao();
-		Events events = eventsDao.findById(id);
+		Events events = eventsDao.findById(ID);
 
-		assertThat(events.getEvent_id(), is(id));
 		assertThat(events.getTitle(), is("人事部ミーティング"));
 		assertThat(events.getStart().toString(), is("2018-06-14 10:00:00.0"));
 		assertThat(events.getEnd().toString(), is("2018-06-14 11:30:00.0"));
@@ -213,7 +259,6 @@ public class EventsDaoImplTest extends TestDBAccess{
 		eventsDao.insert(events);
 
 		Events insEvents = eventsDao.findById(EVENUM+1);
-		assertThat(insEvents.getEvent_id(), is(EVENUM+1));
 		assertThat(insEvents.getTitle(), is("研修会"));
 		assertThat(insEvents.getStart().toString(), is("2018-06-20 16:00:00.0"));
 		assertThat(insEvents.getEnd().toString(), is("2018-06-21 12:00:00.0"));
@@ -239,7 +284,7 @@ public class EventsDaoImplTest extends TestDBAccess{
 		events.setEvent_id(EVENUM-1);
 		events.setTitle("講習会");
 		events.setStart(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse("2018-06-10 19:30:00.0"));
-		events.setEnd(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse("2018-06-11 21:15:00.0"));
+		events.setEnd(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse("2018-06-10 21:15:00.0"));
 		events.setPlace_id(2);
 		events.setDep_id(1);
 		events.setDetail("座学");
@@ -248,7 +293,7 @@ public class EventsDaoImplTest extends TestDBAccess{
 		Events updEvents = eventsDao.findById(EVENUM-1);
 		assertThat(updEvents.getTitle(), is("講習会"));
 		assertThat(updEvents.getStart().toString(), is("2018-06-10 19:30:00.0"));
-		assertThat(updEvents.getEnd().toString(), is("2018-06-11 21:15:00.0"));
+		assertThat(updEvents.getEnd().toString(), is("2018-06-10 21:15:00.0"));
 		assertThat(updEvents.getPlace_name(), is("第二会議室"));
 		assertThat(updEvents.getDep_id(), is(1));
 		assertThat(updEvents.getDetail(), is("座学"));
@@ -312,7 +357,7 @@ public class EventsDaoImplTest extends TestDBAccess{
 	public void testCountAllToday() throws Exception {
 		EventsDao eventsDao = DaoFactory.createEventsDao();
 		double val = eventsDao.countAllToday();
-		double expected = 1.0;	// 期待値:今日のイベント
+		double expected = 1.0;	// 期待値:今日のイベント件数
 
 		assertThat(val, is(expected));
 	}
