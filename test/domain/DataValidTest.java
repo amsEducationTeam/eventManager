@@ -9,183 +9,224 @@ import org.junit.Test;
 
 public class DataValidTest {
 
+	static final int INT_NUM = 5;
+	static final Integer FALSE_NUM= null;
+	static final String STRING_CHAR ="あいうえお";
+	static final String FALSE_CHAR =null;
+	static final Date DATE = new Date();
+	static final  Date FALSE_DATE = null;
+	static final String STR ="あいうえお";
+	static final String FALSE_STR ="あいうえおかきくけこ";
+	static final int LIMIT_NUM = 12345;
+	static final int FALSE_LIMIT_NUM = 1234567890;
+	static final String HALF="aiueo1234";
+	static final String FALSE_HALF="aiueo-1234";
+	static final String HAIHUN_HALF="aiueo-1234";
+	static final String FALSE_HAIHUN_HALF="aiueo_1234";
+	static final String ENG_HALF="aiueo";
+	static final String FALSE_ENG_HALF="aiueo1234";
+	static final String HALF_NUM="12345678";
+	static final String FALSE_HALF_NUM="aiueo1234";
+	static final String KANA="アイウエオ";
+	static final String FALSE_KANA="ABCDE";
+	static final int VALUE=5;
+	static final int BEGIN=0;
+	static final int END=10;
+	static final int FALSE_VALUE=5;
+	static final int FALSE_BEGIN=2;
+	static final int FALSE_END=4;
+	static final String STR_DATE="2018/06/12";
+	static final String TYPE="yyyy/MM/dd";
+	static final String STR_DATE1="2月27日";
+	static final String TYPE1="M月d日";
+	static final String FALSE_STR_DATE="2018/06/12";
+	static final String FALSE_TYPE="M月d日";
+	static final String TIME="23:50";
+	static final String FALSE_TIME="12時50分";
+	static final String TEL="00-1234-5678";
+	static final String TEL1="(00)1234-5678";
+	static final String TEL2="080-1234-5678";
+	static final String TEL3="050-1234-5678";
+	static final String TEL4="0120-123-456";
+	static final String FALSE_TEL="0000-1111-2222";
+	static final int LIMITTER =5;
+
 	@Test
 	public void testIsNotNullInteger() {
-		int intNum = 5;
-		boolean check = DataValid.isNotNull(intNum);
+
+		boolean check = DataValid.isNotNull(INT_NUM);
 		assertThat(check, is(true));
 
-		Integer falseNum= null;
-		boolean check2 = DataValid.isNotNull(falseNum);
+
+		boolean check2 = DataValid.isNotNull(FALSE_NUM);
 		assertThat(check2, is(false));
 	}
 
 	@Test
 	public void testIsNotNullString() {
-		String StringChar ="あいうえお";
-		boolean check = DataValid.isNotNull(StringChar);
+
+		boolean check = DataValid.isNotNull(STRING_CHAR);
 		assertThat(check, is(true));
 
-		String falseChar =null;
-		boolean check2 = DataValid.isNotNull(falseChar);
+
+		boolean check2 = DataValid.isNotNull(FALSE_CHAR);
 		assertThat(check2, is(false));
 	}
 
 	@Test
 	public void testIsNotNullDate() {
-		Date date = new Date();
-        boolean check = DataValid.isNotNull(date);
+
+        boolean check = DataValid.isNotNull(DATE);
         assertThat(check, is(true));
 
-        Date date2 = null;
-        boolean check2 = DataValid.isNotNull(date2);
+
+        boolean check2 = DataValid.isNotNull(FALSE_DATE);
         assertThat(check2, is(false));
 	}
 
 	@Test
 	public void testLimitCharStringInt() {
-		String str ="あいうえお";
-		boolean check =DataValid.limitChar(str, 5);
+
+		boolean check =DataValid.limitChar(STR, LIMITTER);
 		assertThat(check, is(true));
 
-		String falsestr ="あいうえおかきくけこ";
-		boolean check2 =DataValid.limitChar(falsestr, 5);
+
+		boolean check2 =DataValid.limitChar(FALSE_STR, LIMITTER);
 		assertThat(check2, is(false));
 	}
 
 	@Test
 	public void testLimitCharIntInt() {
-		int testNum = 12345;
-		boolean check =DataValid.limitChar(testNum, 5);
+
+		boolean check =DataValid.limitChar(LIMIT_NUM, LIMITTER);
 		assertThat(check, is(true));
 
-		int falseNum = 1234567890;
-		boolean check2 =DataValid.limitChar(falseNum, 5);
+
+		boolean check2 =DataValid.limitChar(FALSE_LIMIT_NUM, LIMITTER);
 		assertThat(check2, is(false));
 	}
 
 	@Test
 	public void testChkLiteAndNum() {
-		String hankaku="aiueo1234";
-		boolean check =DataValid.chkLiteAndNum(hankaku);
+
+		boolean check =DataValid.chkLiteAndNum(HALF);
 		assertThat(check, is(true));
 
-		String falsehankaku="aiueo-1234";
-		boolean check2 =DataValid.chkLiteAndNum(falsehankaku);
+
+		boolean check2 =DataValid.chkLiteAndNum(FALSE_HALF);
 		assertThat(check2, is(false));
 	}
 
 	@Test
 	public void testIsAlphanum() {
-		String hankaku="aiueo-1234";
-		boolean check =DataValid.isAlphanum(hankaku);
+
+		boolean check =DataValid.isAlphanum(HAIHUN_HALF);
 		assertThat(check, is(true));
 
-		String hankaku2="aiueo_1234";
-		boolean check2 =DataValid.isAlphanum(hankaku2);
+
+		boolean check2 =DataValid.isAlphanum(FALSE_HAIHUN_HALF);
 		assertThat(check2, is(false));
 	}
 
 	@Test
 	public void testInNotNum() {
-		String hankaku="aiueo";
-		boolean check =DataValid.inNotNum(hankaku);
+
+		boolean check =DataValid.inNotNum(ENG_HALF);
 		assertThat(check, is(true));
 
-		String falsehankaku="aiueo1234";
-		boolean check2 =DataValid.inNotNum(falsehankaku);
+
+		boolean check2 =DataValid.inNotNum(FALSE_ENG_HALF);
 		assertThat(check2, is(false));
 	}
 
 	@Test
 	public void testIsNum() {
-		String hankaku="12345678";
-		boolean check =DataValid.isNum(hankaku);
+
+		boolean check =DataValid.isNum(HALF_NUM);
 		assertThat(check, is(true));
 
-		String falsehankaku="aiueo1234";
-		boolean check2 =DataValid.isNum(falsehankaku);
+
+		boolean check2 =DataValid.isNum(FALSE_HALF_NUM);
 		assertThat(check2, is(false));
 	}
 
 	@Test
 	public void testIsKana() {
-		String kana="アイウエオ";
-		boolean check =DataValid.isKana(kana);
+
+		boolean check =DataValid.isKana(KANA);
 		assertThat(check, is(true));
 
-		String falsekana="ABCDE";
-		boolean check2 =DataValid.isKana(falsekana);
+
+		boolean check2 =DataValid.isKana(FALSE_KANA);
 		assertThat(check2, is(false));
 	}
 
 	@Test
 	public void testIsRange() {
-		int value=5;
-		int begin=0;
-		int end=10;
-		boolean check =DataValid.isRange(value, begin, end);
+
+
+
+		boolean check =DataValid.isRange(VALUE, BEGIN, END);
 		assertThat(check, is(true));
 
-		int falsevalue=5;
-		int falsebegin=2;
-		int falseend=4;
-		boolean check2 =DataValid.isRange(falsevalue, falsebegin, falseend);
+
+
+
+		boolean check2 =DataValid.isRange(FALSE_VALUE, FALSE_BEGIN, FALSE_END);
 		assertThat(check2, is(false));
 	}
 
 	@Test
 	public void testIsDateFormat() {
-		String date="2018/06/12";
-		String type="yyyy/MM/dd";
-		boolean check =DataValid.isDateFormat(date,type);
+
+
+		boolean check =DataValid.isDateFormat(STR_DATE,TYPE);
 		assertThat(check, is(true));
-		String date1="2月27日";
-		String type1="M月d日";
-		boolean check1 =DataValid.isDateFormat(date1,type1);
+
+
+		boolean check1 =DataValid.isDateFormat(STR_DATE1,TYPE1);
 		assertThat(check1, is(true));
 
-		String falsedate="2018/06/12";
-		String falsetype="M月d日";
-		boolean check2 =DataValid.isDateFormat(falsedate,falsetype);
+
+
+		boolean check2 =DataValid.isDateFormat(FALSE_STR_DATE,FALSE_TYPE);
 		assertThat(check2, is(false));
 	}
 
 	@Test
 	public void testIsTimeFormat() {
-		String time="23:50";
-		boolean check =DataValid.isTimeFormat(time);
+		boolean check =DataValid.isTimeFormat(TIME);
 		assertThat(check, is(true));
 
-		String falsetime="12時50分";
-		boolean checkfalse =DataValid.isTimeFormat(falsetime);
+
+		boolean checkfalse =DataValid.isTimeFormat(FALSE_TIME);
 		assertThat(checkfalse, is(false));
 	}
 
 	@Test
 	public void testIsTelFormat() {
-		String tel="00-1234-5678";
-		boolean check =DataValid.isTelFormat(tel);
+
+		boolean check =DataValid.isTelFormat(TEL);
 		assertThat(check, is(true));
 
-		String tel1="(00)1234-5678";
-		boolean check1 =DataValid.isTelFormat(tel1);
+
+		boolean check1 =DataValid.isTelFormat(TEL1);
 		assertThat(check1, is(true));
 
-		String tel2="080-1234-5678";
-		boolean check2 =DataValid.isTelFormat(tel2);
+
+		boolean check2 =DataValid.isTelFormat(TEL2);
 		assertThat(check2, is(true));
 
-		String tel3="050-1234-5678";
-		boolean check3 =DataValid.isTelFormat(tel3);
+
+		boolean check3 =DataValid.isTelFormat(TEL3);
 		assertThat(check3, is(true));
 
-		String tel4="0120-123-456";
-		boolean check4 =DataValid.isTelFormat(tel4);
+
+		boolean check4 =DataValid.isTelFormat(TEL4);
 		assertThat(check4, is(true));
 
-		String falsetel="0000-1111-2222";
-		boolean checkfalse =DataValid.isTelFormat(falsetel);
+
+		boolean checkfalse =DataValid.isTelFormat(FALSE_TEL);
 		assertThat(checkfalse, is(false));
 	}
 
