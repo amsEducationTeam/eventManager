@@ -123,7 +123,7 @@ public class DepartFileReader extends EventMgFileIO {
 			}
 		}
 
-		//データ行の
+		//データ項目の個別チェック
 		if (!DataValid.limitChar(columns[1], 50) ||
 				!DataValid.limitChar(columns[3], 8) ||
 				!DataValid.chkLiteAndNum(columns[3])) {
