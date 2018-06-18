@@ -3,48 +3,65 @@ package dao;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-import java.io.IOException;
-import java.sql.DriverManager;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.naming.NamingException;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.javaranch.unittest.helper.sql.pool.JNDIUnitTestHelper;
+import com.TestDBAccess;
 
 import domain.Place;
 
-public class PlaceDaoImplTest {
+public class PlaceDaoImplTest extends TestDBAccess  {
 
-	@Before
-	public void setUp() throws Exception {
-		// JNDI準備
+	private static DataSource testds;
+	static final Date DATE = new Date();
+	static final int ADMIN_ID=9;
+	static final int CAPA=90;
+	static final int EQU_MIC=0;
+	static final int EQU_PROJECTOR=1;
+	static final int EQU_WHITEBORD=0;
+	static final String PLACE="会議室100";
+
+
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		InitialContext ctx = null;
+
 		try {
-			JNDIUnitTestHelper.init("WebContent/WEB-INF/classes/jndi_unit_test_helper.properties");
-		} catch (NamingException | IOException e) {
-			e.printStackTrace();
+			ctx = new InitialContext();
+			testds = (DataSource)ctx.lookup("java:comp/env/jdbc/eventdb2");
+		}catch(Exception e) {
+			if(ctx != null) {
+				try {
+					ctx.close();
+				}catch(Exception el) {
+					throw new RuntimeException(el);
+				}
+			}
+			throw new RuntimeException(e);
 		}
 	}
-
 	@Test
 	public void 正常系testInsert() throws Exception {
 
 		//インサート用のテストデータをセットしリストに格納
-		Date date = new Date();
 		Place place = new Place();
-		place.setAdmin_id(9);
-		place.setCapa(90);
-		place.setEqu_mic(0);
-		place.setEqu_projector(1);
-		place.setEqu_whitebord(0);
-		place.setLocking_time(date);
-		place.setPlace("会議室100");
+		place.setAdmin_id(ADMIN_ID);
+		place.setCapa(CAPA);
+		place.setEqu_mic(EQU_MIC);
+		place.setEqu_projector(EQU_PROJECTOR);
+		place.setEqu_whitebord(EQU_WHITEBORD);
+		place.setLocking_time(DATE);
+		place.setPlace(PLACE);
 
 		List<Place> testList = new ArrayList();
 		testList.add(place);
@@ -55,10 +72,8 @@ public class PlaceDaoImplTest {
 		placeDao.insert(testList, count);
 
 		//確認のためにDBに接続
-		Class.forName("com.mysql.jdbc.Driver");
-		try (java.sql.Connection conn = DriverManager
-				.getConnection("jdbc:mysql://127.0.0.1:3306/eventdb2?useUnicode=true"
-						+ "&characterEncoding=utf8&useSSL=false", "root", "rootpass")) {
+
+		try (Connection conn=testds.getConnection()) {
 
 			//登録したテストデータの存在を確認
 			String sql = "select * from place where place = ?;";
@@ -66,7 +81,7 @@ public class PlaceDaoImplTest {
 			stmt.setObject(1, place.getPlace());
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				assertThat(rs.getObject("place").toString(), is("会議室100"));
+				assertThat(rs.getObject("place").toString(), is(PLACE));
 			}
 
 			//テストデータを削除
@@ -81,15 +96,14 @@ public class PlaceDaoImplTest {
 
 		//インサート用のサンプルデータをセットしリストに格納
 		//not nullに設定されているデータ「capa」に何もセットしない
-		Date date = new Date();
 		Place place = new Place();
-		place.setAdmin_id(9);
+		place.setAdmin_id(ADMIN_ID);
 		//place.setCapa(90);
-		place.setEqu_mic(0);
-		place.setEqu_projector(1);
-		place.setEqu_whitebord(0);
-		place.setLocking_time(date);
-		place.setPlace("会議室100");
+		place.setEqu_mic(EQU_MIC);
+		place.setEqu_projector(EQU_PROJECTOR);
+		place.setEqu_whitebord(EQU_WHITEBORD);
+		place.setLocking_time(DATE);
+		place.setPlace(PLACE);
 
 		List<Place> testList = new ArrayList();
 		testList.add(place);
