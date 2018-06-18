@@ -95,12 +95,13 @@ public class DepartFileReader extends EventMgFileIO {
 			try {
 				DepartDao DepartDao = DaoFactory.createDepartDao();
 				result = DepartDao.insert(DepartList,data_amount);
+
 			} catch (Exception e) {
 				e.printStackTrace();
 				result = "DB接続エラー";
 				return result;
 			}
-		return SUCCESS;
+		return result;
 	}
 
 	/**
