@@ -154,34 +154,44 @@ public class MemberFileReader extends EventMgFileIO {
 		// データ行の列で空のデータがないか
 		for (int i = 1; i < columns.length; i++) {
 			//空のデータがあれば終了
-			if (!DataValid.isNotNull(columns[i]))
+			if (!DataValid.isNotNull(columns[i]) && i!=3) {
+				System.out.println("203");
 				return false;
+			}
 		}
 		// データ項目の個別チェック
-		if(!DataValid.limitChar(columns[1],8))
+		if(!DataValid.limitChar(columns[1],8)) {
+			System.out.println("205");
 			return false;
-//			return "INCORRECT_FORMAT_ERROR";
-		if(!DataValid.limitChar(columns[2], 50))
+		}//"INCORRECT_FORMAT_ERROR";
+		if(!DataValid.limitChar(columns[2], 50)) {
+			System.out.println("205");
 			return false;
-//			return "INCORRECT_FORMAT_ERROR";
-		if(!DataValid.isKana(columns[3]))
+		}//return "INCORRECT_FORMAT_ERROR";
+		if(!DataValid.isKana(columns[3])) {
+			System.out.println("204");
 			return false;
-//			return "INCORRECT_FORMAT_ERROR";
-		if(!DataValid.limitChar(columns[3],50))
+		}//return "INCORRECT_FORMAT_ERROR";
+		if(!DataValid.limitChar(columns[3],50)) {
+			System.out.println("205");
 			return false;
-//			return "INCORRECT_FORMAT_ERROR";
-		if(!DataValid.isDateFormat(columns[4],"yyyy/M/d"))
+		}//"INCORRECT_FORMAT_ERROR";
+		if(!DataValid.isDateFormat(columns[4],"yyyy/M/d")) {
+			System.out.println("200");
 			return false;
-//			return "DATE_FORMAT_ERROR";
-		if(!DataValid.isTelFormat(columns[6]))
+		}//"DATE_FORMAT_ERROR";
+		if(!DataValid.isTelFormat(columns[6])) {
+			System.out.println("200");
 			return false;
-//			return "INCORRECT_FORMAT_ERROR";
-		if(!DataValid.isDateFormat(columns[7], "M月d日"))
+		}//"INCORRECT_FORMAT_ERROR";
+		if(!DataValid.isDateFormat(columns[7], "M月d日")) {
+			System.out.println("200");
 			return false;
-//			return "DATE_FORMAT_ERROR";
-		if(!DataValid.isRange(Integer.parseInt(columns[8]),1,5))
+		}//"DATE_FORMAT_ERROR";
+		if(!DataValid.isRange(Integer.parseInt(columns[8]),1,5)) {
+			System.out.println("202");
 			return false;
-//			return "OUT_OF_INDEX_ERROR";
+		}// "OUT_OF_INDEX_ERROR";
 
 		return true;
 
