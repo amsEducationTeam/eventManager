@@ -7,7 +7,6 @@ import javax.sql.DataSource;
 public class DaoFactory {
 	public static MembersDao createMembersDao() {
 		return new MembersDaoImpl(getDataSource());
-
 	}
 	public static EventsDao createEventsDao() {
 		return new EventsDaoImpl(getDataSource());
@@ -20,6 +19,9 @@ public class DaoFactory {
 	}
 	public static DepartDao createDepartDao() {
 		return new DepartDaoImpl(getDataSource());
+	}
+	public static AccountDao createAccountDao() {
+		return new AccountDaoImpl(getDataSource());
 	}
 
 

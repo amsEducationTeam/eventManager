@@ -25,7 +25,7 @@ public class AccountDaoImpl implements AccountDao {
 	 * @param Account
 	 */
 	@Override
-	public String insertAcount(List<Account> account) throws Exception {
+	public String insertAcount(Account account) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			try {
 				//オートコミットを切る
@@ -35,10 +35,10 @@ public class AccountDaoImpl implements AccountDao {
 				String sqlAcc = "INSERT INTO account(login_id,login_pass, auth_id) VALUES(?,?,?);";
 				PreparedStatement stmtAcc = con.prepareStatement(sqlAcc);
 				//account
-				stmtAcc.setString(1, account.get(0).getLoginId());
-				String hashPass = BCrypt.hashpw(account.get(0).getLoginPass(), BCrypt.gensalt());
+				stmtAcc.setString(1, account.getLoginId());
+				String hashPass = BCrypt.hashpw(account.getLoginPass(), BCrypt.gensalt());
 				stmtAcc.setString(2, hashPass);
-				stmtAcc.setObject(3, account.get(0).getAuthId());
+				stmtAcc.setObject(3, account.getAuthId());
 				stmtAcc.executeUpdate();
 
 				// members.member_idがあるかチェック
@@ -50,8 +50,8 @@ public class AccountDaoImpl implements AccountDao {
 					// メンバテーブルのlogin_idにidをINSERTする
 					String sqlMem = "UPDATE members SET login_id = ? WHERE member_id = ?;";
 					PreparedStatement stmtMem = con.prepareStatement(sqlMem);
-					stmtMem.setString(1, account.get(0).getLoginId());
-					stmtMem.setString(2, account.get(0).getMemberId());
+					stmtMem.setString(1, account.getLoginId());
+					stmtMem.setString(2, account.getMemberId());
 					stmtMem.executeUpdate();
 				}else {
 					con.rollback();

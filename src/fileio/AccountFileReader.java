@@ -7,11 +7,17 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import com.javaranch.unittest.helper.sql.pool.JNDIUnitTestHelper;
 
+import dao.AccountDao;
+import dao.DaoFactory;
 import domain.Account;
+import domain.DataValid;
 
 public class AccountFileReader extends EventMgFileIO {
+	private String fileName;
 
 	public static void main(String args[]) {
 		int valid_data_quantity = 5;
@@ -25,7 +31,6 @@ public class AccountFileReader extends EventMgFileIO {
 			try {
 				JNDIUnitTestHelper.init("WebContent/WEB-INF/classes/jndi_unit_test_helper.properties");
 			} catch (NamingException | IOException e) {
-				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
 			}
 
@@ -44,6 +49,7 @@ public class AccountFileReader extends EventMgFileIO {
 	 * **/
 	AccountFileReader(String filename, int columns) {
 		super(filename, columns);
+		this.fileName = filename;
 	}
 
 	/**
@@ -74,12 +80,22 @@ public class AccountFileReader extends EventMgFileIO {
 
 			// データ有効性チェック
 			if (enableLine(columns)) {
+
 				// ドメインにセット
 				Account acoData = new Account();
-//				acoData.setMemberId(columns[1]);
-//				acoData.setLoginId(columns[2]);
-//				acoData.setLoginPass(columns[3]);
-//				acoData.setAuthId(new Integer(Integer.parseInt(columns[4])));
+				int authId = 0;
+
+				// ログインパスワードをhash化
+				String hashPass = BCrypt.hashpw(columns[3], BCrypt.gensalt());
+
+				authId = new Integer(Integer.parseInt(columns[4]));
+
+				// accountsのインスタンスに格納
+				acoData.setMemberId(columns[1]);
+				acoData.setLoginId(columns[2]);
+				acoData.setLoginPass(hashPass);
+				acoData.setAuthId(authId);
+
 				// リストに追加
 				accountList.add(acoData);
 			} else {
@@ -91,8 +107,8 @@ public class AccountFileReader extends EventMgFileIO {
 		for (Account account : accountList) {
 			// Accountリストデータをinsert
 			try {
-//				AccountDao accountDao = DaoFactory.createAccountDao();
-//				result = accountDao.insertAcount(account);
+				AccountDao accountDao = DaoFactory.createAccountDao();
+				accountDao.insertAcount(account);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -120,23 +136,27 @@ public class AccountFileReader extends EventMgFileIO {
 		// データ行の列で空のデータがないか
 		for (int i = 1; i < columns.length; i++) {
 			//空のデータがあれば終了
-//			if (!DataValid.isNotNull(columns[i])) {
-//				return false;
-//			}
+			if (!DataValid.isNotNull(columns[i])) {
+				return false;
+			}
 		}
-
-		//データ行の
-		//		if (!DataValid.checkCharLimit(columns[1], 8) ||
-		//			!DataValid.checkNumberOnly(columns[1]) ||
-		//			!DataValid.checkCharLimit(columns[2], 20) ||
-		//			!DataValid.checkLiteAndNumOnly(columns[2]) ||
-		//			!DataValid.checkLiteAndNumOnly(columns[3]) ||
-		//			!checkCharMin(columns[3], 8) ||
-		//			!DataValid.checkNumberOnly(columns[4]) ||
-		//			!check1or2(columns[4])){
-		//			return false;
-		//
-		//		}
+		// データ項目の個別チェック
+		if(!DataValid.isNum(columns[1]) || !DataValid.limitChar(columns[1], 8)) {
+			System.out.println("205");
+			return false;
+		}
+		if(!DataValid.limitChar(columns[2],20) || !DataValid.isAlphanum(columns[2])) {
+			System.out.println("205");
+			return false;
+		}
+		if(DataValid.limitChar(columns[3],8)  || !DataValid.isAlphanum(columns[3])) {
+			System.out.println("205");
+			return false;
+		}
+		if(DataValid.isRange(Integer.parseInt(columns[4]),1,2)) {
+			System.out.println("205");
+			return false;
+		}
 		return true;
 
 	}
