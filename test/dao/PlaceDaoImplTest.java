@@ -6,9 +6,7 @@ import static org.junit.Assert.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
@@ -63,13 +61,13 @@ public class PlaceDaoImplTest extends TestDBAccess  {
 		place.setLocking_time(DATE);
 		place.setPlace(PLACE);
 
-		List<Place> testList = new ArrayList();
-		testList.add(place);
+//		List<Place> testList = new ArrayList();
+//		testList.add(place);
 
 		//リストにセットしたテストデータをデータベースに登録
-		int count = 1;
+
 		PlaceDao placeDao = DaoFactory.createPlaceDao();
-		placeDao.insert(testList, count);
+		placeDao.insert(place);
 
 		//確認のためにDBに接続
 
@@ -105,13 +103,13 @@ public class PlaceDaoImplTest extends TestDBAccess  {
 		place.setLocking_time(DATE);
 		place.setPlace(PLACE);
 
-		List<Place> testList = new ArrayList();
-		testList.add(place);
+//		List<Place> testList = new ArrayList();
+//		testList.add(place);
 
 		//上で作成した不完全なリストをインサートする
 		//エラーコード300が返ってくる
-		int count = 1;
+
 		PlaceDao placeDao = DaoFactory.createPlaceDao();
-		assertThat(placeDao.insert(testList, count), is("300"));
+		assertThat(placeDao.insert(place), is("300"));
 	}
 }
