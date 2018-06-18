@@ -35,7 +35,6 @@ public class PlaceFileReader extends EventMgFileIO {
 				e.printStackTrace();
 			}
 
-
 			String result = PlaceFileReader.main();
 
 			System.out.print(result);
