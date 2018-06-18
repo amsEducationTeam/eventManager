@@ -76,7 +76,7 @@ public abstract class EventMgFileIO {
 	 * @return ファイルから読み出したデータ
 	 * @param	reader
 	 * @throws NoSuchFileException
-
+	 *
 	 * **/
 	protected List<String[]> enableFile() throws NoSuchFileException {
 

@@ -1,7 +1,5 @@
 package fileio;
 
-import static org.junit.Assert.*;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -28,32 +26,46 @@ public class EventMgFileIOTest {
 
 	@Test
 	public void testEventMgFileIO() {
-		fail("まだ実装されていません");
+		//コンストラクタのテスト
+		//FileNameとcolumnsをセットする
+		//fail("まだ実装されていません");
 	}
 
 	@Test
 	public void testMain() {
-		fail("まだ実装されていません");
+		// String resultを返却する
+		//fail("まだ実装されていません");
 	}
 
 	@Test
 	public void testEnableLine() {
-		fail("まだ実装されていません");
+		//抽象メソッド
+		//テスト用に抽象クラスを継承したクラスを作成
+		//そのクラスに対するテストクラスを作成
+		//fail("まだ実装されていません");
 	}
 
 	@Test
 	public void testEnableFile() {
-		fail("まだ実装されていません");
+		//抽象メソッド
+		//テスト用に抽象クラスを継承したクラスを作成
+		//そのクラスに対するテストクラスを作成
+		//fail("まだ実装されていません");
 	}
 
 	@Test
 	public void testGetResult() {
-		fail("まだ実装されていません");
+		//先にString resultに値をセットしておいてから
+		//このメソッドを呼び出しする
+		//setResultメソッドがprivateなのでセットは他のメソッドを使う
+		//fail("まだ実装されていません");
 	}
 
 	@Test
 	public void testMatchType() {
-		fail("まだ実装されていません");
+		//データタイプ(S,H,D,E)のみが入っているか検査します
+		//それ以外であればfalseを返却します
+		//fail("まだ実装されていません");
 	}
 
 }
