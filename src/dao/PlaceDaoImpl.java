@@ -44,7 +44,6 @@ public class PlaceDaoImpl implements PlaceDao {
 				con.rollback();
 				return "302";
 
-
 			}else if(place_count!=0){
 
 				con.rollback();
