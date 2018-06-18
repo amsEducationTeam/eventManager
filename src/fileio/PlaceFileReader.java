@@ -22,7 +22,7 @@ public class PlaceFileReader extends EventMgFileIO {
 	public static void main(String args[]) {
 		int valid_data_quantity = 8;
 		try {
-			PlaceFileReader PlaceFileReader = new PlaceFileReader("C:\\work_1\\最終版place_20180601.csv",
+			PlaceFileReader PlaceFileReader = new PlaceFileReader("C:\\work_1\\place_20180601.csv",
 					valid_data_quantity);
 
 			/*
