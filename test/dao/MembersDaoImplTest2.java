@@ -20,6 +20,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.TestDBAccess;
+
 import domain.Members;
 
 public class MembersDaoImplTest2 extends TestDBAccess{
@@ -131,7 +133,7 @@ public class MembersDaoImplTest2 extends TestDBAccess{
 			 sql="TRUNCATE members";
 			stmt=con.prepareStatement(sql);
 			stmt.executeUpdate();
-			
+
 			sql="TRUNCATE account";
 			stmt=con.prepareStatement(sql);
 			stmt.executeUpdate();

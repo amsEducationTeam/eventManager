@@ -15,6 +15,7 @@ import domain.Members;
 
 public class MemberFileReader extends EventMgFileIO {
 	private String fileName;
+	static String errorCode="100";
 
 //	public static void main(String args[]) {
 //		int valid_data_quantity = 9;
@@ -83,18 +84,15 @@ public class MemberFileReader extends EventMgFileIO {
 				try {
 					DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
 					birthday = df.parse(columns[4]);
-				} catch (ParseException p) {
-					p.printStackTrace();
-				}
 
 				// 入社日をDate型に変換
-				try {
 					String fileNames[] = fileName.split("_",0);
 					String year = fileNames[2].substring(0, 4) + "年";
-					DateFormat df = new SimpleDateFormat("yyyy年M月d日");
-					hired = df.parse(year + columns[7]);
+					DateFormat df2 = new SimpleDateFormat("yyyy年M月d日");
+					hired = df2.parse(year + columns[7]);
 				} catch (ParseException p) {
-					p.printStackTrace();
+					result="201";
+					return result;
 				}
 
 				// memberのインスタンスに値を格納
@@ -147,41 +145,41 @@ public class MemberFileReader extends EventMgFileIO {
 		for (int i = 1; i < columns.length; i++) {
 			//空のデータがあれば終了
 			if (!DataValid.isNotNull(columns[i]) && i!=3) {
-				System.out.println("203");
+				errorCode="203";
 				return false;
 			}
 		}
 		// データ項目の個別チェック
 		if(!DataValid.limitChar(columns[1],8)) {
-			System.out.println("205");
+			errorCode="205";
 			return false;
 		}//"INCORRECT_FORMAT_ERROR";
 		if(!DataValid.limitChar(columns[2], 50)) {
-			System.out.println("205");
+			errorCode="205";
 			return false;
 		}//return "INCORRECT_FORMAT_ERROR";
 		if(!DataValid.isKana(columns[3])) {
-			System.out.println("204");
+			errorCode="204";
 			return false;
 		}//return "INCORRECT_FORMAT_ERROR";
 		if(!DataValid.limitChar(columns[3],50)) {
-			System.out.println("205");
+			errorCode="205";
 			return false;
 		}//"INCORRECT_FORMAT_ERROR";
 		if(!DataValid.isDateFormat(columns[4],"yyyy/M/d")) {
-			System.out.println("200");
+			errorCode="200";
 			return false;
 		}//"DATE_FORMAT_ERROR";
 		if(!DataValid.isTelFormat(columns[6])) {
-			System.out.println("200");
+			errorCode="200";
 			return false;
 		}//"INCORRECT_FORMAT_ERROR";
 		if(!DataValid.isDateFormat(columns[7], "M月d日")) {
-			System.out.println("200");
+			errorCode="200";
 			return false;
 		}//"DATE_FORMAT_ERROR";
 		if(!DataValid.isRange(Integer.parseInt(columns[8]),1,5)) {
-			System.out.println("202");
+			errorCode="200";
 			return false;
 		}// "OUT_OF_INDEX_ERROR";
 
