@@ -26,9 +26,9 @@ import domain.Members;
 
 public class AttendDaoImplTest extends TestDBAccess {
 	private final static String NORMAL_MEMBER_ID1 = "500";
-	final static String NORMAL_MEMBER_NAME1 = "田中太郎";
+	final static String NORMAL_MEMBER_NAME1 = "田中次郎";
 	final static String NORMAL_MEMBER_ID2 = "501";
-	final static String NORMAL_MEMBER_NAME2 = "山本葵";
+	final static String NORMAL_MEMBER_NAME2 = "山本楓";
 	final String NORMAL_NEW_MEMBER_ID1 = "600";
 	final String NORMAL_NEW_MEMBER_ID2 = "601";
 	static final int NORMAL_EVENT_ID1 = 100;
@@ -87,9 +87,9 @@ public class AttendDaoImplTest extends TestDBAccess {
 				stmt3.executeUpdate(sqlDel3);
 
 				String sqlMem = "INSERT INTO `members` VALUES ('" + NORMAL_MEMBER_ID1 + "','" + NORMAL_MEMBER_NAME1
-						+ "','タナカタロウ','1990-12-12','東京都新宿区飯田橋54-10-1','090-6433-1200','2010-04-02',1,NULL,'taro'),"
+						+ "','タナカジロウ','1990-12-12','東京都新宿区飯田橋54-10-1','090-6433-1200','2010-04-02',1,NULL,'jiro'),"
 						+ "('" + NORMAL_MEMBER_ID2 + "','" + NORMAL_MEMBER_NAME2
-						+ "','ヤマモトアオイ','1995-12-10','東京都新宿区飯田橋54-10-1','090-6433-1233','2018-04-02',3,NULL,'aoi');";
+						+ "','ヤマモトカエデ','1995-12-10','東京都新宿区飯田橋54-10-1','090-6433-1233','2018-04-02',3,NULL,'kaede');";
 				Statement stmt4 = (Statement) conn.createStatement();
 				stmt4.executeUpdate(sqlMem);
 
