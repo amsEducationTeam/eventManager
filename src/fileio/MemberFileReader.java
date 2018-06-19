@@ -1,6 +1,5 @@
 package fileio;
 
-import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -8,10 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.naming.NamingException;
-
-import com.javaranch.unittest.helper.sql.pool.JNDIUnitTestHelper;
 
 import dao.DaoFactory;
 import dao.MembersDao;
@@ -21,27 +16,27 @@ import domain.Members;
 public class MemberFileReader extends EventMgFileIO {
 	private String fileName;
 
-	public static void main(String args[]) {
-		int valid_data_quantity = 9;
-		try {
-			MemberFileReader MembersFileReader = new MemberFileReader("c:\\work_1\\Member_20180601.csv",
-					valid_data_quantity);
-
-			/*
-			 *Junitを使うまではこれで接続します
-			 */
-			try {
-				JNDIUnitTestHelper.init("WebContent/WEB-INF/classes/jndi_unit_test_helper.properties");
-			} catch (NamingException | IOException e) {
-				e.printStackTrace();
-			}
-
-			String result = MembersFileReader.main();
-			System.out.print(result);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String args[]) {
+//		int valid_data_quantity = 9;
+//		try {
+//			MemberFileReader MembersFileReader = new MemberFileReader("c:\\work_1\\Member_20180601.csv",
+//					valid_data_quantity);
+//
+//			/*
+//			 *Junitを使うまではこれで接続します
+//			 */
+//			try {
+//				JNDIUnitTestHelper.init("WebContent/WEB-INF/classes/jndi_unit_test_helper.properties");
+//			} catch (NamingException | IOException e) {
+//				e.printStackTrace();
+//			}
+//
+//			String result = MembersFileReader.main();
+//			System.out.print(result);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	/**
 	 * ファイル名と列数をセットします
@@ -56,18 +51,16 @@ public class MemberFileReader extends EventMgFileIO {
 	/**
 	 * このクラスのメイン処理です
 	 * @return String 結果コードを返却します
+	 * @throws NoSuchFileException
 	 */
-	public String main() {
+	public String main() throws NoSuchFileException {
 
 		String result = null; //結果
 
 		List<String[]> fileRead = new ArrayList<String[]>();
-		try {
+
 			fileRead = enableFile();//ファイル有効性チェック
-		} catch (NoSuchFileException e) {
-			result = "指定のファイルが存在しません";
-			return result;
-		}
+
 		result = getResult(); //結果セット
 		if (!result.equals(SUCCESS)) {//異常であれば終了
 			return result;
@@ -97,7 +90,7 @@ public class MemberFileReader extends EventMgFileIO {
 				// 入社日をDate型に変換
 				try {
 					String fileNames[] = fileName.split("_",0);
-					String year = fileNames[1].substring(0, 4) + "年";
+					String year = fileNames[2].substring(0, 4) + "年";
 					DateFormat df = new SimpleDateFormat("yyyy年M月d日");
 					hired = df.parse(year + columns[7]);
 				} catch (ParseException p) {
@@ -135,7 +128,6 @@ public class MemberFileReader extends EventMgFileIO {
 				return result;
 			}
 		}
-
 		return SUCCESS;
 	}
 

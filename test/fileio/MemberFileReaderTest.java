@@ -3,9 +3,6 @@ package fileio;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
-
 import org.junit.AfterClass;
 import org.junit.Test;
 
@@ -17,9 +14,8 @@ import domain.Members;
 
 public class MemberFileReaderTest extends TestDBAccess {
 	static final int valid_data_quantity = 9;
-	static MemberFileReader MembersFileReader = new MemberFileReader("c:\\work\\member_20180402.csv",
+	MemberFileReader MembersFileReader = new MemberFileReader("c:\\work_1\\member_20180402.csv",
 			valid_data_quantity);
-	private static DataSource testds;
 	static final String MEMBER_ID="105";
 	static final String NAME="山本葵";
 	static final String KANA="ヤマモトアオイ";
@@ -28,25 +24,17 @@ public class MemberFileReaderTest extends TestDBAccess {
 	static final String TEL="090-6433-1233";
 	static final String ENTER="4月1日";
 	static final String DEP_ID="2";
+	static final String FALSE_MEMBER_ID="123456789";
+	static final String FALSE_NAME="あああああいいいいいうううううえええええおおおおお"
+			+ "かかかかかきききききくくくくくけけけけけこここここさ";
+	static final String FALSE_KANA="12345";
+	static final String FALSE_KANA2="アアアアアイイイイイウウウウウエエエエエオオオオオカカカカカキキキキキクククククケケケケケコココココサササササ";
+	static final String FALSE_BIRTHDAY="12月10日";
+	static final String FALSE_TEL="0000-1122-3344";
+	static final String FALSE_ENTER="04/01";
+	static final String FALSE_DEP_ID="6";
 	static final String EMPTY="";
 
-	public static void setUpBeforeClass() throws Exception {
-		InitialContext ctx = null;
-
-		try {
-			ctx = new InitialContext();
-			testds = (DataSource)ctx.lookup("java:comp/env/jdbc/eventdb2");
-		}catch(Exception e) {
-			if(ctx != null) {
-				try {
-					ctx.close();
-				}catch(Exception el) {
-					throw new RuntimeException(el);
-				}
-			}
-			throw new RuntimeException(e);
-		}
-	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
@@ -56,15 +44,7 @@ public class MemberFileReaderTest extends TestDBAccess {
 		membersDao.delete(members);
 	}
 
-	@Test
-	public void 正常系testMain() {
-		try {
-			String result = MembersFileReader.main();
-			assertThat(result, is("100"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+
 
 	@Test
 	public void 正常系testEnableLine() {
@@ -74,16 +54,73 @@ public class MemberFileReaderTest extends TestDBAccess {
 	}
 
 	@Test
-	public void testMainStringArray() {
-		fail("まだ実装されていません");
+	public void 正常系testMainStringArray() {
+		try {
+			String result = MembersFileReader.main();
+			assertThat(result, is("100"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
+	@Test
+	public void 異常系testEnableLine1() {
+		String[] test= {EMPTY,FALSE_MEMBER_ID,NAME,KANA,BIRTHDAY,ADDRESS,TEL,ENTER,DEP_ID};
+		assertThat(MembersFileReader.enableLine(test), is(false));
 	}
 
 	@Test
-	public void testMemberFileReader() {
+	public void 異常系testEnableLine2() {
+		String[] test= {EMPTY,MEMBER_ID,FALSE_NAME,KANA,BIRTHDAY,ADDRESS,TEL,ENTER,DEP_ID};
+		assertThat(MembersFileReader.enableLine(test), is(false));
 	}
 
 	@Test
-	public void 異常系testMain() {
+	public void 異常系testEnableLine3() {
+		String[] test= {EMPTY,MEMBER_ID,NAME,FALSE_KANA,BIRTHDAY,ADDRESS,TEL,ENTER,DEP_ID};
+		assertThat(MembersFileReader.enableLine(test), is(false));
+	}
+
+	@Test
+	public void 異常系testEnableLine4() {
+		String[] test= {EMPTY,MEMBER_ID,NAME,FALSE_KANA2,BIRTHDAY,ADDRESS,TEL,ENTER,DEP_ID};
+		assertThat(MembersFileReader.enableLine(test), is(false));
+	}
+
+	@Test
+	public void 異常系testEnableLine5() {
+		String[] test= {EMPTY,MEMBER_ID,NAME,KANA,FALSE_BIRTHDAY,ADDRESS,TEL,ENTER,DEP_ID};
+		assertThat(MembersFileReader.enableLine(test), is(false));
+	}
+
+	@Test
+	public void 異常系testEnableLine6() {
+		String[] test= {EMPTY,MEMBER_ID,NAME,KANA,BIRTHDAY,ADDRESS,FALSE_TEL,ENTER,DEP_ID};
+		assertThat(MembersFileReader.enableLine(test), is(false));
+	}
+
+	@Test
+	public void 異常系testEnableLine7() {
+		String[] test= {EMPTY,MEMBER_ID,NAME,KANA,BIRTHDAY,ADDRESS,TEL,FALSE_ENTER,DEP_ID};
+		assertThat(MembersFileReader.enableLine(test), is(false));
+	}
+
+	@Test
+	public void 異常系testEnableLine8() {
+		String[] test= {EMPTY,MEMBER_ID,NAME,KANA,BIRTHDAY,ADDRESS,TEL,ENTER,FALSE_DEP_ID};
+		assertThat(MembersFileReader.enableLine(test), is(false));
+	}
+
+	@Test
+	public void 異常系testEnableLine9() {
+		String[] test= {EMPTY,MEMBER_ID,NAME,KANA,BIRTHDAY,ADDRESS,TEL,ENTER,EMPTY};
+		assertThat(MembersFileReader.enableLine(test), is(false));
+	}
+
+	@Test
+	public void 異常系testMainStringArray1() {
 		try {
 			MemberFileReader MembersFileReader = new MemberFileReader("c:\\work\\member.csv",
 					valid_data_quantity);
@@ -93,20 +130,29 @@ public class MemberFileReaderTest extends TestDBAccess {
 			e.printStackTrace();
 		}
 	}
-
 	@Test
-	public void 異常系testEnableLine() {
-		fail("まだ実装されていません");
+	public void 異常系testMainStringArray2() {
+		try {
+			MemberFileReader MembersFileReader = new MemberFileReader("c:\\\\work_1\\\\member_20180403.csv",
+					valid_data_quantity);
+			String result = MembersFileReader.main();
+			assertThat(result, is("データ有効性エラー"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test
-	public void 異常系testMainStringArray() {
-		fail("まだ実装されていません");
+	public void 異常系testMainStringArray3() {
+		try {
+			MemberFileReader MembersFileReader = new MemberFileReader("c:\\\\work_1\\\\member_20180404.csv",
+					valid_data_quantity);
+			String result = MembersFileReader.main();
+			assertThat(result, is("DB接続エラー"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	@Test
-	public void 異常系testMemberFileReader() {
-		fail("まだ実装されていません");
-	}
 
 }
