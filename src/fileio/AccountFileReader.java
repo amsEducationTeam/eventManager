@@ -117,7 +117,7 @@ public class AccountFileReader extends EventMgFileIO {
 			}
 		}
 
-		return SUCCESS;
+		return result;
 	}
 
 	/**
