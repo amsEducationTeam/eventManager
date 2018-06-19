@@ -55,19 +55,20 @@ public class AccountFileReader extends EventMgFileIO {
 	/**
 	 * このクラスのメイン処理です
 	 * @return String 結果コードを返却します
+	 * @throws NoSuchFileException
 	 */
 
-	public String main() {
+	public String main() throws NoSuchFileException {
 
 		String result = null; //結果
 
 		List<String[]> fileRead = new ArrayList<String[]>();
-		try {
+//		try {
 			fileRead = enableFile();//ファイル有効性チェック
-		} catch (NoSuchFileException e) {
-			result = "指定のファイルが存在しません";
-			return result;
-		}
+//		} catch (NoSuchFileException e) {
+//			result = "指定のファイルが存在しません";
+//			return result;
+//		}
 		result = getResult(); //結果セット
 		if (!result.equals(SUCCESS)) {//異常であれば終了
 			return result;
@@ -88,16 +89,18 @@ public class AccountFileReader extends EventMgFileIO {
 				// ログインパスワードをhash化
 				String hashPass = BCrypt.hashpw(columns[3], BCrypt.gensalt());
 
-				authId = new Integer(Integer.parseInt(columns[4]));
+				//authId = new Integer(Integer.parseInt(columns[4]));
+
 
 				// accountsのインスタンスに格納
 				acoData.setMemberId(columns[1]);
 				acoData.setLoginId(columns[2]);
 				acoData.setLoginPass(hashPass);
-				acoData.setAuthId(authId);
+				acoData.setAuthId(new Integer(Integer.parseInt(columns[4])));
 
 				// リストに追加
 				accountList.add(acoData);
+
 			} else {
 				result = "データ有効性エラー";
 				return result;
@@ -142,19 +145,19 @@ public class AccountFileReader extends EventMgFileIO {
 		}
 		// データ項目の個別チェック
 		if(!DataValid.isNum(columns[1]) || !DataValid.limitChar(columns[1], 8)) {
-			System.out.println("205");
+			System.out.println("あ");
 			return false;
 		}
 		if(!DataValid.limitChar(columns[2],20) || !DataValid.isAlphanum(columns[2])) {
-			System.out.println("205");
+			System.out.println("い");
 			return false;
 		}
 		if(DataValid.limitChar(columns[3],8)  || !DataValid.isAlphanum(columns[3])) {
-			System.out.println("205");
+			System.out.println("う");
 			return false;
 		}
 		if(!DataValid.isRange(Integer.parseInt(columns[4]),1,2)) {
-			System.out.println("205");
+			System.out.println("え");
 			return false;
 		}
 		return true;

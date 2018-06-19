@@ -44,6 +44,7 @@ public class AccountDaoImpl implements AccountDao {
 				// members.member_idがあるかチェック
 				String memCheck = "SELECT members.member_id FROM members WHERE member_id=?";
 				PreparedStatement stmtMC = con.prepareStatement(memCheck);
+				stmtMC.setString(1, account.getMemberId());
 				ResultSet rs = stmtMC.executeQuery();
 				if(rs != null) {
 					// members
@@ -70,7 +71,7 @@ public class AccountDaoImpl implements AccountDao {
 				try {
 					if (con != null) {
 						con.close();
-						System.out.println("切断しました");
+
 					}
 				} catch (SQLException e) {
 //					System.out.println("error3");
