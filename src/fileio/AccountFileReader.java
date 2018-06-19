@@ -108,7 +108,7 @@ public class AccountFileReader extends EventMgFileIO {
 			// Accountリストデータをinsert
 			try {
 				AccountDao accountDao = DaoFactory.createAccountDao();
-				accountDao.insertAcount(account);
+				result=accountDao.insertAcount(account);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -153,7 +153,7 @@ public class AccountFileReader extends EventMgFileIO {
 			System.out.println("205");
 			return false;
 		}
-		if(DataValid.isRange(Integer.parseInt(columns[4]),1,2)) {
+		if(!DataValid.isRange(Integer.parseInt(columns[4]),1,2)) {
 			System.out.println("205");
 			return false;
 		}
