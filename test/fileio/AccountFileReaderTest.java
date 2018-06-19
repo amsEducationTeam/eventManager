@@ -71,7 +71,6 @@ public class AccountFileReaderTest extends TestDBAccess {
 	}
 
 
-
 	final int valid_data_quantity = 5;
 	AccountFileReader accountFileReader = new AccountFileReader("c:\\work_1\\account_20180601.csv",
 			valid_data_quantity);

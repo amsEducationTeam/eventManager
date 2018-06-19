@@ -24,7 +24,6 @@ public class AccountFileReader extends EventMgFileIO {
 		try {
 			AccountFileReader accountFileReader = new AccountFileReader("c:\\work_1\\account_20180601.csv",
 					valid_data_quantity);
-
 			/*
 			 *Junitを使うまではこれで接続します
 			 */

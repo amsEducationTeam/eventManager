@@ -42,7 +42,6 @@ public class AccountDaoImpl implements AccountDao {
 				stmtAcc.executeUpdate();
 
 				// members.member_idがあるかチェック
-
 				String memCheck = "SELECT COUNT(*) from members where member_id=?";
 				PreparedStatement stmtMC = con.prepareStatement(memCheck);
 				stmtMC.setString(1, account.getMemberId());
