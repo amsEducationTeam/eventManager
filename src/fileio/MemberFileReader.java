@@ -97,7 +97,7 @@ public class MemberFileReader extends EventMgFileIO {
 				// 入社日をDate型に変換
 				try {
 					String fileNames[] = fileName.split("_",0);
-					String year = fileNames[2].substring(0, 4) + "年";
+					String year = fileNames[1].substring(0, 4) + "年";
 					DateFormat df = new SimpleDateFormat("yyyy年M月d日");
 					hired = df.parse(year + columns[7]);
 				} catch (ParseException p) {

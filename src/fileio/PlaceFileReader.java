@@ -137,23 +137,22 @@ public class PlaceFileReader extends EventMgFileIO {
 
 		// データ行の列で空のデータがないか
 		for (int i = 1; i < columns.length; i++) {
-		//空のデータがあれば終了
+			//空のデータがあれば終了
 			if (!DataValid.isNotNull(columns[i])) {
 				return false;
 			}
 		}
 
 		//データ行のチェック
-				if (!DataValid.limitChar(columns[1], 20) ||
-					!DataValid.limitChar(columns[6],8) ||
-					!DataValid.isTimeFormat(columns[7])||
-					!(columns[3].equals("0")||columns[3].equals("1"))||
-					!(columns[4].equals("0")||columns[4].equals("1"))||
-					!(columns[5].equals("0")||columns[5].equals("1"))
-					){
-					return false;
+		if (!DataValid.limitChar(columns[1], 20) ||
+				!DataValid.limitChar(columns[6], 8) ||
+				!DataValid.isTimeFormat(columns[7]) ||
+				!(columns[3].equals("0") || columns[3].equals("1")) ||
+				!(columns[4].equals("0") || columns[4].equals("1")) ||
+				!(columns[5].equals("0") || columns[5].equals("1"))) {
+			return false;
 
-				}
+		}
 		return true;
 
 	}
