@@ -1,7 +1,6 @@
 package fileio;
 
 import java.io.IOException;
-import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +17,7 @@ import domain.DataValid;
 
 public class AccountFileReader extends EventMgFileIO {
 	private String fileName;
+	static String CHECKCODE="100";
 
 	public static void main(String args[]) {
 		int valid_data_quantity = 5;
@@ -36,6 +36,7 @@ public class AccountFileReader extends EventMgFileIO {
 
 			String result = accountFileReader.main();
 			System.out.print(result);
+	System.out.print(CHECKCODE);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -55,10 +56,10 @@ public class AccountFileReader extends EventMgFileIO {
 	/**
 	 * このクラスのメイン処理です
 	 * @return String 結果コードを返却します
-	 * @throws NoSuchFileException
+	 * @throws Exception
 	 */
 
-	public String main() throws NoSuchFileException {
+	public String main() throws Exception {
 
 		String result = null; //結果
 
@@ -71,6 +72,7 @@ public class AccountFileReader extends EventMgFileIO {
 //		}
 		result = getResult(); //結果セット
 		if (!result.equals(SUCCESS)) {//異常であれば終了
+
 			return result;
 		}
 
@@ -84,7 +86,7 @@ public class AccountFileReader extends EventMgFileIO {
 
 				// ドメインにセット
 				Account acoData = new Account();
-				int authId = 0;
+				//int authId = 0;
 
 				// ログインパスワードをhash化
 				String hashPass = BCrypt.hashpw(columns[3], BCrypt.gensalt());
@@ -109,15 +111,11 @@ public class AccountFileReader extends EventMgFileIO {
 		//リストをDB登録
 		for (Account account : accountList) {
 			// Accountリストデータをinsert
-			try {
+
 				AccountDao accountDao = DaoFactory.createAccountDao();
 				result=accountDao.insertAcount(account);
 
-			} catch (Exception e) {
-				e.printStackTrace();
-				result = "DB接続エラー";
-				return result;
-			}
+
 		}
 
 		return result;
@@ -134,7 +132,7 @@ public class AccountFileReader extends EventMgFileIO {
 	 *			検査対象はindex1からになります
 	 * **/
 
-	public boolean enableLine(String[] columns) {
+	protected boolean enableLine(String[] columns) {
 
 		// データ行の列で空のデータがないか
 		for (int i = 1; i < columns.length; i++) {
@@ -145,19 +143,20 @@ public class AccountFileReader extends EventMgFileIO {
 		}
 		// データ項目の個別チェック
 		if(!DataValid.isNum(columns[1]) || !DataValid.limitChar(columns[1], 8)) {
-			System.out.println("あ");
+			CHECKCODE="205";
+
 			return false;
 		}
 		if(!DataValid.limitChar(columns[2],20) || !DataValid.isAlphanum(columns[2])) {
-			System.out.println("い");
+			CHECKCODE="205";
 			return false;
 		}
 		if(DataValid.limitChar(columns[3],8)  || !DataValid.isAlphanum(columns[3])) {
-			System.out.println("う");
+			CHECKCODE="205";
 			return false;
 		}
 		if(!DataValid.isRange(Integer.parseInt(columns[4]),1,2)) {
-			System.out.println("え");
+			CHECKCODE="205";
 			return false;
 		}
 		return true;
