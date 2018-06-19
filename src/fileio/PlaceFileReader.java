@@ -55,24 +55,17 @@ public class PlaceFileReader extends EventMgFileIO {
 	/**
 	 * このクラスのメイン処理です
 	 * @return String 結果コードを返却します
+	 * @throws NoSuchFileException
 	 */
-	public String main() {
+	public String main() throws NoSuchFileException {
 
 		String result = null; //結果
-
 		List<String[]> fileRead = new ArrayList<String[]>();
-		try {
-			fileRead = enableFile();//ファイル有効性チェック
-		} catch (NoSuchFileException e) {
-			result = "指定のファイルが存在しません";
-			return result;
-		}
+		fileRead = enableFile();//ファイル有効性チェック
 		result = getResult(); //結果セット
 		if (!result.equals(SUCCESS)) {//異常であれば終了
 			return result;
 		}
-
-
 
 		// ドメインリスト
 		List<Place> PlaceList = new ArrayList<>();
