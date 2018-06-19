@@ -77,14 +77,14 @@ public class DepartFileReader extends EventMgFileIO {
 
 			// データ有効性チェック
 			if (enableLine(columns)) {
-								// ドメインにセット
-								Depart acoData = new Depart();
-								acoData.setDepartment(columns[1]);
-								acoData.setFloor(Integer.parseInt(columns[2]));
-								acoData.setPosition_type(Integer.parseInt(columns[3]));
-								// リストに追加
-								DepartList.add(acoData);
-								data_amount++;
+				// ドメインにセット
+				Depart acoData = new Depart();
+				acoData.setDepartment(columns[1]);
+				acoData.setFloor(Integer.parseInt(columns[2]));
+				acoData.setPosition_type(Integer.parseInt(columns[3]));
+				// リストに追加
+				DepartList.add(acoData);
+				data_amount++;
 			} else {
 				result = "データ有効性エラー";
 				return result;
@@ -127,7 +127,7 @@ public class DepartFileReader extends EventMgFileIO {
 		//データ項目の個別チェック
 		if (!DataValid.limitChar(columns[1], 50) ||
 				!DataValid.limitChar(columns[3], 8) ||
-				!DataValid.chkLiteAndNum(columns[3])) {
+				!DataValid.isAlphanum(columns[3])) {
 			return false;
 
 		}
