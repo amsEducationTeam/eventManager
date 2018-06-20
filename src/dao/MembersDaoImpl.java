@@ -197,12 +197,6 @@ public class MembersDaoImpl implements MembersDao {
 			stmt.setObject(8, member.getDep_id(),Types.INTEGER);
 			stmt.setObject(9, 0);
 			stmt.setString(10, member.getLogin_id());
-
-//			//account
-//			stmt.setString(11, member.getLogin_id());
-//			stmt.setString(12, member.getLogin_pass());
-//			stmt.setObject(13, member.getAuth_id(),Types.INTEGER);
-//
 			stmt.executeUpdate();
 		}
 	}
@@ -224,6 +218,32 @@ public class MembersDaoImpl implements MembersDao {
 		return line;
 		}
 
+	@Override
+	public void insertMast(List<Members> memberList) throws Exception {
+		try (Connection con = ds.getConnection()) {
+			con.setAutoCommit(false);//オートコミットを外す
+			String sql = "INSERT INTO members(member_id,name,kana,birthday,address,tel,hired,dep_id,position_type,login_id)"
+					+ "VALUES(?,?,?,?,?,?,?,?,?,?);";
+
+			for (Members member : memberList) {
+				Timestamp Birth = new Timestamp(member.getBirthday().getTime());
+				Timestamp Hire = new Timestamp(member.getHired().getTime());
+				PreparedStatement stmt = con.prepareStatement(sql);
+				stmt.setString(1, member.getMember_id());
+				stmt.setString(2, member.getName());
+				stmt.setString(3, member.getKana());
+				stmt.setTimestamp(4, Birth);
+				stmt.setString(5, member.getAddress());
+				stmt.setString(6, member.getTel());
+				stmt.setTimestamp(7, Hire);
+				stmt.setObject(8, member.getDep_id(), Types.INTEGER);
+				stmt.setObject(9, 0);
+				stmt.setString(10, member.getLogin_id());
+				stmt.executeUpdate();
+			}
+			con.commit();
+		}
+	}
 
 
 
@@ -479,5 +499,7 @@ public class MembersDaoImpl implements MembersDao {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
+
+
 
 }

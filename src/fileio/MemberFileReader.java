@@ -114,18 +114,16 @@ public class MemberFileReader extends EventMgFileIO {
 		}
 
 		//リストをDB登録
-		for (Members Members : MembersList) {
-			// Membersリストデータをinsert
-			try {
-				MembersDao MembersDao = DaoFactory.createMembersDao();
-				MembersDao.insert(Members);
+		try {
+			MembersDao MembersDao = DaoFactory.createMembersDao();
+			MembersDao.insertMast(MembersList);
 
-			} catch (Exception e) {
-				e.printStackTrace();
-				result = "DB接続エラー";
-				return result;
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = "DB接続エラー";
+			return result;
 		}
+
 		return SUCCESS;
 	}
 
