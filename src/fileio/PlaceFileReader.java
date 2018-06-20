@@ -1,7 +1,6 @@
 package fileio;
 
 import java.nio.file.NoSuchFileException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,13 +49,16 @@ public class PlaceFileReader extends EventMgFileIO {
 	/**
 	 * このクラスのメイン処理です
 	 * @return String 結果コードを返却します
-	 * @throws NoSuchFileException
+	 * @throws Exception
 	 */
-	public String main() throws NoSuchFileException {
+	public String main() throws Exception {
 
 		String result = null; //結果
 		List<String[]> fileRead = new ArrayList<String[]>();
-		fileRead = enableFile();//ファイル有効性チェック
+
+		fileRead = enableFile();
+
+		//ファイル有効性チェック
 		result = getResult(); //結果セット
 		if (!result.equals(SUCCESS)) {//異常であれば終了
 			return result;
@@ -73,21 +75,19 @@ public class PlaceFileReader extends EventMgFileIO {
 				Place acoData = new Place();
 	            SimpleDateFormat sdFormat = new SimpleDateFormat("hh:mm");
 	            Date locktime;
-				try {
-					locktime = sdFormat.parse(columns[7]);
-					acoData.setPlace(columns[1]);
-					acoData.setCapa(new Integer(Integer.parseInt(columns[2])));
-					acoData.setEqu_mic(new Integer(Integer.parseInt(columns[3])));
-					acoData.setEqu_whitebord(new Integer(Integer.parseInt(columns[4])));
-					acoData.setEqu_projector(new Integer(Integer.parseInt(columns[5])));
-					acoData.setAdmin_id(new Integer(Integer.parseInt(columns[6])));
-					acoData.setLocking_time(locktime);
 
-					// リストに追加
-					PlaceList.add(acoData);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
+				locktime = sdFormat.parse(columns[7]);
+				acoData.setPlace(columns[1]);
+				acoData.setCapa(new Integer(Integer.parseInt(columns[2])));
+				acoData.setEqu_mic(new Integer(Integer.parseInt(columns[3])));
+				acoData.setEqu_whitebord(new Integer(Integer.parseInt(columns[4])));
+				acoData.setEqu_projector(new Integer(Integer.parseInt(columns[5])));
+				acoData.setAdmin_id(new Integer(Integer.parseInt(columns[6])));
+				acoData.setLocking_time(locktime);
+
+				// リストに追加
+				PlaceList.add(acoData);
+
 			} else {
 				result = "データ有効性エラー";
 				return result;
@@ -97,15 +97,8 @@ public class PlaceFileReader extends EventMgFileIO {
 		//リストをDB登録
 		for (Place Place : PlaceList) {
 			// Placeリストデータをinsert
-			try {
 				PlaceDao PlaceDao = DaoFactory.createPlaceDao();
 				result = PlaceDao.insert(Place);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				result = "DB接続エラー";
-				return result;
-			}
 		}
 
 		return result;
