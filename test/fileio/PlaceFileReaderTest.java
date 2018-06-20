@@ -33,7 +33,6 @@ public class PlaceFileReaderTest extends TestDBAccess {
 	private final static String LEGAL_FILE_NAME = "C:\\work_1\\place_20180601.csv";
 	private final static String BAD_FILE_NAME = "C:\\work_1\\place_20180601_0.csv";//ファイルなし
 	private final static String BAD_FILE_NAME_CHAR = "C:\\work_1\\place_20180601_2.csv";//ファイルキャラクターエラー
-	private final static String BAD_FILE_NAME_DB = "C:\\work_1\\place_20180601_3.csv";//place名が？？？
 	private final static String BAD_FILE_NAME_HEAD = "C:\\work_1\\place_20180601_4.csv";//ヘッダー異常ファイル
 	private final static String BAD_FILE_NAME_DATA = "C:\\work_1\\place_20180601_5.csv";//データ行に空のデータ
 	private final int COLUMNS = 8;
@@ -195,14 +194,12 @@ public class PlaceFileReaderTest extends TestDBAccess {
 	public void testMain() {
 		try {
 			PlaceFileReader PlaceFileReader = new PlaceFileReader(LEGAL_FILE_NAME, COLUMNS);
-
 			String result = PlaceFileReader.main();
 			assertThat(result, is(SUCCESS));
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	// 各ファイルごとに調整したデータチェックのテスト
@@ -218,10 +215,7 @@ public class PlaceFileReaderTest extends TestDBAccess {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-
 	}
-
 
 	// ファイル有効性チェックを行い
 	// 有効性チェックが正常であれば
@@ -230,7 +224,6 @@ public class PlaceFileReaderTest extends TestDBAccess {
 	public void testEnableFile() {
 		try {
 			PlaceFileReader PlaceFileReader = new PlaceFileReader(LEGAL_FILE_NAME, COLUMNS);
-
 			List<String[]> fileRead = new ArrayList<String[]>();
 			try {
 				fileRead = PlaceFileReader.enableFile();//ファイル有効性チェック
@@ -250,7 +243,6 @@ public class PlaceFileReaderTest extends TestDBAccess {
 				System.out.println();
 				i++;
 			}
-
 		} catch (NoSuchFileException e) {
 			e.printStackTrace();
 		}
@@ -266,7 +258,6 @@ public class PlaceFileReaderTest extends TestDBAccess {
 		} catch (NoSuchFileException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	// データタイプ(S,H,D,E)のみが入っているか検査します
