@@ -42,10 +42,16 @@ public class AccountDaoImpl implements AccountDao {
 				stmtAcc.executeUpdate();
 
 				// members.member_idがあるかチェック
-				String memCheck = "SELECT members.member_id FROM members WHERE member_id=?";
+				String memCheck = "SELECT COUNT(*) from members where member_id=?";
 				PreparedStatement stmtMC = con.prepareStatement(memCheck);
+				stmtMC.setString(1, account.getMemberId());
 				ResultSet rs = stmtMC.executeQuery();
-				if(rs != null) {
+				int count=0;
+				while(rs.next()) {
+					count=Integer.parseInt(rs.getString("count(*)"));
+				}
+
+				if(count==1) {
 					// members
 					// メンバテーブルのlogin_idにidをINSERTする
 					String sqlMem = "UPDATE members SET login_id = ? WHERE member_id = ?;";
@@ -70,7 +76,7 @@ public class AccountDaoImpl implements AccountDao {
 				try {
 					if (con != null) {
 						con.close();
-						System.out.println("切断しました");
+
 					}
 				} catch (SQLException e) {
 //					System.out.println("error3");

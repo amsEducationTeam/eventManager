@@ -13,50 +13,47 @@ import domain.Place;
 public class PlaceDaoImpl implements PlaceDao {
 	private DataSource ds;
 
-
 	public PlaceDaoImpl(DataSource ds) {
 		this.ds = ds;
 	}
 
-	public String insert(Place place)throws Exception{
-		try(Connection con=ds.getConnection()){
+	public String insert(Place place) throws Exception {
+		try (Connection con = ds.getConnection()) {
 
 			try {
 				con.setAutoCommit(false);
 
-			String sql1="SELECT member_id from members where member_id=?;";
-			PreparedStatement stmt1 = con.prepareStatement(sql1);
-			stmt1.setString(1, place.getAdmin_id().toString());
-			ResultSet rs =stmt1.executeQuery();
-			//System.out.println(rs);
+				String sql1 = "SELECT member_id from members where member_id=?;";
+				PreparedStatement stmt1 = con.prepareStatement(sql1);
+				stmt1.setString(1, place.getAdmin_id().toString());
+				ResultSet rs = stmt1.executeQuery();
+				//System.out.println(rs);
 
+				String sql2 = "SELECT COUNT(*) from place where place=?";
+				PreparedStatement stmt2 = con.prepareStatement(sql2);
+				stmt2.setString(1, place.getPlace());
+				ResultSet rs2 = stmt2.executeQuery();
+				int place_count = 0;
+				while (rs2.next()) {
+					place_count = Integer.parseInt(rs2.getString("count(*)"));
+				}
 
-			String sql2="SELECT COUNT(*) from place where place=?";
-			PreparedStatement stmt2 = con.prepareStatement(sql2);
-			stmt2.setString(1, place.getPlace());
-			ResultSet rs2=stmt2.executeQuery();
-			int place_count=0;
-			while (rs2.next()) {
-				place_count = Integer.parseInt(rs2.getString("count(*)"));
-			}
+				if (rs == null) {
+					con.rollback();
+					return "302";
 
-			if(rs==null) {
-				con.rollback();
-				return "302";
+				} else if (place_count != 0) {
 
-			}else if(place_count!=0){
+					con.rollback();
+					return "302";
 
-				con.rollback();
-				return "302";
+				} else {
 
-			}else {
-
-
-					String sql="INSERT INTO place"
+					String sql = "INSERT INTO place"
 							+ "(place,capa,equ_mic,equ_whitebord,equ_projector, admin_id,locking_time) "
 							+ "VALUES(?,?,?,?,?,?,?);";
 					Timestamp LockTime = new Timestamp(place.getLocking_time().getTime());
-					PreparedStatement stmt=con.prepareStatement(sql);
+					PreparedStatement stmt = con.prepareStatement(sql);
 					stmt.setString(1, place.getPlace());
 					stmt.setObject(2, place.getCapa());
 					stmt.setObject(3, place.getEqu_mic());
@@ -67,32 +64,26 @@ public class PlaceDaoImpl implements PlaceDao {
 					stmt.executeUpdate();
 				}
 
+				con.commit();
+				return "100";
 
+			} catch (Exception e) {
 
-
-			con.commit();
-			return "100";
-
-		}catch(Exception e) {
-
-			System.out.println("error1");
-			e.printStackTrace();
+				System.out.println("error1");
+				e.printStackTrace();
 				con.rollback();
 				return "300";
-		}finally {
-			try {
-				if(con!=null) {
-					con.close();
+			} finally {
+				try {
+					if (con != null) {
+						con.close();
+					}
+				} catch (SQLException e) {
+					System.out.println("error2");
 				}
-			}catch(SQLException e) {
-				System.out.println("error2");
 			}
-		}
 		}
 
 	}
-
-
-
 
 }

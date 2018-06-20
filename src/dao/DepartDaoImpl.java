@@ -52,13 +52,18 @@ public class DepartDaoImpl implements DepartDao {
 					stmt.executeUpdate();
 
 					//member_idを検索して結果をResultSetにセットする
-					String sql1 = "select member_id from members where member_id = ?";
+
+					String sql1 = "SELECT COUNT(*) from members where member_id=?";
 					PreparedStatement stmt1 = con.prepareStatement(sql1);
 					stmt1.setObject(1, department.get(data1).getPosition_type());
 					ResultSet rs = stmt1.executeQuery();
+					int member_count=0;
+					while (rs.next()) {
+						member_count = Integer.parseInt(rs.getString("count(*)"));
+					}
 
-					//検索結果がnullならロールバック
-					if(rs==null) {
+					//検索結果が0ならロールバック
+					if(member_count==0) {
 						con.rollback();
 						return "302";
 					}else {
