@@ -29,7 +29,10 @@ public class PlaceDaoImpl implements PlaceDao {
 				PreparedStatement stmt1 = con.prepareStatement(sql1);
 				stmt1.setString(1, place.getAdmin_id().toString());
 				ResultSet rs = stmt1.executeQuery();
-				//System.out.println(rs);
+				int admin_count = -1;
+				while (rs.next()) {
+					admin_count = Integer.parseInt(rs.getString("count(*)"));
+				}
 
 				String sql2 = "SELECT COUNT(*) from place where place=?";
 				PreparedStatement stmt2 = con.prepareStatement(sql2);
@@ -40,7 +43,7 @@ public class PlaceDaoImpl implements PlaceDao {
 					place_count = Integer.parseInt(rs2.getString("count(*)"));
 				}
 
-				if (rs == null) {
+				if (admin_count == 0) {
 					con.rollback();
 					return "302";
 
