@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.naming.NamingException;
+
+import com.javaranch.unittest.helper.sql.pool.JNDIUnitTestHelper;
+
 import dao.DaoFactory;
 import dao.MembersDao;
 import domain.DataValid;
@@ -17,27 +21,27 @@ public class MemberFileReader extends EventMgFileIO {
 	private String fileName;
 	static String errorCode="100";
 
-//	public static void main(String args[]) {
-//		int valid_data_quantity = 9;
-//		try {
-//			MemberFileReader MembersFileReader = new MemberFileReader("c:\\work_1\\Member_20180601.csv",
-//					valid_data_quantity);
-//
-//			/*
-//			 *Junitを使うまではこれで接続します
-//			 */
-//			try {
-//				JNDIUnitTestHelper.init("WebContent/WEB-INF/classes/jndi_unit_test_helper.properties");
-//			} catch (NamingException | IOException e) {
-//				e.printStackTrace();
-//			}
-//
-//			String result = MembersFileReader.main();
-//			System.out.print(result);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public static void main(String args[]) {
+		int valid_data_quantity = 9;
+		try {
+			MemberFileReader MembersFileReader = new MemberFileReader("c:\\work_1\\Member_20180601.csv",
+					valid_data_quantity);
+
+			/*
+			 *Junitを使うまではこれで接続します
+			 */
+			try {
+				JNDIUnitTestHelper.init("WebContent/WEB-INF/classes/jndi_unit_test_helper.properties");
+			} catch (NamingException e) {
+				e.printStackTrace();
+			}
+
+			String result = MembersFileReader.main();
+			System.out.print(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * ファイル名と列数をセットします
@@ -116,7 +120,7 @@ public class MemberFileReader extends EventMgFileIO {
 		//リストをDB登録
 		try {
 			MembersDao MembersDao = DaoFactory.createMembersDao();
-			MembersDao.insertMast(MembersList);
+			result = MembersDao.insertMast(MembersList);
 
 		} catch (Exception e) {
 			e.printStackTrace();

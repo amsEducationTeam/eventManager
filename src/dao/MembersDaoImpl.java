@@ -63,7 +63,6 @@ public class MembersDaoImpl implements MembersDao {
 		try (Connection con = ds.getConnection()) {
 
 			for (Members fuga : hoge) {
-
 				String sql = "SELECT "
 						+ "members.member_id, members.name, department.department "
 						+ "FROM members JOIN department "
@@ -76,9 +75,7 @@ public class MembersDaoImpl implements MembersDao {
 				ResultSet rs = stms.executeQuery();
 
 				if (rs.next()) {
-
 					userList.add(mapToUsers2(rs));
-					;
 				}
 			}
 
@@ -219,7 +216,7 @@ public class MembersDaoImpl implements MembersDao {
 		}
 
 	@Override
-	public void insertMast(List<Members> memberList) throws Exception {
+	public String insertMast(List<Members> memberList) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			con.setAutoCommit(false);//オートコミットを外す
 			String sql = "INSERT INTO members(member_id,name,kana,birthday,address,tel,hired,dep_id,position_type,login_id)"
@@ -242,7 +239,10 @@ public class MembersDaoImpl implements MembersDao {
 				stmt.executeUpdate();
 			}
 			con.commit();
+		} catch (Exception e) {
+			return "302";
 		}
+		return "100";
 	}
 
 
@@ -257,23 +257,12 @@ public class MembersDaoImpl implements MembersDao {
 		Members member = null;
 		try (Connection con = ds.getConnection()) {
 			String sql1 = "SELECT  * FROM members WHERE login_id = ?;";
-
-
 			PreparedStatement stmt1 = con.prepareStatement(sql1);
-
-
 			stmt1.setString(1, loginId);
-
 			ResultSet rs1 = stmt1.executeQuery();
-
-
 			if (rs1.next()) {
-
-					member = mapToLogin(rs1);
-
-
+				member = mapToLogin(rs1);
 			}
-
 		}
 		return member;
 	}
@@ -289,8 +278,7 @@ public class MembersDaoImpl implements MembersDao {
 
 			if (rs2.next()) {
 				if (BCrypt.checkpw(loginPass, rs2.getString("login_pass"))) {
-
-				member = mapToLoginAccount(rs2);
+					member = mapToLoginAccount(rs2);
 				}
 			}
 			return member;
@@ -329,7 +317,8 @@ public class MembersDaoImpl implements MembersDao {
 	public void update(Members Members) throws Exception {
 
 		try (Connection con = ds.getConnection()) {
-			String sql ="UPDATE members SET member_id=?,name =?,kana=?,dep_id=?,address=?,tel=?,birthday=?,position_type=?,login_id = ? WHERE member_id = ?;";
+			String sql ="UPDATE members SET member_id=?,name =?,kana=?,dep_id=?,"
+					+ "address=?,tel=?,birthday=?,position_type=?,login_id = ? WHERE member_id = ?;";
 
 			Timestamp Birth = new Timestamp(Members.getBirthday().getTime());
 
@@ -374,7 +363,8 @@ public class MembersDaoImpl implements MembersDao {
 
 		int line=0;
 		try (Connection con = ds.getConnection()) {
-			String sql = "UPDATE members SET member_id=?,name = ?,kana=?,dep_id=?,address=?,tel=?,birthday=?,position_type=?,login_id = ? WHERE member_id = ?;";
+			String sql = "UPDATE members SET member_id=?,name = ?,kana=?,dep_id=?,"
+					+ "address=?,tel=?,birthday=?,position_type=?,login_id = ? WHERE member_id = ?;";
 
 			Timestamp Birth = new Timestamp(Members.getBirthday().getTime());
 			//アカウントの扱い
@@ -492,14 +482,6 @@ public class MembersDaoImpl implements MembersDao {
 			return check;
 		}
 	}
-
-
-	@Override
-	public List<Members> findAll() throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
-	}
-
 
 
 }

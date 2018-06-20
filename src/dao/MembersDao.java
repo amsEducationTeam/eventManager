@@ -6,10 +6,9 @@ import domain.Members;
 
 
 public interface MembersDao{
-	List<Members> findAll()throws Exception;
 	Members findById(String id) throws Exception;
 	void insert(Members member)throws Exception;
-	void insertMast(List<Members> memberList)throws Exception;
+	String insertMast(List<Members> memberList)throws Exception;
 	void update(Members member)throws Exception;
 	int delete(Members member)throws Exception;
 	Members findByLoginIdAndLoginPass(String loginId,String loginPass) throws Exception;
