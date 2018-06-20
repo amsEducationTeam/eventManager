@@ -3,13 +3,9 @@ package fileio;
 import java.nio.file.NoSuchFileException;
 import java.util.ResourceBundle;
 
-import org.apache.log4j.Logger;
+import com.OutputLog;
+public class FileController extends OutputLog {
 
-import logTest.LogTest;
-public class FileController {
-
-	private static final Logger logger = Logger.getLogger(LogTest.class);
-	private static String code=null;
 
 	public static String member(String fileName) {
 		ResourceBundle rb = ResourceBundle.getBundle("fileIO");
@@ -24,6 +20,7 @@ public class FileController {
 		}
 
 		output();
+
 		return code;
 	}
 
@@ -78,17 +75,6 @@ public class FileController {
 		}
 		output();
 		return code;
-	}
-
-	public static void  output() {
-
-		if(code.equals("100")) {
-			logger.info(code);
-		}else {
-			logger.error(code);
-		}
-
-
 	}
 
 }
