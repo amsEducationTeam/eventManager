@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fileio.FileController;
+
 /**
  * Servlet implementation class FileIOServlet
  */
@@ -17,15 +18,16 @@ import fileio.FileController;
 public class FileIOServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	protected final String MEMBER_INSERT="memberInsert";
-	protected final String ACCOUNT_INSERT="accountInsert";
-	protected final String PLACE_INSERT ="placeInsert";
-	protected final String DEPART_INSERT="departInsert";
+	protected final String MEMBER_INSERT = "memberInsert";
+	protected final String ACCOUNT_INSERT = "accountInsert";
+	protected final String PLACE_INSERT = "placeInsert";
+	protected final String DEPART_INSERT = "departInsert";
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		request.getRequestDispatcher("view/MasterInsert.jsp").forward(request, response);
 	}
@@ -33,50 +35,49 @@ public class FileIOServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-
-
-
-		String fileName = (String)request.getParameter("fileName");
+		String fileName = (String) request.getParameter("fileName");
 		ResourceBundle rb = ResourceBundle.getBundle("fileIO");
 		String error = fileName + "error";
 		String complete = fileName + "complete";
-		System.out.println((String)rb.getString(fileName));//動作確認用なのでコメントアウト
-		System.out.println((String)rb.getString(fileName+"column"));//動作確認用なのでコメントアウト
+		System.out.println((String) rb.getString(fileName));//動作確認用なのでコメントアウト
+		System.out.println((String) rb.getString(fileName + "column"));//動作確認用なのでコメントアウト
 
-		switch(fileName) {
+		String result = null;
+		switch (fileName) {
 
 		case MEMBER_INSERT:
-			FileController.member(fileName);
+			result = FileController.member(fileName);
 
+			break;
 		case ACCOUNT_INSERT:
-			FileController.account(fileName);
+			result = FileController.account(fileName);
 
+			break;
 		case PLACE_INSERT:
-			FileController.place(fileName);
+			result = FileController.place(fileName);
 
+			break;
 		case DEPART_INSERT:
-			FileController.depart(fileName);
+			result = FileController.depart(fileName);
+
+			break;
 		}
 
+		// マスター登録するjavaクラスのコントローラーをインスタンス
+		// インスタンス.メソッド名(rb.getString(fileName),rb.getString(fileName + "column"));
+		if (result.equals("100")) {
 
-
-
-		try {
-			// マスター登録するjavaクラスのコントローラーをインスタンス
-			// インスタンス.メソッド名(rb.getString(fileName),rb.getString(fileName + "column"));
 			request.setAttribute(complete, "test");
+		} else {
 
-
-		}catch(Exception e) {
 			request.setAttribute(error, "testt2");
-			throw new ServletException(e);
 
 		}
-
-
 		request.getRequestDispatcher("view/MasterInsert.jsp").forward(request, response);
+
 	}
 
 }

@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.DataValid;
+
 import dao.DaoFactory;
 import dao.MembersDao;
 import domain.Members;
@@ -36,7 +38,7 @@ public class LoginServlet extends HttpServlet {
 		String login_pass = request.getParameter("login_pass");
 
 		// loginIdとloginPassの正規化チェック 半角英数字、ハイフン、アンダースコアのみ許可
-		if(login_id.matches("[0-9a-zA-Z\\-\\_]+") && login_pass.matches("[0-9a-zA-Z\\-\\_]+")) {
+		if(DataValid.isAlphanum(login_id) && DataValid.isAlphanum(login_pass)) {
 			try {
 				MembersDao UsersDao = DaoFactory.createMembersDao();
 				Members member2=UsersDao.login(login_id,  login_pass);

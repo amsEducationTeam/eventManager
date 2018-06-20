@@ -42,10 +42,10 @@
 	</div></div>
 
 	<div class="row">
-	<div class="col-md-3 col-md-offset-4">
+
 	<form action="FileIOServlet" method="post">
 		<input type="hidden" name="fileName"  value="memberInsert">
-		<input type="submit" class="btn btn-primary center-block btn-block" value="メンバー登録" />
+		<input type="submit" class="btn btn-primary center-block btn-block form-control" value="メンバー登録" />
 		<c:if test="${!empty memberInsertcomplete}">
 			<div class="alert alert-warning" role="alert">登録が完了しました</div>
 		</c:if>
@@ -53,14 +53,14 @@
 			<div class="alert alert-warning" role="alert">処理ができません</div>
 		</c:if>
 	</form>
-	</div></div>
+	</div>
 	<hr>
 
 	<div class="row">
-	<div class="col-md-3 col-md-offset-4">
+
 	<form action="FileIOServlet" method="post">
 		<input type="hidden" name="fileName" value="accountInsert">
-		<input type="submit" class="btn btn-primary center-block btn-block" value="アカウント登録" />
+		<input type="submit" class="btn btn-primary center-block btn-block form-control" value="アカウント登録" />
 		<c:if test="${!empty accountInsertcomplete}">
 			<div class="alert alert-warning" role="alert">登録が完了しました</div>
 		</c:if>
@@ -68,14 +68,14 @@
 			<div class="alert alert-warning" role="alert">処理ができません</div>
 		</c:if>
 	</form>
-	</div></div>
+	</div>
 	<hr>
 
 	<div class="row">
-	<div class="col-md-3 col-md-offset-4">
+
 	<form action="FileIOServlet" method="post">
 		<input type="hidden" name="fileName" value="placeInsert">
-		<input type="submit" class="btn btn-primary center-block btn-block" value="会議室登録" />
+		<input type="submit" class="btn btn-primary center-block btn-block form-control" value="会議室登録" />
 		<c:if test="${!empty placeInsertcomplete}">
 			<div class="alert alert-warning" role="alert">登録が完了しました</div>
 		</c:if>
@@ -83,14 +83,14 @@
 			<div class="alert alert-warning" role="alert">処理ができません</div>
 		</c:if>
 	</form>
-	</div></div>
+	</div>
 	<hr>
 
 	<div class="row">
-	<div class="col-md-3 col-md-offset-4">
+
 	<form action="FileIOServlet" method="post">
 		<input type="hidden" name="fileName" value="departInsert">
-		<input type="submit" class="btn btn-primary center-block btn-block" value="部署登録" />
+		<input type="submit" class="btn btn-primary center-block btn-block form-control" value="部署登録" />
 		<c:if test="${!empty departInsertcomplete}">
 			<div class="alert alert-warning" role="alert">登録が完了しました</div>
 		</c:if>
@@ -98,7 +98,7 @@
 			<div class="alert alert-warning" role="alert">処理ができません</div>
 		</c:if>
 	</form>
-	</div></div>
+	</div>
 	</div>
 
 

@@ -8,10 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.naming.NamingException;
-
 import com.DataValid;
-import com.javaranch.unittest.helper.sql.pool.JNDIUnitTestHelper;
 
 import dao.DaoFactory;
 import dao.MembersDao;
@@ -20,28 +17,30 @@ import domain.Members;
 public class MemberFileReader extends EventMgFileIO {
 	private String fileName;
 	static String errorCode="100";
+	static final String className = new Object(){}.getClass().getEnclosingClass().getName();
 
-	public static void main(String args[]) {
-		int valid_data_quantity = 9;
-		try {
-			MemberFileReader MembersFileReader = new MemberFileReader("c:\\work_1\\Member_20180601.csv",
-					valid_data_quantity);
 
-			/*
-			 *Junitを使うまではこれで接続します
-			 */
-			try {
-				JNDIUnitTestHelper.init("WebContent/WEB-INF/classes/jndi_unit_test_helper.properties");
-			} catch (NamingException e) {
-				e.printStackTrace();
-			}
-
-			String result = MembersFileReader.main();
-			System.out.print(result);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String args[]) {
+//		int valid_data_quantity = 9;
+//		try {
+//			MemberFileReader MembersFileReader = new MemberFileReader("c:\\work_1\\Member_20180601.csv",
+//					valid_data_quantity);
+//
+//			/*
+//			 *Junitを使うまではこれで接続します
+//			 */
+//			try {
+//				JNDIUnitTestHelper.init("WebContent/WEB-INF/classes/jndi_unit_test_helper.properties");
+//			} catch (NamingException e) {
+//				e.printStackTrace();
+//			}
+//
+//			String result = MembersFileReader.main();
+//			System.out.print(result);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	/**
 	 * ファイル名と列数をセットします
@@ -96,6 +95,8 @@ public class MemberFileReader extends EventMgFileIO {
 					hired = df2.parse(year + columns[7]);
 				} catch (ParseException p) {
 					result="201";
+
+					 logger.error(className+p.getMessage());
 					return result;
 				}
 
@@ -113,10 +114,10 @@ public class MemberFileReader extends EventMgFileIO {
 				MembersList.add(domain);
 			} else {
 				result = "データ有効性エラー";
+				 logger.error(className);
 				return result;
 			}
 		}
-
 		//リストをDB登録
 		try {
 			MembersDao MembersDao = DaoFactory.createMembersDao();
@@ -125,10 +126,12 @@ public class MemberFileReader extends EventMgFileIO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			result = "DB接続エラー";
+
+			 logger.error(className+e.getMessage());
 			return result;
 		}
 
-		return SUCCESS;
+		return result;
 	}
 
 	/**
