@@ -3,9 +3,10 @@ package fileio;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.DataValid;
+
 import dao.DaoFactory;
 import dao.DepartDao;
-import domain.DataValid;
 import domain.Depart;
 
 public class DepartFileReader extends EventMgFileIO {
