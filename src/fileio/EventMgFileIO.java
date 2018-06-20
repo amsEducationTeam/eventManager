@@ -10,6 +10,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.OutputLog;
 /**
  *  このクラスはCSVファイルの読み込みと
  *  ファイル共通のファイル有効性検査を行うクラスです
@@ -20,7 +22,7 @@ import java.util.List;
  *  @author ICG
  */
 
-public abstract class EventMgFileIO {
+public abstract class EventMgFileIO extends OutputLog {
 	/** ファイル名 インスタンス時に外部からセットします*/
 	private String fileName;
 	/** データタイプコードを含めた列数 インスタンス時に外部からセットします*/

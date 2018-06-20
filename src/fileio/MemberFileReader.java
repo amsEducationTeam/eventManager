@@ -17,6 +17,8 @@ import domain.Members;
 public class MemberFileReader extends EventMgFileIO {
 	private String fileName;
 	static String errorCode="100";
+	static final String className = new Object(){}.getClass().getEnclosingClass().getName();
+
 
 //	public static void main(String args[]) {
 //		int valid_data_quantity = 9;
@@ -94,6 +96,7 @@ public class MemberFileReader extends EventMgFileIO {
 				} catch (ParseException p) {
 					result="201";
 
+					 logger.error(className+p.getMessage());
 					return result;
 				}
 
@@ -111,6 +114,7 @@ public class MemberFileReader extends EventMgFileIO {
 				MembersList.add(domain);
 			} else {
 				result = "データ有効性エラー";
+				 logger.error(className);
 				return result;
 			}
 		}
@@ -122,6 +126,8 @@ public class MemberFileReader extends EventMgFileIO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			result = "DB接続エラー";
+
+			 logger.error(className+e.getMessage());
 			return result;
 		}
 
