@@ -183,7 +183,6 @@ public class EventsDaoImplTest extends TestDBAccess{
 		assertThat(evList.size(), is(5));
 	}
 
-
 	/**
 	 * イベントデータを5件まで取得し、FindAllで取得したイベントidを参照し、各情報をリストに格納する
 	 * @throws Exception
@@ -198,7 +197,7 @@ public class EventsDaoImplTest extends TestDBAccess{
 		assertThat(fiveEvents.get(0).getMember_name(), is("山本葵"));
 		assertThat(fiveEvents.get(1).getTitle(), is("経理部ミーティング"));
 		assertThat(fiveEvents.get(2).getDetail(), is("総務部でのミーティングです"));
-		assertThat(fiveEvents.get(3).getDep_name(), is("営業"));
+		assertThat(fiveEvents.get(3).getDep_name(), is("営業部"));
 		assertThat(fiveEvents.get(4).getStart().toString(), is("2018-06-20 13:00:00.0"));
 	}
 
@@ -213,7 +212,7 @@ public class EventsDaoImplTest extends TestDBAccess{
 		List<Events> eventList = eventsDao.findToday(0);
 
 		// DBのeventsテーブルでstartが今日のイベントid
-		final int ID = 3;
+		final int ID = 5;
 
 		assertThat(eventList.get(0).getEvent_id(), is(ID));
 	}
