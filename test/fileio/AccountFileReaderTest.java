@@ -26,12 +26,14 @@ public class AccountFileReaderTest extends TestDBAccess {
 
 	//異常系
 	String FALSE_DATA="H";
-	String FALSE_MEMBERID="壱";
-	String FALSE_LOGINID="ログインID";
+	String FALSE_MEMBERID="あいうえおかきくけこ";
+	String FALSE_MEMBERID2="111111111111";
+	String FALSE_LOGINID="ログインＩＤ番号20180402-t-tanaka";
+	String FALSE_LOGINID2="ログインID";
 	String FALSE_LOGINPASS="ログインパス";
+	String FALSE_LOGINPASS2="loginid_20180402";
 	String FALSE_AUTHID="10";
 	String FALSE_AUTHID2="壱";
-
 
 	static DataSource  ds;
 
@@ -56,7 +58,6 @@ public class AccountFileReaderTest extends TestDBAccess {
 			}
 			throw new RuntimeException(e);
 		  }
-
 
 		try (Connection con = ds.getConnection()){
 
@@ -176,6 +177,7 @@ public class AccountFileReaderTest extends TestDBAccess {
 	@Test
 	public void testEnableLine異常1() {
 
+		//メンバーID異常
 		String[] a= {FALSE_DATA,FALSE_MEMBERID,LOGINID,LOGINPASS,AUTHID};
 		boolean check =accountFileReader.enableLine(a);
 		assertThat(check,is(false));
@@ -184,23 +186,47 @@ public class AccountFileReaderTest extends TestDBAccess {
 	@Test
 	public void testEnableLine異常2() {
 
-		String[] a= {FALSE_DATA,MEMBERID,FALSE_LOGINID,LOGINPASS,AUTHID};
+		//メンバーID異常
+		String[] a= {FALSE_DATA,FALSE_MEMBERID2,LOGINID,LOGINPASS,AUTHID};
 		boolean check =accountFileReader.enableLine(a);
 		assertThat(check,is(false));
 	}
 
 	@Test
 	public void testEnableLine異常3() {
-
-		String[] a= {FALSE_DATA,MEMBERID,LOGINID,FALSE_LOGINPASS,AUTHID};
+		//ログインID異常
+		String[] a= {FALSE_DATA,MEMBERID,FALSE_LOGINID,LOGINPASS,AUTHID};
 		boolean check =accountFileReader.enableLine(a);
 		assertThat(check,is(false));
 	}
 
 	@Test
 	public void testEnableLine異常4() {
+		//ログインID異常
+		String[] a= {FALSE_DATA,MEMBERID,FALSE_LOGINID2,LOGINPASS,AUTHID};
+		boolean check =accountFileReader.enableLine(a);
+		assertThat(check,is(false));
+	}
 
+	@Test
+	public void testEnableLine異常5() {
+		//ログインパス異常
+		String[] a= {FALSE_DATA,MEMBERID,LOGINID,FALSE_LOGINPASS,AUTHID};
+		boolean check =accountFileReader.enableLine(a);
+		assertThat(check,is(false));
+	}
 
+	@Test
+	public void testEnableLine異常6() {
+		//ログインパス異常
+		String[] a= {FALSE_DATA,MEMBERID,LOGINID,FALSE_LOGINPASS2,AUTHID};
+		boolean check =accountFileReader.enableLine(a);
+		assertThat(check,is(false));
+	}
+	@Test
+	public void testEnableLine異常7() {
+
+		//管理ID以上
 		String[] a= {FALSE_DATA,MEMBERID,LOGINID,LOGINPASS,FALSE_AUTHID};
 		boolean check =accountFileReader.enableLine(a);
 		assertThat(check,is(false));
@@ -209,8 +235,8 @@ public class AccountFileReaderTest extends TestDBAccess {
 
 
 	@Test
-	public void testEnableLine異常5() {
-
+	public void testEnableLine異常8() {
+		//管理ID以上
 		try {
 			String[] a= {FALSE_DATA,MEMBERID,LOGINID,LOGINPASS,FALSE_AUTHID2};
 			boolean check =accountFileReader.enableLine(a);
@@ -221,7 +247,5 @@ public class AccountFileReaderTest extends TestDBAccess {
 			assertThat(e.getMessage(),is(Result));
 		}
 	}
-
-
 
 }

@@ -1,14 +1,9 @@
 package fileio;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.NamingException;
-
 import org.mindrot.jbcrypt.BCrypt;
-
-import com.javaranch.unittest.helper.sql.pool.JNDIUnitTestHelper;
 
 import dao.AccountDao;
 import dao.DaoFactory;
@@ -19,27 +14,27 @@ public class AccountFileReader extends EventMgFileIO {
 	private String fileName;
 	static String CHECKCODE="100";
 
-	public static void main(String args[]) {
-		int valid_data_quantity = 5;
-		try {
-			AccountFileReader accountFileReader = new AccountFileReader("c:\\work_1\\account_20180601.csv",
-					valid_data_quantity);
-			/*
-			 *Junitを使うまではこれで接続します
-			 */
-			try {
-				JNDIUnitTestHelper.init("WebContent/WEB-INF/classes/jndi_unit_test_helper.properties");
-			} catch (NamingException | IOException e) {
-				e.printStackTrace();
-			}
-
-			String result = accountFileReader.main();
-			System.out.print(result);
-	System.out.print(CHECKCODE);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String args[]) {
+//		int valid_data_quantity = 5;
+//		try {
+//			AccountFileReader accountFileReader = new AccountFileReader("c:\\work_1\\account_20180601.csv",
+//					valid_data_quantity);
+//			/*
+//			 *Junitを使うまではこれで接続します
+//			 */
+//			try {
+//				JNDIUnitTestHelper.init("WebContent/WEB-INF/classes/jndi_unit_test_helper.properties");
+//			} catch (NamingException | IOException e) {
+//				e.printStackTrace();
+//			}
+//
+//			String result = accountFileReader.main();
+//			System.out.println(result);
+//	System.out.println(CHECKCODE);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	/**
 	 * ファイル名と列数をセットします
