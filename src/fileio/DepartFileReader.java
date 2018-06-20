@@ -10,7 +10,6 @@ import domain.Depart;
 
 public class DepartFileReader extends EventMgFileIO {
 	static final int VALID_DATA_QUANTITY = 4;
-	private static int data_amount = 0;
 
 //	public static void main(String args[]) {
 //
@@ -75,7 +74,6 @@ public class DepartFileReader extends EventMgFileIO {
 				depData.setPosition_type(Integer.parseInt(columns[3]));
 				// リストに追加
 				DepartList.add(depData);
-				data_amount++;
 			} else {
 				result = "データ有効性エラー";
 				return result;
@@ -84,7 +82,7 @@ public class DepartFileReader extends EventMgFileIO {
 
 		// Departリストデータをinsert
 		DepartDao DepartDao = DaoFactory.createDepartDao();
-		result = DepartDao.insert(DepartList,data_amount);
+		result = DepartDao.insert(DepartList);
 		return result;
 	}
 

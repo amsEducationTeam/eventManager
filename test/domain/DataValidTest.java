@@ -7,6 +7,8 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import domain.DataValid;
+
 public class DataValidTest {
 
 	static final int INT_NUM = 5;

@@ -25,13 +25,10 @@ public class DepartDaoImpl implements DepartDao {
 		return null;
 	}
 
-	public String insert(List<Depart> department, int datacounter) throws Exception {
+	public String insert(List<Depart> department) throws Exception {
 
 		try (Connection con = ds.getConnection()) {
 			//必ず決まっているデータのスタート地点をセット（テーブルによって量、数値が変わります）
-			int data1 = 0;
-			//int data2 = 2;
-			//Connection conn = null;
 			try {
 				//DB接続
 				//オートコミットを切る
@@ -39,12 +36,12 @@ public class DepartDaoImpl implements DepartDao {
 
 				//departmentテーブルに部署名とフロア情報を挿入
 				//membersテーブルにpositionタイプ（役職情報）を挿入
-				for (int i = 0; i < datacounter; i++) {
+				for (Depart depart:department) {
 
 					String sql = "insert into department (dep_id,department,floor)  values (null,?,?)";
 					PreparedStatement stmt = con.prepareStatement(sql);
-					stmt.setObject(1, department.get(data1).getDepartment());
-					stmt.setObject(2, department.get(data1).getFloor());
+					stmt.setObject(1, depart.getDepartment());
+					stmt.setObject(2, depart.getFloor());
 					System.out.println(stmt);
 					stmt.executeUpdate();
 
@@ -52,7 +49,7 @@ public class DepartDaoImpl implements DepartDao {
 
 					String sql1 = "SELECT COUNT(*) from members where member_id=?";
 					PreparedStatement stmt1 = con.prepareStatement(sql1);
-					stmt1.setObject(1, department.get(data1).getPosition_type());
+					stmt1.setObject(1, depart.getPosition_type());
 					ResultSet rs = stmt1.executeQuery();
 					int member_count = 0;
 					while (rs.next()) {
@@ -68,12 +65,10 @@ public class DepartDaoImpl implements DepartDao {
 						//membersテーブルにpositionタイプ（役職情報）を挿入
 						String sql2 = "update Members set position_type =1 where member_id=?;";
 						PreparedStatement stmt2 = con.prepareStatement(sql2);
-						stmt2.setObject(1, department.get(data1).getPosition_type());
+						stmt2.setObject(1, depart.getPosition_type());
 						System.out.println(stmt2);
 						stmt2.executeUpdate();
 					}
-					//次のデータの位置にインデックスを変える（テーブルによって量、数値が変わります）
-					data1++;
 				}
 
 				//エラーがなければコミットする
