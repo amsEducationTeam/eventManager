@@ -328,23 +328,17 @@ public class PlaceFileReaderTest extends TestDBAccess {
 		}
 	}
 
-
 	// 各ファイルごとに調整したデータチェックのテスト 空白
 	@Test
 	public void 異常系testEnableLine() {
 		try {
 			PlaceFileReader PlaceFileReader = new PlaceFileReader(LEGAL_FILE_NAME, COLUMNS);
-			//int i = 0;
 			for(String[] columns:BAD_DATA_LIST) {
 				assertThat( PlaceFileReader.enableLine(columns), is(false));
-			//	i++;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
-
-
 
 }
