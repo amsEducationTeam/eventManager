@@ -240,7 +240,7 @@ public class MembersDaoImpl implements MembersDao {
 			}
 			con.commit();
 		} catch (Exception e) {
-			return "302";
+			return "300";
 		}
 		return "100";
 	}
