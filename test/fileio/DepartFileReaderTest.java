@@ -19,13 +19,17 @@ import com.TestDBAccess;
 import com.javaranch.unittest.helper.sql.pool.JNDIUnitTestHelper;
 
 public class DepartFileReaderTest extends TestDBAccess {
-	final String FILE_NAME = "C:\\work\\department_20180601.csv";
-	final int COLUMNS = 4;
+	private final String FILE_NAME[] = {"C:\\work\\department_20180601.csv",
+			"C:\\xxxx.csv", "C:\\work\\lossDataFile.csv"};
+	private final int COLUMNS = 4;
+	private final DepartFileReader DEP_FIL_RED = new DepartFileReader(FILE_NAME[0], COLUMNS);
+
 	static DataSource ds;
 
-//	private final static int DEP_ID[] = {1, 2, 3, 4, 5};
 	private final static String DEP_NAME[] = {"人事部", "経理部", "総務部", "営業部", "開発部"};
 	private final static int DEP_FLOOR[] = {4, 2, 2, 3, 4};
+	protected final String FAULT_DATA[] =
+		{"123456789012345678901234567890123456789012345678901234567890", "1145141919", "部長"};
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -53,7 +57,6 @@ public class DepartFileReaderTest extends TestDBAccess {
 				conn.setAutoCommit(false);
 				String sqlTrn = "TRUNCATE TABLE eventdb2.department;";
 				Statement stmt = (Statement) conn.createStatement();
-System.out.println("truncateしました");
 				stmt.executeUpdate(sqlTrn);
 
 				String sqlDep = "INSERT INTO department(department, floor) VALUES"
@@ -63,13 +66,10 @@ System.out.println("truncateしました");
 						+ " ('"+DEP_NAME[3]+"', "+DEP_FLOOR[3]+"),"
 						+ " ('"+DEP_NAME[4]+"', "+DEP_FLOOR[4]+");";
 				Statement stmtDep = (Statement) conn.createStatement();
-System.out.println("insertしました");
 				stmtDep.executeUpdate(sqlDep);
-System.out.println("update後");
 
 				//エラーがなければコミットする
 				conn.commit();
-System.out.println("commit後");
 
 			}
 			//挿入時にエラーが発生したらロールバックしてエラー文を表示
@@ -91,23 +91,73 @@ System.out.println("commit後");
 		}
 	}
 
+
+	// 正常パターン
 	@Test
 	public void testMain() throws NamingException, IOException {
-		DepartFileReader DepartFileReader = new DepartFileReader(FILE_NAME, COLUMNS);
-//		try {
-			JNDIUnitTestHelper.init("WebContent/WEB-INF/classes/jndi_unit_test_helper.properties");
-//		} catch (NamingException | IOException e) {
-//			e.printStackTrace();
-//		}
-		String result = DepartFileReader.main();
+		JNDIUnitTestHelper.init("WebContent/WEB-INF/classes/jndi_unit_test_helper.properties");
+
+		String result = DEP_FIL_RED.main();
 		System.out.print(result);
 
 		assertThat(result, is("100"));
 	}
 
+
+	@Test
+	public void faultTestMainFile() throws NamingException, IOException {
+		// 存在しないファイル
+		DepartFileReader DepFaultFilReader = new DepartFileReader(FILE_NAME[1], COLUMNS);
+		JNDIUnitTestHelper.init("WebContent/WEB-INF/classes/jndi_unit_test_helper.properties");
+
+		String result = DepFaultFilReader.main();
+		assertThat(result, is("ファイル読み込みエラー"));
+
+		DepartFileReader DepFaultFilRed = new DepartFileReader(FILE_NAME[2], COLUMNS);
+		String result2 = DepFaultFilRed.main();
+		assertThat(result2, is("指定のファイルが存在しません"));
+
+		// fileRead失敗
+
+//		// enableLine(columns) false
+//		String[] faultEnableString = {"12", "", "25"};
+//		DepFilReader.main(faultEnableString);
+
+		// departDao.insert失敗
+
+	}
+
+	@Test
+	public void faultTestEnableLineFile() throws NamingException, IOException {
+		JNDIUnitTestHelper.init("WebContent/WEB-INF/classes/jndi_unit_test_helper.properties");
+
+		// データ行にnull
+		String[] LostString = {"12", "", "DEP_NAME[2]"};
+		boolean dataNull = DEP_FIL_RED.enableLine(LostString);
+		assertThat(dataNull, is(false));
+
+		// 部署名の文字数超過
+		String[] overString1 = {"D", "FAULT_DATA[0]", "DEP_FLOOR[1]", "DEP_FLOOR[1]"};
+		boolean dataOver1 = DEP_FIL_RED.enableLine(overString1);
+		assertThat(dataOver1, is(false));
+
+		// 部長IDの文字超過
+		String[] overString3 = {"D", "DEP_FLOOR[2]", "DEP_FLOOR[1]", "FAULT_DATA[1]"};
+		boolean dataOver3 = DEP_FIL_RED.enableLine(overString3);
+		assertThat(dataOver3, is(false));
+
+		// 部長IDの文字規定違反
+		String[] faultString3 = {"D", "DEP_NAME[1]", "DEP_FLOOR[1]", "FAULT_DATA[2]"};
+		boolean dataFault3 = DEP_FIL_RED.enableLine(faultString3);
+		assertThat(dataFault3, is(false));
+	}
+
+
 	@Test
 	public void testEnableLine() {
-		// データチェック
+//		DepartFileReader DepartFileReader = new DepartFileReader(FILE_NAME, COLUMNS);
+//		// データチェック
+//		boolean result = DepartFileReader.enableLine();// 引数String[]
 
 		// columnsの1～4の全てが空ではあるか
 		// columnsの1が50文字以下ではないか
