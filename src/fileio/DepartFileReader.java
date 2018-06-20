@@ -1,13 +1,7 @@
 package fileio;
 
-import java.io.IOException;
-import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.naming.NamingException;
-
-import com.javaranch.unittest.helper.sql.pool.JNDIUnitTestHelper;
 
 import dao.DaoFactory;
 import dao.DepartDao;
@@ -18,27 +12,27 @@ public class DepartFileReader extends EventMgFileIO {
 	static final int VALID_DATA_QUANTITY = 4;
 	private static int data_amount = 0;
 
-	public static void main(String args[]) {
-
-		try {
-			DepartFileReader DepartFileReader = new DepartFileReader("c:\\work\\department_20180601.csv",
-					VALID_DATA_QUANTITY);
-
-			/*
-			 *Junitを使うまではこれで接続します
-			 */
-			try {
-				JNDIUnitTestHelper.init("WebContent/WEB-INF/classes/jndi_unit_test_helper.properties");
-			} catch (NamingException | IOException e) {
-				e.printStackTrace();
-			}
-
-			String result = DepartFileReader.main();
-			System.out.print(result);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String args[]) {
+//
+//		try {
+//			DepartFileReader DepartFileReader = new DepartFileReader("c:\\work\\department_20180601.csv",
+//					VALID_DATA_QUANTITY);
+//
+//			/*
+//			 *Junitを使うまではこれで接続します
+//			 */
+//			try {
+//				JNDIUnitTestHelper.init("WebContent/WEB-INF/classes/jndi_unit_test_helper.properties");
+//			} catch (NamingException | IOException e) {
+//				e.printStackTrace();
+//			}
+//
+//			String result = DepartFileReader.main();
+//			System.out.print(result);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	/**
 	 * ファイル名と列数をセットします
@@ -53,9 +47,9 @@ public class DepartFileReader extends EventMgFileIO {
 	/**
 	 * このクラスのメイン処理です
 	 * @return String 結果コードを返却します
-	 * @throws NoSuchFileException
+	 * @throws Exception
 	 */
-	public String main() throws NoSuchFileException {
+	public String main() throws Exception {
 
 		String result = null; //結果
 
@@ -75,12 +69,12 @@ public class DepartFileReader extends EventMgFileIO {
 			// データ有効性チェック
 			if (enableLine(columns)) {
 				// ドメインにセット
-				Depart acoData = new Depart();
-				acoData.setDepartment(columns[1]);
-				acoData.setFloor(Integer.parseInt(columns[2]));
-				acoData.setPosition_type(Integer.parseInt(columns[3]));
+				Depart depData = new Depart();
+				depData.setDepartment(columns[1]);
+				depData.setFloor(Integer.parseInt(columns[2]));
+				depData.setPosition_type(Integer.parseInt(columns[3]));
 				// リストに追加
-				DepartList.add(acoData);
+				DepartList.add(depData);
 				data_amount++;
 			} else {
 				result = "データ有効性エラー";
@@ -88,16 +82,9 @@ public class DepartFileReader extends EventMgFileIO {
 			}
 		}
 
-			// Departリストデータをinsert
-			try {
-				DepartDao DepartDao = DaoFactory.createDepartDao();
-				result = DepartDao.insert(DepartList,data_amount);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				result = "DB接続エラー";
-				return result;
-			}
+		// Departリストデータをinsert
+		DepartDao DepartDao = DaoFactory.createDepartDao();
+		result = DepartDao.insert(DepartList,data_amount);
 		return result;
 	}
 
