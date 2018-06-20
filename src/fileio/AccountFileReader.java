@@ -103,14 +103,10 @@ public class AccountFileReader extends EventMgFileIO {
 			}
 		}
 		//リストをDB登録
-		for (Account account : accountList) {
-			// Accountリストデータをinsert
+		AccountDao accountDao = DaoFactory.createAccountDao();
 
-				AccountDao accountDao = DaoFactory.createAccountDao();
-				result=accountDao.insertAcount(account);
-
-
-		}
+		// Accountリストデータをinsert
+		result=accountDao.insertAcount(accountList);
 
 		return result;
 	}

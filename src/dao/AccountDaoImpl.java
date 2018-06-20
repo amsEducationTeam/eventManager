@@ -2,7 +2,6 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -25,63 +24,41 @@ public class AccountDaoImpl implements AccountDao {
 	 * @param Account
 	 */
 	@Override
-	public String insertAcount(Account account) throws Exception {
+	public String insertAcount(List<Account> accountList) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			try {
 				//オートコミットを切る
 				con.setAutoCommit(false);
+				for(Account account:accountList) {
 
-				// アカウントテーブルに各idとpassをINSERTする
-				String sqlAcc = "INSERT INTO account(login_id,login_pass, auth_id) VALUES(?,?,?);";
-				PreparedStatement stmtAcc = con.prepareStatement(sqlAcc);
-				//account
-				stmtAcc.setString(1, account.getLoginId());
-				String hashPass = BCrypt.hashpw(account.getLoginPass(), BCrypt.gensalt());
-				stmtAcc.setString(2, hashPass);
-				stmtAcc.setObject(3, account.getAuthId());
-				stmtAcc.executeUpdate();
-
-				// members.member_idがあるかチェック
-				String memCheck = "SELECT COUNT(*) from members where member_id=?";
-				PreparedStatement stmtMC = con.prepareStatement(memCheck);
-				stmtMC.setString(1, account.getMemberId());
-				ResultSet rs = stmtMC.executeQuery();
-				int count=0;
-				while(rs.next()) {
-					count=Integer.parseInt(rs.getString("count(*)"));
-				}
-
-				if(count==1) {
-					// members
-					// メンバテーブルのlogin_idにidをINSERTする
+					// membersテーブルのlogin_idにidをセット
 					String sqlMem = "UPDATE members SET login_id = ? WHERE member_id = ?;";
 					PreparedStatement stmtMem = con.prepareStatement(sqlMem);
 					stmtMem.setString(1, account.getLoginId());
 					stmtMem.setString(2, account.getMemberId());
-					stmtMem.executeUpdate();
-				}else {
-					con.rollback();
-//					System.out.println("error1");
-					return "903";
+					int udCnt=stmtMem.executeUpdate();
+
+					if(udCnt!=0) {
+						// accountテーブルにINSERTする
+						String sqlAcc = "INSERT INTO account(login_id,login_pass, auth_id) VALUES(?,?,?);";
+						PreparedStatement stmtAcc = con.prepareStatement(sqlAcc);
+						stmtAcc.setString(1, account.getLoginId());
+						String hashPass = BCrypt.hashpw(account.getLoginPass(), BCrypt.gensalt());//パスワードハッシュ化
+						stmtAcc.setString(2, hashPass);
+						stmtAcc.setObject(3, account.getAuthId());
+						stmtAcc.executeUpdate();
+					}else {
+						con.rollback();
+						return "300";
+					}
 				}
 				con.commit();
 			} //挿入時にエラーが発生したらロールバックしてエラー文を表示
-			catch (Exception e) {
-				System.out.println("error2");
+			catch (SQLException e) {
 				e.printStackTrace();
-					con.rollback();
-					return "302";
+				con.rollback();
+				return "300";
 
-			} finally {
-				try {
-					if (con != null) {
-						con.close();
-
-					}
-				} catch (SQLException e) {
-//					System.out.println("error3");
-					return "904";
-				}
 			}
 		}
 		return "100";
