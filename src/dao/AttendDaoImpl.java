@@ -183,8 +183,6 @@ public class AttendDaoImpl implements MembersDao, AttendDao {
 
 
 
-
-
 	@Override
 	public Members login(String loginId, String loginPass) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
@@ -238,10 +236,6 @@ public class AttendDaoImpl implements MembersDao, AttendDao {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
-
-
-
-
 
 
 
