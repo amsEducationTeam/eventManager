@@ -6,6 +6,6 @@ import domain.Place;
 public interface PlaceDao {
 
 
-	String insert(List<Place> place,int amount)throws Exception;
+	String insert(List<Place> place)throws Exception;
 
 }

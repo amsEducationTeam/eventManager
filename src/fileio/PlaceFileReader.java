@@ -18,7 +18,7 @@ import domain.Place;
 
 public class PlaceFileReader extends EventMgFileIO {
 
-	private static int amount=0;
+
 	public static void main(String args[]) {
 		int valid_data_quantity = 8;
 		try {
@@ -93,7 +93,7 @@ public class PlaceFileReader extends EventMgFileIO {
 
 				// リストに追加
 				PlaceList.add(acoData);
-				amount++;
+
 			} else {
 				result = "データ有効性エラー";
 				return result;
@@ -104,7 +104,7 @@ public class PlaceFileReader extends EventMgFileIO {
 
 		try {
 			PlaceDao PlaceDao=DaoFactory.createPlaceDao();
-			result=PlaceDao.insert(PlaceList,amount);
+			result=PlaceDao.insert(PlaceList);
 		}catch(Exception e) {
 			e.printStackTrace();
 			result = "DB接続エラー";

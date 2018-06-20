@@ -18,22 +18,22 @@ public class PlaceDaoImpl implements PlaceDao {
 		this.ds = ds;
 	}
 
-	public String insert(List<Place> place,int amount) throws Exception {
+	public String insert(List<Place> placeList) throws Exception {
 		try (Connection con = ds.getConnection()) {
 
 			try {
 				con.setAutoCommit(false);
 
-				for(int i=0; i<amount;i++) {
+				for(Place place:placeList) {
 				String sql1 = "SELECT member_id from members where member_id=?;";
 				PreparedStatement stmt1 = con.prepareStatement(sql1);
-				stmt1.setString(1, place.get(i).getAdmin_id().toString());
+				stmt1.setString(1, place.getAdmin_id().toString());
 				ResultSet rs = stmt1.executeQuery();
 				//System.out.println(rs);
 
 				String sql2 = "SELECT COUNT(*) from place where place=?";
 				PreparedStatement stmt2 = con.prepareStatement(sql2);
-				stmt2.setString(1, place.get(i).getPlace());
+				stmt2.setString(1, place.getPlace());
 				ResultSet rs2 = stmt2.executeQuery();
 				int place_count = 0;
 				while (rs2.next()) {
@@ -54,14 +54,14 @@ public class PlaceDaoImpl implements PlaceDao {
 					String sql = "INSERT INTO place"
 							+ "(place,capa,equ_mic,equ_whitebord,equ_projector, admin_id,locking_time) "
 							+ "VALUES(?,?,?,?,?,?,?);";
-					Timestamp LockTime = new Timestamp(place.get(i).getLocking_time().getTime());
+					Timestamp LockTime = new Timestamp(place.getLocking_time().getTime());
 					PreparedStatement stmt = con.prepareStatement(sql);
-					stmt.setString(1, place.get(i).getPlace());
-					stmt.setObject(2, place.get(i).getCapa());
-					stmt.setObject(3, place.get(i).getEqu_mic());
-					stmt.setObject(4, place.get(i).getEqu_whitebord());
-					stmt.setObject(5, place.get(i).getEqu_projector());
-					stmt.setObject(6, place.get(i).getAdmin_id());
+					stmt.setString(1, place.getPlace());
+					stmt.setObject(2, place.getCapa());
+					stmt.setObject(3, place.getEqu_mic());
+					stmt.setObject(4, place.getEqu_whitebord());
+					stmt.setObject(5, place.getEqu_projector());
+					stmt.setObject(6, place.getAdmin_id());
 					stmt.setTimestamp(7, LockTime);
 					stmt.executeUpdate();
 				}
