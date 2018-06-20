@@ -108,10 +108,10 @@ public class DepartFileReader extends EventMgFileIO {
 
 		//データ項目の個別チェック
 		if (!DataValid.limitChar(columns[1], 50) ||
+				!DataValid.isNum(columns[2]) ||
 				!DataValid.limitChar(columns[3], 8) ||
 				!DataValid.isAlphanum(columns[3])) {
 			return false;
-
 		}
 		return true;
 
