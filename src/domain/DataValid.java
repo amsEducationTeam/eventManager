@@ -150,7 +150,7 @@ public class DataValid {
 		return result;
 	}
 
-	//不等号の向きと条件論理演算子を下記説明通りになるように変更しました
+	//不等号の向きと論理演算子を下記説明通りになるように変更しました
 	/**
 	 * int型の第一引数Valueが第二引数begin以上、第三引数end以下ならtrueを返す
 	 * @param int value, int begin, int true

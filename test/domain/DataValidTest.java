@@ -12,7 +12,8 @@ public class DataValidTest {
 	static final int INT_NUM = 5;
 	static final Integer FALSE_NUM= null;
 	static final String STRING_CHAR ="あいうえお";
-	static final String FALSE_CHAR =null;
+	static final String FALSE_NULL_CHAR =null;
+	static final String FALSE_EMPTY_CHAR ="";
 	static final Date DATE = new Date();
 	static final  Date FALSE_DATE = null;
 	static final String STR ="あいうえお";
@@ -32,7 +33,8 @@ public class DataValidTest {
 	static final int VALUE=5;
 	static final int BEGIN=0;
 	static final int END=10;
-	static final int FALSE_VALUE=5;
+	static final int FALSE_VALUE_OVER=5;
+	static final int FALSE_VALUE_UNDER=1;
 	static final int FALSE_BEGIN=2;
 	static final int FALSE_END=4;
 	static final String STR_DATE="2018/06/12";
@@ -41,8 +43,11 @@ public class DataValidTest {
 	static final String TYPE1="M月d日";
 	static final String FALSE_STR_DATE="2018/06/12";
 	static final String FALSE_TYPE="M月d日";
+	static final String FALSE_STR_DATE2="2016/2/29";
 	static final String TIME="23:50";
 	static final String FALSE_TIME="12時50分";
+	static final String NULL_TIME=null;
+	static final String EMPTY_TIME="";
 	static final String TEL="00-1234-5678";
 	static final String TEL1="(00)1234-5678";
 	static final String TEL2="080-1234-5678";
@@ -69,8 +74,11 @@ public class DataValidTest {
 		assertThat(check, is(true));
 
 
-		boolean check2 = DataValid.isNotNull(FALSE_CHAR);
+		boolean check2 = DataValid.isNotNull(FALSE_NULL_CHAR);
 		assertThat(check2, is(false));
+
+		boolean check3 = DataValid.isNotNull(FALSE_EMPTY_CHAR);
+		assertThat(check3, is(false));
 	}
 
 	@Test
@@ -169,11 +177,11 @@ public class DataValidTest {
 		boolean check =DataValid.isRange(VALUE, BEGIN, END);
 		assertThat(check, is(true));
 
-
-
-
-		boolean check2 =DataValid.isRange(FALSE_VALUE, FALSE_BEGIN, FALSE_END);
+		boolean check2 =DataValid.isRange(FALSE_VALUE_OVER, FALSE_BEGIN, FALSE_END);
 		assertThat(check2, is(false));
+
+		boolean check3 =DataValid.isRange(FALSE_VALUE_UNDER, FALSE_BEGIN, FALSE_END);
+		assertThat(check3, is(false));
 	}
 
 	@Test
@@ -188,9 +196,11 @@ public class DataValidTest {
 		assertThat(check1, is(true));
 
 
-
 		boolean check2 =DataValid.isDateFormat(FALSE_STR_DATE,FALSE_TYPE);
 		assertThat(check2, is(false));
+
+		boolean check3 = DataValid.isDateFormat(FALSE_STR_DATE2,TYPE);
+		assertThat(check3, is(false));
 	}
 
 	@Test
@@ -199,8 +209,14 @@ public class DataValidTest {
 		assertThat(check, is(true));
 
 
-		boolean checkfalse =DataValid.isTimeFormat(FALSE_TIME);
-		assertThat(checkfalse, is(false));
+		boolean checkfalse1 =DataValid.isTimeFormat(FALSE_TIME);
+		assertThat(checkfalse1, is(false));
+
+		boolean checkfalse2 =DataValid.isTimeFormat(NULL_TIME);
+		assertThat(checkfalse2, is(false));
+
+		boolean checkfalse3 =DataValid.isTimeFormat(EMPTY_TIME);
+		assertThat(checkfalse3, is(false));
 	}
 
 	@Test
