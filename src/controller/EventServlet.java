@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.DataValid;
+
 import dao.AttendDao;
 import dao.DaoFactory;
 import dao.EventsDao;
@@ -39,7 +41,7 @@ public class EventServlet extends HttpServlet {
 		// どのページ遷移かをパラメータから取得し定数と比較
 		//EventServName eventServName = EventServName.valueOf(request.getParameter("servName"));
 		String pageName = (String)request.getSession().getAttribute("servletName");
-		if(pageName==null || pageName == "") {
+		if(DataValid.isNotNull(pageName)) { //(pageName==null || pageName == "")
 			pageName = (String)request.getParameter("servletName");
 		}
 
@@ -66,7 +68,6 @@ public class EventServlet extends HttpServlet {
 						request.getSession().setAttribute("event_page", page); //セッションに格納する
 					} catch (Exception e) {
 						int prevnext = Integer.parseInt(request.getParameter("prevnext")); //eventslistから送られてきたのを受け取る
-						//セッションに保存したevent_pageを取得し、変数に格納する
 						int event_page = (Integer) request.getSession().getAttribute("event_page");
 
 						//←→をするための仕組みを準備する
@@ -90,8 +91,7 @@ public class EventServlet extends HttpServlet {
 					EventsDao eventsDao = DaoFactory.createEventsDao();
 					List<Events> eventsList = eventsDao.findfive(eventsDao.findAll(event_page), member_id);
 					//lastpageを設定する
-					double setpage = (eventsDao.countAll());
-					int lastpage = (int) Math.ceil(setpage / 5);
+					int lastpage = (eventsDao.countAll());
 					request.getSession().setAttribute("pageExist",lastpage );
 					request.setAttribute("eventsList", eventsList);
 					request.setAttribute("lastpage", lastpage);
@@ -151,11 +151,11 @@ public class EventServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String pageName = (String)request.getAttribute("servletName");
-		if(pageName==null) {
-			pageName = (String)request.getParameter("servletName");
+		String pageName = (String) request.getAttribute("servletName");
+		if (DataValid.isNotNull(pageName)) {
+			pageName = (String) request.getParameter("servletName");
 		}
-		switch(pageName) {
+		switch (pageName) {
 		default:
 			// doPostメソッドでは無効な処理 404ページへ遷移
 			break;
@@ -172,19 +172,19 @@ public class EventServlet extends HttpServlet {
 			try {
 				int event_id = Integer.parseInt(request.getParameter("event_id"));
 				request.getSession().setAttribute("findEventId", event_id);
-				} catch(Exception e){
+			} catch (Exception e) {
 
-				}
-				int findEventId=(int)request.getSession().getAttribute("findEventId");
+			}
+			int findEventId = (int) request.getSession().getAttribute("findEventId");
 
 			try {
 				EventsDao eventsDao = DaoFactory.createEventsDao();
 				Events event = eventsDao.findById(findEventId);
-				request.setAttribute("event",event);
+				request.setAttribute("event", event);
 				AttendDao attendDao = DaoFactory.createAttendDao();
 				List<Attend> attendList = attendDao.findAttends(findEventId);
-				request.setAttribute("attendList",attendList);
-	            request.getRequestDispatcher("view/eventinfo.jsp").forward(request, response);
+				request.setAttribute("attendList", attendList);
+				request.getRequestDispatcher("view/eventinfo.jsp").forward(request, response);
 			} catch (Exception e) {
 				throw new ServletException(e);
 			}
@@ -215,16 +215,16 @@ public class EventServlet extends HttpServlet {
 			event.setPlace_id(place_id);
 			event.setDep_id(dep_id);
 			event.setDetail(detail);
-			event.setRegistered_id((String)request.getSession().getAttribute("member_id"));
+			event.setRegistered_id((String) request.getSession().getAttribute("member_id"));
 
 			try {
 				EventsDao eventsDao = DaoFactory.createEventsDao();
 				eventsDao.update(event);
 				request.setAttribute("eventId", event_id);
 				request.getRequestDispatcher("view/eventeditDone.jsp").forward(request, response);
-				} catch (Exception e) {
+			} catch (Exception e) {
 				throw new ServletException(e);
-				}
+			}
 			break;
 
 		case EVENT_INSERT:
@@ -250,7 +250,7 @@ public class EventServlet extends HttpServlet {
 			event2.setPlace_id(place_id2);
 			event2.setDep_id(dep_id2);
 			event2.setDetail(detail2);
-			event2.setRegistered_id((String)request.getSession().getAttribute("member_id"));
+			event2.setRegistered_id((String) request.getSession().getAttribute("member_id"));
 
 			try {
 				EventsDao eventsDao = DaoFactory.createEventsDao();
@@ -319,8 +319,7 @@ public class EventServlet extends HttpServlet {
 			EventsDao eventsDao = DaoFactory.createEventsDao();
 			List<Events> eventsList = eventsDao.findfive(eventsDao.findToday(todayevent_page), member_id);
 			//lastpageを設定する
-			double setpage =(eventsDao.countAllToday());
-			int lastpage = (int) Math.ceil(setpage/5);
+			int lastpage =(eventsDao.countAllToday());
 			request.getSession().setAttribute("pageExist",lastpage );
 			request.setAttribute("lastpage", lastpage);
 			request.setAttribute("eventsList", eventsList);
@@ -329,122 +328,6 @@ public class EventServlet extends HttpServlet {
 			throw new ServletException(e);
 		}
 	}
-	protected void eventList(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
-		//pagenation用
-				int page = 0;
-				try {
-					try {
-						page = Integer.parseInt(request.getParameter("page")); //eventlist.jspから送られてきたのを受け取る
-
-						//pageに開始ページを格納する
-						if (page == 1) {
-							page = 0;
-						} else {
-							page = 5 * (page - 1);
-						}
-						request.getSession().setAttribute("event_page", page); //セッションに格納する
-					} catch (Exception e) {
-						int prevnext = Integer.parseInt(request.getParameter("prevnext")); //eventslistから送られてきたのを受け取る
-						//セッションに保存したevent_pageを取得し、変数に格納する
-						int event_page = (Integer) request.getSession().getAttribute("event_page");
-
-						//←→をするための仕組みを準備する
-						if (prevnext == 1) {
-							//もどる
-							event_page = event_page - 5;
-						} else {
-							//すすむ
-							event_page = event_page + 5;
-						}
-						request.getSession().setAttribute("event_page", event_page); //セッションに格納する
-					}
-				} catch (Exception e) {
-					page = 0; //navbarなどからこのページにきたときの処理
-					request.getSession().setAttribute("event_page", page); //セッションに格納する
-				}
-				String member_id = (String)request.getSession().getAttribute("member_id");
-				try {
-					//セッションに保存したevent_pageを取得し、変数に格納する
-					int event_page = (Integer) request.getSession().getAttribute("event_page");
-					EventsDao eventsDao = DaoFactory.createEventsDao();
-					List<Events> eventsList = eventsDao.findfive(eventsDao.findAll(event_page), member_id);
-					//lastpageを設定する
-					double setpage = (eventsDao.countAll());
-					int lastpage = (int) Math.ceil(setpage / 5);
-					request.setAttribute("eventsList", eventsList);
-					request.setAttribute("lastpage", lastpage);
-					request.getRequestDispatcher("view/eventlist.jsp").forward(request, response);
-				} catch (Exception e) {
-					throw new ServletException(e);
-				}
-	}
-	protected void eventInsert()  {
-		//
-
-	}
-	protected void eventInfo() {
-		//
-	}
-	protected void eventEdit() {
-		//
-
-	}
-	protected void eventEditPost() {
-		//
-	}
-	protected void eventInsertPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException  {
-		//
-		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-		String title2 = request.getParameter("title");
-		Date start2 = null;
-		Date end2 = null;
-		try {
-			start2 = sdf2.parse(request.getParameter("start"));
-			end2 = sdf2.parse(request.getParameter("end"));
-		} catch (ParseException e1) {
-			e1.printStackTrace();
-		}
-		//String place2=request.getParameter("place");
-		int place_id2 = Integer.parseInt(request.getParameter("place_id"));
-		int dep_id2 = Integer.parseInt(request.getParameter("dep_id"));
-		String detail2 = request.getParameter("detail");
-
-		Events event2 = new Events();
-		event2.setTitle(title2);
-		event2.setStart(start2);
-		event2.setEnd(end2);
-		event2.setPlace_id(place_id2);
-		event2.setDep_id(dep_id2);
-		event2.setDetail(detail2);
-		event2.setRegistered_id((String)request.getSession().getAttribute("member_id"));
-
-		try {
-			EventsDao eventsDao = DaoFactory.createEventsDao();
-			eventsDao.insert(event2);
-			request.getRequestDispatcher("view/eventinsertDone.jsp").forward(request, response);
-		} catch (Exception e) {
-			throw new ServletException(e);
-		}
-	}
-	protected void eventDeletePost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-		//今は使ってないメソッド
-		int event_id3 = Integer.parseInt(request.getParameter("event_id"));
-		try {
-			EventsDao eventsDao = DaoFactory.createEventsDao();
-			AttendDao attendDao = DaoFactory.createAttendDao();
-			Events event3 = new Events();
-			event3.setEvent_id(event_id3);
-			attendDao.deleteByEventId(event3);
-			eventsDao.delete(event3);
-			request.getRequestDispatcher("view/eventdelDone.jsp").forward(request, response);
-		} catch (Exception e) {
-			throw new ServletException(e);
-		}
-	}
-
-
-
 
 
 }
