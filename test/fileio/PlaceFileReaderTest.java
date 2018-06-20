@@ -29,6 +29,7 @@ import com.TestDBAccess;
 import com.mysql.jdbc.Statement;
 
 public class PlaceFileReaderTest extends TestDBAccess {
+	private final static String NORMAL_MEMBER_ID1 = "523";
 	private final static String LEGAL_FILE_NAME = "C:\\work_1\\place_20180601.csv";
 	private final static String BAD_FILE_NAME = "C:\\work_1\\place_20180601_0.csv";//ファイルなし
 	private final static String BAD_FILE_NAME_CHAR = "C:\\work_1\\place_20180601_2.csv";//ファイルキャラクターエラー
@@ -75,17 +76,29 @@ public class PlaceFileReaderTest extends TestDBAccess {
 			throw new RuntimeException(e);
 		}
 
-		//Placeテーブルの削除
+		//Placeテーブルの削除  memberからmember_idが"523"の削除してからインサート
 		try (Connection conn = testds.getConnection() ) {
 
 			try {
 				//SQL処理
+				conn.setAutoCommit(false);//オートコミットを外す
 				String sqlDel = "DELETE FROM place;";
 				Statement stmt = (Statement) conn.createStatement();
 				stmt.executeUpdate(sqlDel);
 
+				String sqlDel2 = "DELETE FROM members where member_id = '" +NORMAL_MEMBER_ID1+ "';";
+				Statement stmt2 = (Statement)conn.createStatement();
+				stmt2.executeUpdate(sqlDel2);
+
+				String sqlMem = "INSERT INTO `members` VALUES ('" + NORMAL_MEMBER_ID1 + "','田中小次郎"
+						+ "','タナカコジロウ','1990-12-12','東京都新宿区飯田橋54-10-1','090-6433-1200','2010-04-02',1,NULL,'kojiro');";
+				Statement stmt3 = (Statement) conn.createStatement();
+				stmt3.executeUpdate(sqlMem);
+
+				//エラーがなければコミットする
+				conn.commit();
 			}catch (Exception e) {
-				System.out.println("error1");
+				System.out.println("error11");
 				e.printStackTrace();
 				conn.rollback();
 
@@ -136,9 +149,16 @@ public class PlaceFileReaderTest extends TestDBAccess {
 		try (Connection conn = testds.getConnection() ) {
 			try {
 				//SQL処理
+				conn.setAutoCommit(false);//オートコミットを外す
 				String sqlDel = "DELETE FROM place;";
 				Statement stmt = (Statement) conn.createStatement();
 				stmt.executeUpdate(sqlDel);
+
+				String sqlDel2 = "DELETE FROM members where member_id = '" +NORMAL_MEMBER_ID1+ "';";
+				Statement stmt2 = (Statement)conn.createStatement();
+				stmt2.executeUpdate(sqlDel2);
+
+				conn.commit();
 
 			}
 			//挿入時にエラーが発生したらロールバックしてエラー文を表示
@@ -297,19 +317,6 @@ public class PlaceFileReaderTest extends TestDBAccess {
 			PlaceFileReader PlaceFileReader = new PlaceFileReader(BAD_FILE_NAME_DATA, COLUMNS);
 			String result = PlaceFileReader.main();
 			assertThat(result, is(ERROR_FILE_DATA));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	// DB接続エラー
-	@Test
-	public void 異常系testMain4() {
-		try {
-			PlaceFileReader PlaceFileReader = new PlaceFileReader(BAD_FILE_NAME_DB, COLUMNS);
-			String result = PlaceFileReader.main();
-			String expected = "302";
-			assertThat(result, is(expected));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
