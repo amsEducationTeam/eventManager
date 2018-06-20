@@ -1,7 +1,7 @@
 /**
  *
  */
-package domain;
+package com;
 
 import java.text.DateFormat;
 import java.text.ParseException;

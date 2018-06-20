@@ -63,7 +63,7 @@ public class PlaceDaoImplTest extends TestDBAccess  {
 		place.setLocking_time(DATE);
 		place.setPlace(PLACE);
 
-		List<Place> testList = new ArrayList();
+		List<Place> testList = new ArrayList<>();
 		testList.add(place);
 
 		//リストにセットしたテストデータをデータベースに登録
@@ -105,7 +105,7 @@ public class PlaceDaoImplTest extends TestDBAccess  {
 		place.setLocking_time(DATE);
 		place.setPlace(PLACE);
 
-		List<Place> testList = new ArrayList();
+		List<Place> testList = new ArrayList<>();
 		testList.add(place);
 
 		//上で作成した不完全なリストをインサートする

@@ -9,11 +9,11 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
+import com.DataValid;
 import com.javaranch.unittest.helper.sql.pool.JNDIUnitTestHelper;
 
 import dao.DaoFactory;
 import dao.PlaceDao;
-import domain.DataValid;
 import domain.Place;
 
 public class PlaceFileReader extends EventMgFileIO {

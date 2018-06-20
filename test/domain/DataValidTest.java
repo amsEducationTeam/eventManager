@@ -7,7 +7,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import domain.DataValid;
+import com.DataValid;
 
 public class DataValidTest {
 

@@ -5,10 +5,11 @@ import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import com.DataValid;
+
 import dao.AccountDao;
 import dao.DaoFactory;
 import domain.Account;
-import domain.DataValid;
 
 public class AccountFileReader extends EventMgFileIO {
 	static String CHECKCODE="100";
