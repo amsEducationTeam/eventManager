@@ -16,13 +16,9 @@ import org.junit.Test;
 
 import com.TestDBAccess;
 
-import dao.DaoFactory;
-import dao.MembersDao;
-import domain.Members;
-
 public class MemberFileReaderTest extends TestDBAccess {
 	static final int valid_data_quantity = 9;
-	MemberFileReader MembersFileReader = new MemberFileReader("c:\\work_1\\member_20180402.csv",
+	static final MemberFileReader MembersFileReader = new MemberFileReader("c:\\work_1\\member_20180402.csv",
 			valid_data_quantity);
 	static final String MEMBER_ID="105";
 	static final String NAME="山本葵";
@@ -78,10 +74,10 @@ public class MemberFileReaderTest extends TestDBAccess {
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		MembersDao membersDao=DaoFactory.createMembersDao();
-		Members members = new Members();
-		members.setMember_id(MEMBER_ID);
-		membersDao.delete(members);
+//		MembersDao membersDao=DaoFactory.createMembersDao();
+//		Members members = new Members();
+//		members.setMember_id(MEMBER_ID);
+//		membersDao.delete(members);
 	}
 
 

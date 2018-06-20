@@ -139,7 +139,7 @@ public class MemberFileReader extends EventMgFileIO {
 	 *			index0には"D"が格納されています
 	 *			検査対象はindex1からになります
 	 * **/
-	public boolean enableLine(String[] columns) {
+	protected boolean enableLine(String[] columns) {
 
 		// データ行の列で空のデータがないか
 		for (int i = 1; i < columns.length; i++) {
