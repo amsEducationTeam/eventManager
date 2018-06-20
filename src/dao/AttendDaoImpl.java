@@ -127,13 +127,6 @@ public class AttendDaoImpl implements MembersDao, AttendDao {
 
 
 	@Override
-	public List<Members> findAll() throws Exception {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
-	}
-
-
-	@Override
 	public Members findById(String id) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
@@ -238,6 +231,12 @@ public class AttendDaoImpl implements MembersDao, AttendDao {
 	public int deleteAccount(Members Members) throws Exception {
 		// TODO 自動生成されたメソッド・スタブ
 		return 0;
+	}
+
+	@Override
+	public String insertMast(List<Members> memberList) throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
 	}
 
 

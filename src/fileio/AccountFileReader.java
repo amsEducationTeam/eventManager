@@ -11,7 +11,6 @@ import domain.Account;
 import domain.DataValid;
 
 public class AccountFileReader extends EventMgFileIO {
-	private String fileName;
 	static String CHECKCODE="100";
 
 //	public static void main(String args[]) {
@@ -44,7 +43,6 @@ public class AccountFileReader extends EventMgFileIO {
 	 * **/
 	AccountFileReader(String filename, int columns) {
 		super(filename, columns);
-		this.fileName = filename;
 	}
 
 	/**
