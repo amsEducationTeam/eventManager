@@ -277,7 +277,7 @@ public class EventsDaoImpl implements EventsDao {
 	/*
 	 * pagenationで使用する
 	 */
-	public double countAll() throws Exception {
+	public int countAll() throws Exception {
 		List<Events> eventsList = new ArrayList<>();
 		Connection con = ds.getConnection();
 		String sql = "SELECT "
@@ -289,13 +289,15 @@ public class EventsDaoImpl implements EventsDao {
 			eventsList.add(mapToEvents(rs));
 		}
 		double count = eventsList.size();
-		return count;
+		int lastpage = (int) Math.ceil(count/5);
+
+		return lastpage;
 	}
 
 	/*
 	 * Todayのpagenationで使用する
 	 */
-	public double countAllToday() throws Exception {
+	public int countAllToday() throws Exception {
 		List<Events> eventsList = new ArrayList<>();
 		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
@@ -317,7 +319,9 @@ public class EventsDaoImpl implements EventsDao {
 			eventsList.add(mapToEvents(rs));
 		}
 		double count = eventsList.size();
-		return count;
+		int lastpage = (int) Math.ceil(count/5);
+
+		return lastpage;
 	}
 
 }

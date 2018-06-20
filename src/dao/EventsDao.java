@@ -13,7 +13,7 @@ public interface EventsDao {
 	List<Events> findAll(int event_page) throws Exception;
 	List<Events> findToday(int event_page) throws Exception;
 	List<Events> findfive(List<Events> eventsList, String member_id) throws Exception;
-	double countAll() throws Exception;
-	double countAllToday() throws Exception;
+	int countAll() throws Exception;
+	int countAllToday() throws Exception;
 
 }
