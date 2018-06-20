@@ -29,22 +29,33 @@ import com.TestDBAccess;
 import com.mysql.jdbc.Statement;
 
 public class PlaceFileReaderTest extends TestDBAccess {
-	private final static String FILE_NAME = "C:\\work_1\\place_20180601.csv";
+	private final static String LEGAL_FILE_NAME = "C:\\work_1\\place_20180601.csv";
+	private final static String BAD_FILE_NAME = "C:\\work_1\\place_20180601_0.csv";//ファイルなし
+	private final static String BAD_FILE_NAME_CHAR = "C:\\work_1\\place_20180601_2.csv";//ファイルキャラクターエラー
+	private final static String BAD_FILE_NAME_DB = "C:\\work_1\\place_20180601_3.csv";//place名が？？？
+	private final static String BAD_FILE_NAME_HEAD = "C:\\work_1\\place_20180601_4.csv";//ヘッダー異常ファイル
+	private final static String BAD_FILE_NAME_DATA = "C:\\work_1\\place_20180601_5.csv";//データ行に空のデータ
 	private final int COLUMNS = 8;
+	protected static final String SUCCESS = "100"; //正常結果値100
+	private static final String DATA_ROW = "D";//ファイルのデータ行
+	private static final String SEPARATE = ",";//区切り文字 カンマ
+	private static final String ERROR_FILE_READ = "ファイル読み込みエラー";
+	private static final String ERROR_FILE_CHAR = "ファイルキャラクターセットエラー";
+	private static final String ERROR_FILE_HEAD = "ヘッダ行異常2";
+	private static final String ERROR_FILE_DATA = "データ有効性エラー";
+
+	private static final String[][] BAD_DATA_LIST = {
+			{ "D", "123456789012345678901", "10", "1", "1", "1", "23", "17:00" },
+			{ "D", "第一会議室", "10", "1", "1", "0", "123456789", "17:00" },
+			{ "D", "第一会議室", "10", "1", "0", "1", "23", "30:70" }, //timeFormat_error
+			{ "D", "第一会議室", "10", "3", "1", "1", "23", "17:00" },
+			{ "D", "第一会議室", "10", "0", "3", "1", "23", "17:00" },
+			{ "D", "第一会議室", "10", "0", "-1", "0", "23", "17:00" },
+			{ "D", "第一会議室", "10", "1", "0", "3", "23", "17:00" },
+			{ "D", "第一会議室", "10", "", "", "", "", "" }};
+
 	private static  DataSource testds;
 	private static List<String[]> dataList;
-	/** 正常結果値100 */
-	protected static final String SUCCESS = "100";
-	/** ファイルの開始行 */
-	//private static final String START_ROW = "S";
-	/** ファイルのヘッダ行 */
-	//private static final String HEAD_ROW = "H";
-	/** ファイルのデータ行 */
-	private static final String DATA_ROW = "D";
-	/** ファイルの終了行 */
-	//private static final String END_ROW = "E";
-	/** 区切り文字 カンマ */
-	private static final String SEPARATE = ",";
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -90,7 +101,7 @@ public class PlaceFileReaderTest extends TestDBAccess {
 			}
 		}
 
-		Path path=Paths.get(FILE_NAME);
+		Path path=Paths.get(LEGAL_FILE_NAME);
 
 		dataList = new ArrayList<>();;
 
@@ -157,11 +168,13 @@ public class PlaceFileReaderTest extends TestDBAccess {
 	public void tearDown() throws Exception {
 	}
 
+	// ------------------正常値テスト ここから --------------------------------------------------------
+
 	// mainメソッド、正常テスト、インスタンスしてコンストラクタにファイルパスを渡す
 	@Test
 	public void testMain() {
 		try {
-			PlaceFileReader PlaceFileReader = new PlaceFileReader(FILE_NAME, COLUMNS);
+			PlaceFileReader PlaceFileReader = new PlaceFileReader(LEGAL_FILE_NAME, COLUMNS);
 
 			String result = PlaceFileReader.main();
 			assertThat(result, is(SUCCESS));
@@ -176,7 +189,7 @@ public class PlaceFileReaderTest extends TestDBAccess {
 	@Test
 	public void testEnableLine() {
 		try {
-			PlaceFileReader PlaceFileReader = new PlaceFileReader(FILE_NAME, COLUMNS);
+			PlaceFileReader PlaceFileReader = new PlaceFileReader(LEGAL_FILE_NAME, COLUMNS);
 			//int i = 1;
 			for(String[] columns:dataList) {
 				assertThat(PlaceFileReader.enableLine(columns), is(true));
@@ -196,7 +209,7 @@ public class PlaceFileReaderTest extends TestDBAccess {
 	@Test
 	public void testEnableFile() {
 		try {
-			PlaceFileReader PlaceFileReader = new PlaceFileReader(FILE_NAME, COLUMNS);
+			PlaceFileReader PlaceFileReader = new PlaceFileReader(LEGAL_FILE_NAME, COLUMNS);
 
 			List<String[]> fileRead = new ArrayList<String[]>();
 			try {
@@ -227,7 +240,7 @@ public class PlaceFileReaderTest extends TestDBAccess {
 	@Test
 	public void testGetResult() {
 		try {
-			PlaceFileReader PlaceFileReader = new PlaceFileReader(FILE_NAME, COLUMNS);
+			PlaceFileReader PlaceFileReader = new PlaceFileReader(LEGAL_FILE_NAME, COLUMNS);
 			String result =  PlaceFileReader.getResult();
 			assertThat(result, is(not(notNullValue())));
 		} catch (NoSuchFileException e) {
@@ -242,7 +255,7 @@ public class PlaceFileReaderTest extends TestDBAccess {
 	@Test
 	public void testMatchType() {
 		try {
-			PlaceFileReader PlaceFileReader = new PlaceFileReader(FILE_NAME, COLUMNS);
+			PlaceFileReader PlaceFileReader = new PlaceFileReader(LEGAL_FILE_NAME, COLUMNS);
 			for(String[] cols:dataList) {
 				assertThat(PlaceFileReader.matchType(cols[0]), is(true));
 			}
@@ -251,7 +264,89 @@ public class PlaceFileReaderTest extends TestDBAccess {
 		}
 	}
 
-	// ----------------------- 以下　異常値テスト -------------------------------------------
+	// ----------------------- 以下 異常値テスト -------------------------------------------
+
+	// mainメソッド、異常系テストIOException
+	@Test
+	public void 異常系testMain1() {
+		try {
+			PlaceFileReader PlaceFileReader = new PlaceFileReader(BAD_FILE_NAME, COLUMNS);
+			String result = PlaceFileReader.main();
+			assertThat(result, is(ERROR_FILE_READ));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// mainメソッド、異常系テスト ファイルキャラクターセットエラー
+	@Test
+	public void 異常系testMain2() {
+		try {
+			PlaceFileReader PlaceFileReader = new PlaceFileReader(BAD_FILE_NAME_CHAR, COLUMNS);
+			String result = PlaceFileReader.main();
+			assertThat(result, is(ERROR_FILE_CHAR));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// mainメソッド、異常系テスト ファイルキャラクターセットエラー
+	@Test
+	public void 異常系testMain3() {
+		try {
+			PlaceFileReader PlaceFileReader = new PlaceFileReader(BAD_FILE_NAME_DATA, COLUMNS);
+			String result = PlaceFileReader.main();
+			assertThat(result, is(ERROR_FILE_DATA));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// DB接続エラー
+	@Test
+	public void 異常系testMain4() {
+		try {
+			PlaceFileReader PlaceFileReader = new PlaceFileReader(BAD_FILE_NAME_DB, COLUMNS);
+			String result = PlaceFileReader.main();
+			String expected = "302";
+			assertThat(result, is(expected));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// ファイル有効性チェックを行い
+	// 有効性チェックが正常であれば
+	// D行を格納したList<String[]>を返却します
+	@Test
+	public void 異常系testEnableFile() throws Exception {
+		try {
+			PlaceFileReader PlaceFileReader = new PlaceFileReader(BAD_FILE_NAME_HEAD, COLUMNS);
+			//List<String[]> fileRead = new ArrayList<String[]>();
+			String result = PlaceFileReader.main();//ファイル有効性チェック
+			assertThat(result, is(ERROR_FILE_HEAD));
+		} catch (NoSuchFileException e) {
+			//e.printStackTrace();
+		}
+	}
+
+
+	// 各ファイルごとに調整したデータチェックのテスト 空白
+	@Test
+	public void 異常系testEnableLine() {
+		try {
+			PlaceFileReader PlaceFileReader = new PlaceFileReader(LEGAL_FILE_NAME, COLUMNS);
+			//int i = 0;
+			for(String[] columns:BAD_DATA_LIST) {
+				assertThat( PlaceFileReader.enableLine(columns), is(false));
+			//	i++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
 
 
 }
