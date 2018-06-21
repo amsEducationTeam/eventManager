@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -16,7 +15,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -155,22 +153,22 @@ public class MembersDaoImplTest2 extends TestDBAccess{
 	}
 
 
-	@AfterClass
-	public static void DBsetAfter() throws SQLException {
-		try (Connection con = ds.getConnection()){
-		PreparedStatement stmt;
-		String sql;
-		//全件削除
-
-		 sql="TRUNCATE members";
-		stmt=con.prepareStatement(sql);
-
-		stmt.executeUpdate();
-		sql="TRUNCATE account";
-		stmt=con.prepareStatement(sql);
-		stmt.executeUpdate();
-		}
-	}
+//	@AfterClass
+//	public static void DBsetAfter() throws SQLException {
+//		try (Connection con = ds.getConnection()){
+//		PreparedStatement stmt;
+//		String sql;
+//		//全件削除
+//
+//		 sql="TRUNCATE members";
+//		stmt=con.prepareStatement(sql);
+//
+//		stmt.executeUpdate();
+//		sql="TRUNCATE account";
+//		stmt=con.prepareStatement(sql);
+//		stmt.executeUpdate();
+//		}
+//	}
 	@Test
 	public void testFindAllInt正常1() throws Exception {
 		MembersDao membersDao = DaoFactory.createMembersDao();
