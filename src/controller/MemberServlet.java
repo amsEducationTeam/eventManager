@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import com.DataValid;
+
 import dao.AttendDao;
 import dao.DaoFactory;
 import dao.MembersDao;
@@ -204,7 +206,7 @@ public class MemberServlet extends HttpServlet {
 
 
 			// loginIdとloginPassの正規化チェック 半角英数字、ハイフン、アンダースコアのみ許可
-			if (login_id.matches("[0-9a-zA-Z\\-\\_]+") && login_pass.matches("[0-9a-zA-Z\\-\\_]+")) {
+			if (DataValid.isAlphanum(login_id) && DataValid.isAlphanum(login_pass)) {
 				// パスワードのハッシュ化
 				String hashedPass = BCrypt.hashpw(login_pass, BCrypt.gensalt());
 
@@ -276,7 +278,7 @@ public class MemberServlet extends HttpServlet {
 			String oldmember_id=request.getParameter("oldmember_id");
 
 			// loginIdとloginPassの正規化チェック 半角英数字、ハイフン、アンダースコアのみ許可
-			if (edit_login_id.matches("[0-9a-zA-Z\\-\\_]+") && edit_login_pass.matches("[0-9a-zA-Z\\-\\_]+")) {
+			if(DataValid.isAlphanum(edit_login_id) &&DataValid.isAlphanum(edit_login_pass)) {
 				String hashedPass = BCrypt.hashpw(edit_login_pass, BCrypt.gensalt());
 				// メンバーからユーザーIdを取得しインスタンスにセット
 				Members member = new Members();
@@ -316,7 +318,7 @@ public class MemberServlet extends HttpServlet {
 				} catch (Exception e) {
 					throw new ServletException(e);
 				}
-			} else if (edit_login_id.matches("[0-9a-zA-Z\\-\\_]+") && edit_login_pass == "") {// パスワード無しの場合の更新処理
+			} else if(DataValid.isAlphanum(edit_login_id) && !DataValid.isNotNull(edit_login_pass)) {// パスワード無しの場合の更新処理
 				Members member = new Members();
 
 				member.setMember_id(edit_member_id);
@@ -357,8 +359,6 @@ public class MemberServlet extends HttpServlet {
 				request.getRequestDispatcher("view/memberedit.jsp").forward(request, response);
 			}
 			break;
-
-
 
 
 		case MEMBER_DELETE:

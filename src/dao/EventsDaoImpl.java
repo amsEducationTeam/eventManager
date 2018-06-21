@@ -28,9 +28,7 @@ public class EventsDaoImpl implements EventsDao {
 	public List<Events> findAll(int event_page) throws Exception {
 		List<Events> eventsList = new ArrayList<>();
 
-//		try (Connection con = ds.getConnection()) {
-		// テスト用にコメントアウト
-		Connection con = ds.getConnection();
+		try (Connection con = ds.getConnection()) {
 
 			String sql = "SELECT "
 					+ " EVENTS.event_id"
@@ -44,7 +42,7 @@ public class EventsDaoImpl implements EventsDao {
 			while (rs.next()) {
 				eventsList.add(mapToEvents(rs));
 			}
-//		}
+		}
 		return eventsList;
 	}
 
@@ -58,7 +56,7 @@ public class EventsDaoImpl implements EventsDao {
 	public List<Events> findfive(List<Events> events,String member_id) throws Exception {
 		List<Events> eventsList = new ArrayList<>();
 
-			Connection con = ds.getConnection();
+		try (Connection con = ds.getConnection()) {
 			for (Events event : events) {
 				String sql = "SELECT"
 						+ "		EVENTS.event_id,"
@@ -90,12 +88,11 @@ public class EventsDaoImpl implements EventsDao {
 				stms.setObject(1, member_id);
 				stms.setObject(2, event.getEvent_id());
 				ResultSet rs = stms.executeQuery();
-				// テスト用にコメントアウト
-//				if (rs.next()) {
-					rs.next();
+				if (rs.next()) {
 					eventsList.add(mapToEvents2(rs));
-//				}
+				}
 			}
+		}
 		return eventsList;
 	}
 
@@ -109,8 +106,7 @@ public class EventsDaoImpl implements EventsDao {
 		String today = String.format("%04d", year) + "-" + String.format("%02d", month) + "-"
 				+ String.format("%02d", day);
 
-//		try (Connection con = ds.getConnection()) {
-			Connection con = ds.getConnection();
+		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT "
 					+ " 	EVENTS.event_id"
 					+ " FROM"
@@ -126,7 +122,7 @@ public class EventsDaoImpl implements EventsDao {
 			while (rs.next()) {
 				eventsList.add(mapToEvents(rs));
 			}
-//		}
+		}
 		return eventsList;
 	}
 
@@ -159,7 +155,11 @@ public class EventsDaoImpl implements EventsDao {
 	events.setDetail(rs.getString("detail"));
 	events.setMember_name(rs.getString("MEMBERS_name"));
 	events.setCreated(rs.getTimestamp("created"));
-	events.setMember_id(rs.getString("member_id"));
+	try {
+		events.setMember_id(rs.getString("member_id"));
+	} catch (NullPointerException e) {
+
+	}
 	return events;
 }
 
@@ -183,7 +183,7 @@ public class EventsDaoImpl implements EventsDao {
 	public Events findById(Integer event_id) throws Exception {
 		Events events = new Events();
 
-			Connection con = ds.getConnection();
+		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT"
 					+ "		EVENTS.event_id,"
 					+ " 	EVENTS.title,"
@@ -211,6 +211,7 @@ public class EventsDaoImpl implements EventsDao {
 			while (rs.next()) {
 				events = mapToEventInfo(rs);
 			}
+		}
 		return events;
 	}
 
@@ -218,19 +219,20 @@ public class EventsDaoImpl implements EventsDao {
 	public void insert(Events events) throws Exception {
 		Timestamp castStart = new Timestamp(events.getStart().getTime());
 		Timestamp castEnd = new Timestamp(events.getEnd().getTime());
-		Connection con = ds.getConnection();
-		String sql = "INSERT INTO events"
-				+ " 	(event_id, title, start, end, place_id, dep_id, detail, registered_id, created)"
-				+ " VALUES(null,?,?,?,?,?,?,?,NOW())";
-		PreparedStatement stmt = con.prepareStatement(sql);
-		stmt.setString(1, events.getTitle());
-		stmt.setTimestamp(2, castStart);
-		stmt.setTimestamp(3, castEnd);
-		stmt.setInt(4, events.getPlace_id());
-		stmt.setInt(5, events.getDep_id());
-		stmt.setString(6, events.getDetail());
-		stmt.setString(7, events.getRegistered_id());
-		stmt.executeUpdate();
+		try (Connection con = ds.getConnection()) {
+			String sql = "INSERT INTO events"
+					+ " 	(event_id, title, start, end, place_id, dep_id, detail, registered_id, created)"
+					+ " VALUES(null,?,?,?,?,?,?,?,NOW())";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, events.getTitle());
+			stmt.setTimestamp(2, castStart);
+			stmt.setTimestamp(3, castEnd);
+			stmt.setInt(4, events.getPlace_id());
+			stmt.setInt(5, events.getDep_id());
+			stmt.setString(6, events.getDetail());
+			stmt.setString(7, events.getRegistered_id());
+			stmt.executeUpdate();
+		}
 	}
 
 
@@ -238,40 +240,41 @@ public class EventsDaoImpl implements EventsDao {
 	public void update(Events events) throws Exception {
 		Timestamp castStart = new Timestamp(events.getStart().getTime());
 		Timestamp castEnd = new Timestamp(events.getEnd().getTime());
-
-		Connection con = ds.getConnection();
-		String sql = "UPDATE"
-				+ " 	EVENTS"
-				+ " SET"
-				+ "     title = ?,"
-				+ "     start = ?,"
-				+ "     end = ?,"
-				+ "     place_id = ?,"
-				+ "     dep_id = ?,"
-				+ "     detail = ?"
-				+ " WHERE"
-				+ "     event_id = ?";
-		PreparedStatement stmt = con.prepareStatement(sql);
-		stmt.setString(1, events.getTitle());
-		stmt.setTimestamp(2, castStart);
-		stmt.setTimestamp(3, castEnd);
-		stmt.setInt(4, events.getPlace_id());
-		stmt.setInt(5, events.getDep_id());
-		stmt.setString(6, events.getDetail());
-		stmt.setInt(7, events.getEvent_id());
-		stmt.executeUpdate();
+		try (Connection con = ds.getConnection()) {
+			String sql = "UPDATE"
+					+ " 	EVENTS"
+					+ " SET"
+					+ "     title = ?,"
+					+ "     start = ?,"
+					+ "     end = ?,"
+					+ "     place_id = ?,"
+					+ "     dep_id = ?,"
+					+ "     detail = ?"
+					+ " WHERE"
+					+ "     event_id = ?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, events.getTitle());
+			stmt.setTimestamp(2, castStart);
+			stmt.setTimestamp(3, castEnd);
+			stmt.setInt(4, events.getPlace_id());
+			stmt.setInt(5, events.getDep_id());
+			stmt.setString(6, events.getDetail());
+			stmt.setInt(7, events.getEvent_id());
+			stmt.executeUpdate();
+		}
 	}
 
 	@Override
 	public void delete(Events events) throws Exception {
-		Connection con = ds.getConnection();
-		String sql = "DELETE FROM"
-				+ "	 	EVENTS"
-				+ " WHERE"
-				+ " 	event_id=?";
-		PreparedStatement stmt = con.prepareStatement(sql);
-		stmt.setObject(1, events.getEvent_id(), Types.INTEGER);
-		stmt.executeUpdate();
+		try (Connection con = ds.getConnection()) {
+			String sql = "DELETE FROM"
+					+ "	 	EVENTS"
+					+ " WHERE"
+					+ " 	event_id=?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setObject(1, events.getEvent_id(), Types.INTEGER);
+			stmt.executeUpdate();
+		}
 	}
 
 	/*
@@ -279,14 +282,15 @@ public class EventsDaoImpl implements EventsDao {
 	 */
 	public int countAll() throws Exception {
 		List<Events> eventsList = new ArrayList<>();
-		Connection con = ds.getConnection();
-		String sql = "SELECT "
-				+ " EVENTS.event_id "
-				+ " FROM EVENTS";
-		PreparedStatement stms = con.prepareStatement(sql);
-		ResultSet rs = stms.executeQuery();
-		while (rs.next()) {
-			eventsList.add(mapToEvents(rs));
+		try (Connection con = ds.getConnection()) {
+			String sql = "SELECT "
+					+ " EVENTS.event_id "
+					+ " FROM EVENTS";
+			PreparedStatement stms = con.prepareStatement(sql);
+			ResultSet rs = stms.executeQuery();
+			while (rs.next()) {
+				eventsList.add(mapToEvents(rs));
+			}
 		}
 		double count = eventsList.size();
 		int lastpage = (int) Math.ceil(count/5);
@@ -305,18 +309,19 @@ public class EventsDaoImpl implements EventsDao {
 		int day = cal.get(Calendar.DATE);
 		String today = String.format("%04d", year) + "-" + String.format("%02d", month) + "-"
 				+ String.format("%02d", day);
-		Connection con = ds.getConnection();
-		String sql = "SELECT "
-				+ " EVENTS.event_id "
-				+ " FROM EVENTS"
-				+ " WHERE SUBSTRING( `start`, 1, 10 ) = ?";
+		try (Connection con = ds.getConnection()) {
+			String sql = "SELECT "
+					+ " EVENTS.event_id "
+					+ " FROM EVENTS"
+					+ " WHERE SUBSTRING( `start`, 1, 10 ) = ?";
 
-		PreparedStatement stmt = con.prepareStatement(sql);
-		stmt.setString(1, today);
-		ResultSet rs = stmt.executeQuery();
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, today);
+			ResultSet rs = stmt.executeQuery();
 
-		while (rs.next()) {
-			eventsList.add(mapToEvents(rs));
+			while (rs.next()) {
+				eventsList.add(mapToEvents(rs));
+			}
 		}
 		double count = eventsList.size();
 		int lastpage = (int) Math.ceil(count/5);
