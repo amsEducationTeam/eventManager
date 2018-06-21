@@ -20,7 +20,7 @@ import com.javaranch.unittest.helper.sql.pool.JNDIUnitTestHelper;
 
 public class DepartFileReaderTest extends TestDBAccess {
 	private final String FILE_NAME[] = {"C:\\work\\department_20180601.csv",
-			"C:\\xxxx.csv", "C:\\work\\lossDataFile.csv", "C:\\work\\noneValidData.csv"};
+			"C:\\xxxx.csv", "C:\\work\\department_lossDataFile.csv", "C:\\work\\department_noneValidData.csv"};
 	private final int COLUMNS = 4;
 	private final DepartFileReader DEP_FIL_RED = new DepartFileReader(FILE_NAME[0], COLUMNS);
 
